@@ -1,0 +1,107 @@
+# Student Management System - Mixed Chinese/English Example
+# Shows practical use of Chinese in DSL
+
+domain: 学生成绩管理系统
+
+entities:
+  - name: Student
+    attributes:
+      - name: student_id
+        type: string
+        pattern: "^[0-9]{8}$"
+        description: 学号（8位数字）
+        
+      - name: name  
+        type: string
+        description: 学生姓名
+        
+      - name: grade_level
+        type: integer
+        min: 1
+        max: 6
+        description: 年级（1-6）
+        
+      - name: score
+        type: integer
+        min: 0
+        max: 100
+        description: 考试成绩
+        
+      - name: subjects
+        type: array[string]
+        min_size: 1
+        max_size: 10
+        description: 选修科目列表
+        
+      - name: honors
+        type: set[string]
+        max_size: 5
+        description: 荣誉称号集合
+        
+      - name: is_excellent
+        type: boolean
+        description: 是否优秀学生
+
+  - name: Course
+    attributes:
+      - name: course_code
+        type: string
+        pattern: "^[A-Z]{2}[0-9]{3}$"
+        
+      - name: course_name
+        type: string
+        description: 课程名称
+        
+      - name: credit_hours
+        type: integer
+        min: 1
+        max: 6
+        
+      - name: is_required
+        type: boolean
+        description: 是否必修课
+
+constraints:
+  - student_grade_level >= 1 and student_grade_level <= 6
+  - student_score >= 0 and student_score <= 100
+  - size(student_subjects) >= 1
+  - course_credit_hours >= 1
+
+rules:
+  - name: 优秀学生标准
+    condition: student_score >= 90
+    implies: student_is_excellent == true
+    description: 成绩90分以上为优秀学生
+    
+  - name: 高年级选课要求
+    condition: student_grade_level >= 4
+    implies: size(student_subjects) >= 3
+    description: 4年级以上学生至少选3门课
+    
+  - name: 低年级选课限制
+    condition: student_grade_level <= 2
+    implies: size(student_subjects) <= 5
+    description: 1-2年级学生最多选5门课
+    
+  - name: 必修课学分要求
+    condition: course_is_required == true
+    implies: course_credit_hours >= 2
+    description: 必修课至少2学分
+
+test_requirements:
+  - name: 成绩边界测试
+    type: boundary
+    focus: [score, grade_level]
+    
+  - name: 选课数量测试
+    type: collection
+    collection_tests: [single, multiple, boundary]
+    
+  - name: 年级与选课组合
+    type: combinatorial
+    combinations: 2
+    focus: [grade_level, subjects]
+    
+  - name: 规则覆盖测试
+    type: equivalence
+    focus: [is_excellent, is_required]

@@ -1,0 +1,70 @@
+# Permission management system with sets
+domain: Role-Based Access Control
+
+entities:
+  - name: User
+    attributes:
+      - name: id
+        type: integer
+        min: 1
+      - name: roles
+        type: set[string]     # Set of role names
+        min_size: 1
+        max_size: 10
+      - name: permissions
+        type: set[string]     # Computed permissions from roles
+        max_size: 100
+      - name: is_active
+        type: boolean
+
+  - name: Role
+    attributes:
+      - name: name
+        type: string
+      - name: permissions
+        type: set[string]     # Permissions granted by this role
+        min_size: 1
+        max_size: 50
+      - name: parent_roles
+        type: set[string]     # Role inheritance
+        max_size: 5
+
+constraints:
+  # User must have at least one role if active
+  - user_is_active == true -> size(user_roles) >= 1
+  
+  # User permissions must include all role permissions
+  - size(user_permissions) >= size(user_roles)
+  
+  # Role must have permissions
+  - size(role_permissions) >= 1
+  
+  # Prevent circular inheritance (simplified)
+  - size(role_parent_roles) < 5
+
+rules:
+  - name: Admin has all permissions
+    condition: '"admin" in user_roles'
+    implies: size(user_permissions) >= 50
+
+  - name: Inactive users have no permissions
+    condition: user_is_active == false
+    implies: size(user_permissions) == 0
+
+  - name: Multiple roles increase permissions
+    condition: size(user_roles) >= 3
+    implies: size(user_permissions) >= 10
+
+test_requirements:
+  - name: Permission boundaries
+    type: collection
+    collection_tests: [empty, single, multiple, boundary]
+    
+  - name: Role inheritance
+    type: combinatorial
+    combinations: 2
+    focus: [roles, parent_roles]
+    
+  - name: Active/inactive states
+    type: boundary
+    focus: [is_active, permissions]

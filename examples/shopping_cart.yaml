@@ -1,0 +1,68 @@
+# Shopping cart system with collections
+domain: E-commerce Shopping Cart
+
+entities:
+  - name: Cart
+    attributes:
+      - name: items
+        type: array[integer]  # Array of product IDs
+        min_size: 0
+        max_size: 50
+      - name: total_price
+        type: real
+        min: 0
+      - name: discount_codes
+        type: set[string]    # Set of unique discount codes
+        max_size: 5
+      - name: is_premium_member
+        type: boolean
+
+  - name: Product
+    attributes:
+      - name: id
+        type: integer
+        min: 1
+      - name: price
+        type: real
+        min: 0.01
+      - name: categories
+        type: set[string]    # Product can belong to multiple categories
+        min_size: 1
+        max_size: 10
+
+constraints:
+  # Cart constraints
+  - cart_total_price >= 0
+  - size(cart_items) <= 50
+  - size(cart_discount_codes) <= 5
+  
+  # Product constraints
+  - product_price > 0
+  - size(product_categories) >= 1
+
+rules:
+  - name: Free shipping for premium
+    condition: cart_is_premium_member == true
+    implies: cart_total_price >= 0  # No minimum for free shipping
+
+  - name: Bulk discount
+    condition: size(cart_items) >= 10
+    implies: size(cart_discount_codes) >= 1  # Must have at least one discount
+
+  - name: Empty cart has zero total
+    condition: size(cart_items) == 0
+    implies: cart_total_price == 0
+
+test_requirements:
+  - name: Cart boundary tests
+    type: boundary
+    focus: [total_price]
+  
+  - name: Collection tests
+    type: collection
+    collection_tests: [empty, single, multiple, boundary]
+  
+  - name: Discount combinations
+    type: combinatorial
+    combinations: 2
+    focus: [is_premium_member, discount_codes]

@@ -1,0 +1,46 @@
+# Simple example with arrays and sets of integers
+domain: Score Management System
+
+entities:
+  - name: Student
+    attributes:
+      - name: id
+        type: integer
+        min: 1
+      - name: test_scores
+        type: array[integer]
+        min_size: 0
+        max_size: 10
+        min: 0
+        max: 100
+      - name: course_ids
+        type: set[integer]  # Using integers instead of strings
+        min_size: 1
+        max_size: 5
+        min: 100
+        max: 999
+      - name: is_active
+        type: boolean
+
+constraints:
+  - student_id >= 1
+  - size(student_test_scores) <= 10
+  - size(student_course_ids) >= 1
+
+rules:
+  - name: Active students must have scores
+    condition: student_is_active == true
+    implies: size(student_test_scores) >= 1
+    
+  - name: Many courses means many tests
+    condition: size(student_course_ids) >= 3
+    implies: size(student_test_scores) >= 5
+
+test_requirements:
+  - name: Array tests
+    type: collection
+    collection_tests: [empty, single, multiple, boundary]
+    
+  - name: Boundary tests
+    type: boundary
+    focus: [id, test_scores]

@@ -1,0 +1,687 @@
+{
+  "summary": {
+    "total_tests": 37,
+    "positive_tests": 17,
+    "negative_tests": 20,
+    "coverage_rate": "100%",
+    "test_distribution": {
+      "boundary": 16,
+      "rule_coverage": 1,
+      "negative": 20
+    }
+  },
+  "test_suites": {
+    "boundary": [
+      {
+        "id": 1,
+        "name": "boundary_policy_type_min",
+        "description": "Minimum valid policy_type",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 1,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 2,
+        "name": "boundary_policy_type_max",
+        "description": "Maximum valid policy_type",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 4,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 3,
+        "name": "boundary_coverage_amount_min",
+        "description": "Minimum valid coverage_amount",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 10000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 4,
+        "name": "boundary_coverage_amount_max",
+        "description": "Maximum valid coverage_amount",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 5000000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 5,
+        "name": "boundary_deductible_min",
+        "description": "Minimum valid deductible",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 0.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 6,
+        "name": "boundary_deductible_max",
+        "description": "Maximum valid deductible",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 10000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 7,
+        "name": "boundary_claim_amount_min",
+        "description": "Minimum valid claim_amount",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 0.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 8,
+        "name": "boundary_claim_amount_max",
+        "description": "Maximum valid claim_amount",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 5000000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 9,
+        "name": "boundary_incident_date_days_ago_min",
+        "description": "Minimum valid incident_date_days_ago",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 0,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 10,
+        "name": "boundary_incident_date_days_ago_max",
+        "description": "Maximum valid incident_date_days_ago",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 365,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 11,
+        "name": "boundary_claim_type_min",
+        "description": "Minimum valid claim_type",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 1,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 12,
+        "name": "boundary_claim_type_max",
+        "description": "Maximum valid claim_type",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 4,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 13,
+        "name": "boundary_previous_claims_count_min",
+        "description": "Minimum valid previous_claims_count",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 0,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 14,
+        "name": "boundary_previous_claims_count_max",
+        "description": "Maximum valid previous_claims_count",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 10,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 15,
+        "name": "boundary_fraud_risk_score_min",
+        "description": "Minimum valid fraud_risk_score",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 0
+        }
+      },
+      {
+        "id": 16,
+        "name": "boundary_fraud_risk_score_max",
+        "description": "Maximum valid fraud_risk_score",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 100
+        }
+      }
+    ],
+    "rule_coverage": [
+      {
+        "id": 1,
+        "name": "rule_premium_payment_required_active",
+        "description": "Activate rule: Life Insurance Age Factor - High value life insurance needs verification",
+        "expected_result": "pass",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      }
+    ],
+    "negative": [
+      {
+        "id": 1,
+        "name": "negative_policy_type_below_min_1",
+        "description": "policy_type = 0 (below minimum 1)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 0,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 2,
+        "name": "negative_policy_type_above_max_1",
+        "description": "policy_type = 5 (above maximum 4)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 5,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 3,
+        "name": "negative_policy_type_above_max_2",
+        "description": "policy_type = 14 (above maximum 4)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 14,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 4,
+        "name": "negative_coverage_amount_below_min_1",
+        "description": "coverage_amount = 0 (below minimum 10000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 5,
+        "name": "negative_coverage_amount_below_min_2",
+        "description": "coverage_amount = 9999.0 (below minimum 10000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 9999.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 6,
+        "name": "negative_coverage_amount_above_max_1",
+        "description": "coverage_amount = 5000001.0 (above maximum 5000000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 5000001.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 7,
+        "name": "negative_deductible_below_min_1",
+        "description": "deductible = -1.0 (below minimum 0.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": -1.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 8,
+        "name": "negative_deductible_above_max_1",
+        "description": "deductible = 10001.0 (above maximum 10000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 10001.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 9,
+        "name": "negative_claim_amount_below_min_1",
+        "description": "claim_amount = -1.0 (below minimum 0.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": -1.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 10,
+        "name": "negative_claim_amount_above_max_1",
+        "description": "claim_amount = 5000001.0 (above maximum 5000000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 5000001.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 11,
+        "name": "negative_incident_date_days_ago_below_min_1",
+        "description": "incident_date_days_ago = -1 (below minimum 0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": -1,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 12,
+        "name": "negative_incident_date_days_ago_above_max_1",
+        "description": "incident_date_days_ago = 366 (above maximum 365)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 366,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 13,
+        "name": "negative_claim_type_below_min_1",
+        "description": "claim_type = 0 (below minimum 1)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 0,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 14,
+        "name": "negative_claim_type_above_max_1",
+        "description": "claim_type = 5 (above maximum 4)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 5,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 15,
+        "name": "negative_claim_type_above_max_2",
+        "description": "claim_type = 14 (above maximum 4)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 14,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 16,
+        "name": "negative_previous_claims_count_below_min_1",
+        "description": "previous_claims_count = -1 (below minimum 0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": -1,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 17,
+        "name": "negative_previous_claims_count_above_max_1",
+        "description": "previous_claims_count = 11 (above maximum 10)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 11,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 18,
+        "name": "negative_previous_claims_count_above_max_2",
+        "description": "previous_claims_count = 20 (above maximum 10)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 20,
+          "fraud_risk_score": 50
+        }
+      },
+      {
+        "id": 19,
+        "name": "negative_fraud_risk_score_below_min_1",
+        "description": "fraud_risk_score = -1 (below minimum 0)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": -1
+        }
+      },
+      {
+        "id": 20,
+        "name": "negative_fraud_risk_score_above_max_1",
+        "description": "fraud_risk_score = 101 (above maximum 100)",
+        "expected_result": "fail",
+        "test_data": {
+          "policy_type": 2,
+          "coverage_amount": 1507000.0,
+          "deductible": 3000.0,
+          "premium_paid": true,
+          "claim_amount": 1500000.0,
+          "incident_date_days_ago": 182,
+          "claim_type": 2,
+          "documents_complete": true,
+          "previous_claims_count": 5,
+          "fraud_risk_score": 101
+        }
+      }
+    ]
+  }
+}
