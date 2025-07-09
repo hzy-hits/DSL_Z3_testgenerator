@@ -9,6 +9,8 @@ A clean, correct, and minimal test case generator based on Domain Specific Langu
 - **Clear Test Objectives**: Every test has a clear purpose and coverage information
 - **Clean Architecture**: Layered design with clear separation of concerns
 - **No Business Logic Hardcoding**: Pure, domain-agnostic engine
+- **Intelligent Combination Analysis**: Automatically detects rule conflicts and suggests critical test scenarios
+- **Advanced Test Planning**: Prioritizes important combinations and edge cases
 
 ## Quick Start
 
@@ -16,8 +18,14 @@ A clean, correct, and minimal test case generator based on Domain Specific Langu
 # Generate test cases from DSL
 python dsl2test.py --input examples/simple_test.yaml --output tests.json
 
+# Analyze rule combinations and conflicts
+python dsl2test.py --input model.yaml --analyze-combinations
+
 # Generate with specific format
 python dsl2test.py --input model.yaml --output tests.py --format pytest
+
+# Use advanced features
+python dsl2test_advanced.py --input model.yaml --output tests.json --analyze-combinations --use-advanced-planner
 
 # Validate DSL only
 python dsl2test.py --input model.yaml --validate-only

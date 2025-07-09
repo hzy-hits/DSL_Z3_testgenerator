@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-DSL Test Generator V2.0 - CLI Interface
+DSL Test Generator V2.0 - Advanced CLI with combination analysis
 
 Usage:
-    python dsl2test.py --input model.yaml --output tests.json
+    python dsl2test_advanced.py --input model.yaml --output tests.json --analyze-combinations
 """
 
 import argparse
@@ -17,8 +17,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from src.layers import DSLParser
 from src.core import TestGenerator
-from src.utils import OutputFormatter
+from src.strategies.advanced_test_planner import AdvancedTestPlanner
 from src.strategies.combination_analyzer import CombinationAnalyzer
+from src.utils import OutputFormatter
 
 
 def setup_logging(verbose: bool):
@@ -33,7 +34,7 @@ def setup_logging(verbose: bool):
 def main():
     """Main CLI entry point"""
     parser = argparse.ArgumentParser(
-        description="DSL Test Generator V2.0 - Generate minimal correct test cases"
+        description="DSL Test Generator V2.0 - Advanced version with combination analysis"
     )
     
     # Required arguments
@@ -58,6 +59,18 @@ def main():
     )
     
     parser.add_argument(
+        "--analyze-combinations",
+        action="store_true",
+        help="Analyze rule combinations and show potential conflicts"
+    )
+    
+    parser.add_argument(
+        "--use-advanced-planner",
+        action="store_true",
+        help="Use advanced test planner with combination support"
+    )
+    
+    parser.add_argument(
         "--max-tests",
         type=int,
         help="Maximum number of tests to generate"
@@ -70,28 +83,9 @@ def main():
     )
     
     parser.add_argument(
-        "--coverage-goal",
-        type=float,
-        default=1.0,
-        help="Coverage goal (0.0-1.0, default: 1.0)"
-    )
-    
-    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose logging"
-    )
-    
-    parser.add_argument(
-        "--validate-only",
-        action="store_true",
-        help="Only validate the DSL model without generating tests"
-    )
-    
-    parser.add_argument(
-        "--analyze-combinations",
-        action="store_true",
-        help="Analyze rule combinations and show potential conflicts"
     )
     
     args = parser.parse_args()
@@ -107,19 +101,7 @@ def main():
         model = parser.parse_file(args.input)
         logger.info(f"Successfully parsed DSL for domain: {model.domain}")
         
-        # Validate only mode
-        if args.validate_only:
-            errors = model.validate()
-            if errors:
-                print("Validation errors:")
-                for error in errors:
-                    print(f"  - {error}")
-                sys.exit(1)
-            else:
-                print("DSL model is valid!")
-                sys.exit(0)
-        
-        # Combination analysis mode
+        # Combination analysis
         if args.analyze_combinations:
             print("\n🔍 Analyzing rule combinations...")
             analyzer = CombinationAnalyzer(model)
@@ -147,9 +129,16 @@ def main():
                 print(f"\n💡 Critical test suggestions: {len(suggestions)}")
                 for s in suggestions[:3]:
                     print(f"  - {s['description']}")
-            
-            if not args.output:
-                sys.exit(0)
+        
+        # Choose planner
+        if args.use_advanced_planner:
+            logger.info("Using advanced test planner...")
+            from src.strategies.test_planner import TestPlanner
+            planner = AdvancedTestPlanner(model)
+        else:
+            logger.info("Using standard test planner...")
+            from src.strategies.test_planner import TestPlanner
+            planner = TestPlanner(model)
         
         # Generate tests
         logger.info("Starting test generation...")
@@ -159,9 +148,9 @@ def main():
         )
         
         coverage_goals = {
-            'constraint': args.coverage_goal,
-            'rule': args.coverage_goal,
-            'boundary': args.coverage_goal
+            'constraint': 1.0,
+            'rule': 1.0,
+            'boundary': 1.0
         }
         
         result = generator.generate(
@@ -176,11 +165,6 @@ def main():
                    f"Rules: {result.coverage_report.rule_coverage:.2%}, "
                    f"Boundaries: {result.coverage_report.boundary_coverage:.2%}")
         
-        if result.warnings:
-            logger.warning(f"Generation warnings: {len(result.warnings)}")
-            for warning in result.warnings:
-                logger.warning(f"  - {warning}")
-        
         # Format output
         formatter = OutputFormatter()
         
@@ -194,8 +178,6 @@ def main():
             output = formatter.format_markdown(result, model)
         elif args.format in ["pytest", "unittest"]:
             output = formatter.format_python(result, model, framework=args.format)
-        else:
-            raise ValueError(f"Unknown format: {args.format}")
         
         # Write output
         output_path = Path(args.output)
@@ -207,16 +189,12 @@ def main():
         logger.info(f"Test cases written to: {args.output}")
         
         # Print summary
-        print(f"\nTest Generation Complete!")
+        print(f"\n✅ Test Generation Complete!")
         print(f"Domain: {model.domain}")
         print(f"Tests generated: {len(result.test_cases)}")
-        print(f"Failed objectives: {len(result.failed_objectives)}")
         print(f"Constraint coverage: {result.coverage_report.constraint_coverage:.2%}")
         print(f"Rule coverage: {result.coverage_report.rule_coverage:.2%}")
         print(f"Boundary coverage: {result.coverage_report.boundary_coverage:.2%}")
-        
-        if result.failed_objectives:
-            print(f"\nWarning: {len(result.failed_objectives)} objectives could not be satisfied")
         
     except Exception as e:
         logger.error(f"Error: {e}", exc_info=args.verbose)
