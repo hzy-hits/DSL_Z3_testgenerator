@@ -83,6 +83,13 @@ class SmartTestGenerator(DomainAwareTestGenerator):
                 if var in values:
                     values[var] = val
             
+            # Parse and apply the implication part of the rule
+            if rule.action:
+                action_values = self._parse_rule_condition(rule.action)
+                for var, val in action_values.items():
+                    if var in values:
+                        values[var] = val
+            
             # Ensure related constraints are satisfied
             self._ensure_constraint_consistency(values, model)
             
@@ -264,11 +271,31 @@ class SmartTestGenerator(DomainAwareTestGenerator):
                         # Make them equal
                         values[var2] = values[var1]
             
-            # Handle range constraints
-            if '>=' in expr and '<=' in expr:
-                # This might be a range constraint like "x >= min and x <= max"
-                # Parse and ensure value is within range
-                pass
+            # Handle >= constraints
+            if '>=' in expr:
+                parts = expr.split('>=')
+                if len(parts) == 2:
+                    var, min_val = parts[0].strip(), parts[1].strip()
+                    if var in values:
+                        try:
+                            min_num = float(min_val)
+                            if values[var] < min_num:
+                                values[var] = min_num
+                        except:
+                            pass
+            
+            # Handle <= constraints
+            if '<=' in expr and ' and ' not in expr:
+                parts = expr.split('<=')
+                if len(parts) == 2:
+                    var, max_val = parts[0].strip(), parts[1].strip()
+                    if var in values:
+                        try:
+                            max_num = float(max_val)
+                            if values[var] > max_num:
+                                values[var] = max_num
+                        except:
+                            pass
     
     def _create_rule_inactive_scenario(self, rule: Rule, model: DSLModel) -> Optional[Dict[str, Any]]:
         """Create a scenario where the rule is NOT activated."""
@@ -429,3 +456,66 @@ class SmartTestGenerator(DomainAwareTestGenerator):
         sanitized = re.sub(r'[^a-zA-Z0-9]+', '_', name.lower())
         # Remove leading/trailing underscores
         return sanitized.strip('_')
+    
+    def _validate_rule_test(self, values: Dict[str, Any], rule: Any) -> bool:
+        """Check if test values satisfy both condition and action of a rule."""
+        # Check if condition is satisfied
+        condition_satisfied = self._evaluate_expression(rule.condition, values)
+        
+        if not condition_satisfied:
+            return True  # Rule not activated, which is valid
+        
+        # If condition is satisfied, check if action is also satisfied
+        if rule.action:
+            action_satisfied = self._evaluate_expression(rule.action, values)
+            return action_satisfied
+        
+        return True
+    
+    def _evaluate_expression(self, expr: str, values: Dict[str, Any]) -> bool:
+        """Evaluate a boolean expression with given values."""
+        try:
+            # Simple evaluation for common patterns
+            if '>=' in expr:
+                parts = expr.split('>=')
+                if len(parts) == 2:
+                    var, val = parts[0].strip(), parts[1].strip()
+                    if var in values:
+                        return values[var] >= float(val)
+            
+            if '<=' in expr:
+                parts = expr.split('<=')
+                if len(parts) == 2:
+                    var, val = parts[0].strip(), parts[1].strip()
+                    if var in values:
+                        return values[var] <= float(val)
+            
+            if '==' in expr:
+                parts = expr.split('==')
+                if len(parts) == 2:
+                    var, val = parts[0].strip(), parts[1].strip()
+                    if var in values:
+                        try:
+                            return values[var] == float(val)
+                        except:
+                            return str(values[var]) == val
+            
+            return True
+        except:
+            return True
+    
+    def _fix_rule_test_values(self, values: Dict[str, Any], rule: Any, model: DSLModel) -> Dict[str, Any]:
+        """Fix test values to ensure they satisfy the rule."""
+        fixed_values = values.copy()
+        
+        # If rule has an action (implication), ensure it's satisfied
+        if rule.action:
+            action_values = self._parse_rule_condition(rule.action)
+            for var, val in action_values.items():
+                if var in fixed_values:
+                    fixed_values[var] = val
+        
+        # Re-check constraints
+        self._ensure_constraint_consistency(fixed_values, model)
+        
+        return fixed_values

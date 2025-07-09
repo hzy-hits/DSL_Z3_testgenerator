@@ -20,24 +20,20 @@ from dsl_test_generator.core.enhanced_engine import EnhancedDSLEngine
 
 
 def format_test_data(values: Dict[str, Any]) -> Dict[str, Any]:
-    """Format test data for better readability in output."""
+    """Format test data while preserving full attribute names."""
     formatted = {}
     
     for key, value in values.items():
-        # Remove entity prefixes for cleaner output
-        clean_key = key
-        for prefix in ['customer_', 'booking_', 'room_', 'policy_', 'claim_']:
-            if key.startswith(prefix):
-                clean_key = key[len(prefix):]
-                break
+        # Keep the full attribute name with entity prefix
+        # This maintains consistency with DSL definitions
         
         # Format values based on type
         if isinstance(value, bool):
-            formatted[clean_key] = value  # Keep boolean values as true/false
+            formatted[key] = value  # Keep boolean values as true/false
         elif isinstance(value, (int, float)):
-            formatted[clean_key] = value
+            formatted[key] = value
         else:
-            formatted[clean_key] = str(value)
+            formatted[key] = str(value)
     
     return formatted
 

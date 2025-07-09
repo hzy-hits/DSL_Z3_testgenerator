@@ -78,6 +78,14 @@ class ConstraintTranslator:
         elif ' subset ' in expr:
             return self._parse_subset(expr)
         
+        # Handle implication operator first (->)
+        if ' -> ' in expr:
+            parts = expr.split(' -> ', 1)
+            if len(parts) == 2:
+                left = self._parse_expression(parts[0])
+                right = self._parse_expression(parts[1])
+                return z3.Implies(left, right)
+        
         # Handle logical operators
         for op_str, op_func in self.operators.items():
             if f' {op_str} ' in expr:
@@ -147,7 +155,7 @@ class ConstraintTranslator:
         if term.startswith('"') and term.endswith('"'):
             return term[1:-1]
         
-        # Variables
+        # Variables - exact match first
         if term in self.variables:
             return self.variables[term]
         
@@ -155,9 +163,10 @@ class ConstraintTranslator:
         if '[' in term and ']' in term:
             return self._parse_array_access(term)
         
-        # Try to find partial matches (e.g., user_age might be stored as user_age)
+        # Try to find exact suffix match (e.g., 'age' matches 'customer_age')
+        # This handles cases where DSL uses short names but variables have entity prefixes
         for var_name in self.variables:
-            if term in var_name or var_name in term:
+            if var_name.endswith('_' + term):
                 return self.variables[var_name]
         
         raise ValueError(f"Unknown term: {term}")

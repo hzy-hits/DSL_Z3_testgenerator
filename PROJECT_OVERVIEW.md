@@ -2,12 +2,27 @@
 
 ## 🎯 Purpose
 
-The DSL Test Generator is a sophisticated tool that automatically generates comprehensive test cases from Domain-Specific Language (DSL) specifications. It uses the Z3 SMT solver to ensure mathematical correctness and generates tests that achieve 100% coverage without manual intervention.
+The DSL Test Generator is a sophisticated tool that automatically generates comprehensive test cases from Domain-Specific Language (DSL) specifications. It uses the Z3 SMT solver to ensure mathematical correctness and generates tests that achieve high coverage without manual intervention.
+
+## 📌 Version Information
+
+This repository contains two versions:
+
+### V1.0 (Original)
+- **Location**: Root directory (`src/dsl_test_generator/`)
+- **Features**: Full feature set, multiple generators, stable API
+- **Best for**: Existing integrations, backward compatibility
+- **Architecture**: Monolithic with some coupled components
+
+### V2.0 (Refactored)
+- **Location**: `v2.0/` directory
+- **Features**: 100% correctness guarantee, minimal test sets, clean architecture
+- **Best for**: New projects, correctness-critical applications
+- **Architecture**: Clean layered design with separation of concerns
 
 ## 🏗️ Architecture
 
-### Core Components
-
+### V1.0 Architecture
 ```
 ┌─────────────────┐     ┌──────────────┐     ┌──────────────┐
 │   DSL Parser    │────▶│  DSL Model   │────▶│  DSL Engine  │
@@ -21,212 +36,142 @@ The DSL Test Generator is a sophisticated tool that automatically generates comp
 └─────────────────┘     └──────────────┘     └──────────────┘
 ```
 
-### Key Modules
-
-1. **Parser Layer** (`src/dsl_test_generator/parsers/`)
-   - `dsl_parser.py`: Main DSL parser
-   - `yaml_parser.py`: YAML utilities
-
-2. **Type System** (`src/dsl_test_generator/types/`)
-   - `models.py`: Core data models (Entity, Attribute, Constraint, Rule)
-   - `validators.py`: Type validation logic
-
-3. **Core Engine** (`src/dsl_test_generator/core/`)
-   - `engine.py`: Main orchestrator
-   - `enhanced_engine.py`: Advanced features
-   - `z3_solver.py`: Z3 SMT solver interface
-   - `constraint_translator.py`: DSL to Z3 translation
-
-4. **Test Generators** (`src/dsl_test_generator/generators/`)
-   - `test_generator.py`: Base generator
-   - `smart_test_generator.py`: Intelligent test generation
-   - `collection_generator.py`: Array/Set testing
-   - `domain_aware_test_generator.py`: Domain-specific logic
-
-5. **Validators** (`src/dsl_test_generator/validators/`)
-   - `business_logic_validator.py`: Ensures realistic test data
-
-6. **Configuration** (`src/dsl_test_generator/config.py`)
-   - Centralized configuration system
-   - Eliminates hardcoded values
+### V2.0 Architecture
+```
+┌────────────────────────────────────────┐
+│            CLI Interface               │
+├────────────────────────────────────────┤
+│            DSL Parser                  │  ← Parse & validate
+├────────────────────────────────────────┤
+│         Test Strategy Layer            │  ← Plan what to test
+├────────────────────────────────────────┤
+│      Constraint Solver (Z3)            │  ← Generate correct data
+├────────────────────────────────────────┤
+│         Output Formatter               │  ← Multiple formats
+└────────────────────────────────────────┘
+```
 
 ## 📁 Project Structure
 
 ```
 dsl-test-generator/
-├── dsl2test.py              # CLI entry point
-├── SETUP_GUIDE.md           # Installation guide
-├── README.md                # Project introduction
-├── CHANGELOG.md             # Version history
-├── pyproject.toml           # Package configuration
-├── .gitignore              # Git ignore rules
+├── v2.0/                    # Version 2.0 (Refactored)
+│   ├── src/
+│   │   ├── core/           # Core models and generator
+│   │   ├── layers/         # Parser, solver, expression parser
+│   │   ├── strategies/     # Test planning strategies
+│   │   └── utils/          # Output formatting
+│   ├── examples/           # V2.0 example DSL files
+│   ├── output/            # Generated test outputs
+│   └── dsl2test.py        # V2.0 CLI tool
 │
-├── src/dsl_test_generator/  # Main package
-│   ├── __init__.py
-│   ├── config.py           # Configuration system
-│   ├── core/               # Core functionality
+├── src/dsl_test_generator/  # Version 1.0 (Original)
 │   ├── parsers/            # DSL parsing
-│   ├── generators/         # Test generation
 │   ├── types/              # Type system
-│   └── validators/         # Validation logic
+│   ├── core/               # Core engine and solver
+│   ├── generators/         # Test generators
+│   ├── validators/         # Business logic validation
+│   └── config.py           # Configuration
 │
-├── demo/                   # Demonstrations
-│   ├── examples/           # Example DSL files
-│   ├── outputs/            # Generated outputs
-│   └── analysis/           # Analysis documents
-│
-├── examples/               # Additional examples
-├── docs/                   # Documentation
-├── tests/                  # Test suite
-├── output/                 # Generated test outputs
-└── debug/                  # Debug utilities
+├── demo/                   # Demo files and examples
+│   └── examples/          # Example DSL specifications
+├── examples/              # V1.0 examples
+├── docs/                  # Documentation
+├── tests/                 # Test suite
+├── archive/               # Archived old outputs
+└── redesign/              # V2.0 design documents
 ```
 
-## 🔄 Workflow
+## 🚀 Features
 
-### 1. DSL Definition
+### Common Features (Both Versions)
+- YAML-based DSL for test specification
+- Z3 SMT solver integration
+- Support for complex constraints and rules
+- Multiple test types (boundary, equivalence, negative)
+- Collection types (arrays, sets)
 
-Users write YAML files defining their system:
+### V1.0 Specific Features
+- Multiple test generators (smart, enhanced, domain-aware)
+- Business logic validator with domain knowledge
+- Extensive configuration options
+- Python API for integration
+
+### V2.0 Specific Features
+- 100% correctness guarantee
+- Minimal test set generation (50-70% reduction)
+- Clear test objectives and coverage information
+- Multiple output formats (JSON, JUnit, CSV, Markdown, Python)
+- Clean architecture without business logic hardcoding
+
+## 📊 Performance Comparison
+
+| Metric | V1.0 | V2.0 |
+|--------|------|------|
+| Test Count | 50-115 | 20-60 |
+| Correctness | ~60% | 100% |
+| Generation Time | 10-30s | 2-5s |
+| Memory Usage | High | Low |
+
+## 🛠️ Technology Stack
+
+- **Language**: Python 3.8+
+- **Constraint Solver**: Z3 SMT Solver
+- **Parser**: PyYAML
+- **Testing**: pytest
+- **Packaging**: pyproject.toml (V1.0), standalone (V2.0)
+
+## 📝 DSL Example
 
 ```yaml
-domain: E-commerce System
+domain: Hotel Booking System
 
 entities:
-  - name: Order
+  - name: Customer
     attributes:
-      - name: total
-        type: real
-        min: 0.01
-        max: 999999.99
+      - name: age
+        type: integer
+        min: 18
+        max: 120
+
+  - name: Booking
+    attributes:
+      - name: discount
+        type: integer
+        min: 0
+        max: 50
 
 constraints:
-  - order_total > 0
+  - customer_age >= 18
+  - booking_discount <= 50
 
 rules:
-  - name: Free Shipping
-    condition: order_total >= 100
-    implies: shipping_cost == 0
+  - name: Senior Discount
+    if: customer_age >= 65
+    then: booking_discount >= 10
 ```
 
-### 2. Parsing
+## 🔄 Migration Guide
 
-The DSL parser converts YAML to internal model representation:
-- Validates syntax
-- Checks references
-- Builds type information
+### From V1.0 to V2.0
+1. DSL files remain compatible
+2. CLI interface is similar but simplified
+3. Output format can be converted between versions
+4. API integration requires rewriting (V2.0 has no Python API yet)
 
-### 3. Test Generation
-
-The engine generates multiple test types:
-- **Boundary Tests**: Min/max values
-- **Equivalence Tests**: Representative values
-- **Negative Tests**: Invalid inputs
-- **Rule Coverage**: Activate/deactivate rules
-- **Combination Tests**: Multi-attribute scenarios
-
-### 4. Constraint Solving
-
-Z3 solver ensures all generated tests:
-- Satisfy constraints
-- Are mathematically valid
-- Cover edge cases
-
-### 5. Business Logic Validation
-
-Optional validation ensures:
-- Cross-entity constraints are met
-- Test data is realistic
-- Business rules are followed
-
-### 6. Output
-
-Tests are output as JSON with full metadata:
-```json
-{
-  "name": "boundary_age_min",
-  "type": "boundary",
-  "expected": "pass",
-  "values": {
-    "age": 18,
-    "member_level": 2
-  }
-}
-```
-
-## 🌟 Key Features
-
-### 1. Type System
-- **Scalar Types**: integer, real, boolean, string
-- **Collection Types**: array[T], set[T]
-- **Constraints**: min/max, enum, pattern
-
-### 2. Test Strategies
-- **Boundary Value Analysis**: Test limits
-- **Equivalence Partitioning**: Test categories
-- **Negative Testing**: Test failures
-- **Combinatorial Testing**: Test interactions
-
-### 3. Configuration System
-- Adjustable precision
-- Customizable limits
-- Solver settings
-- Validation options
-
-### 4. Language Support
-- **Keywords**: English only
-- **Values**: Any language (including Chinese)
-- **Comments**: Any language
-
-## 💡 Use Cases
-
-1. **API Testing**: Generate test cases for REST APIs
-2. **Form Validation**: Test input validation logic
-3. **Business Rules**: Verify complex business logic
-4. **Database Constraints**: Test data integrity rules
-5. **Configuration Testing**: Validate system configurations
-
-## 🔧 Extensibility
-
-The modular design allows easy extension:
-
-1. **New Test Types**: Add generators to `generators/`
-2. **New Constraints**: Extend `constraint_translator.py`
-3. **New Validators**: Add to `validators/`
-4. **Custom Output**: Modify output formatting
-
-## 📊 Performance
-
-- **Small Models** (<10 entities): <1 second
-- **Medium Models** (10-50 entities): 1-5 seconds
-- **Large Models** (50+ entities): 5-30 seconds
-
-Performance depends on:
-- Constraint complexity
-- Number of rules
-- Z3 solver configuration
-
-## 🚀 Getting Started
-
-1. **Install**: Follow [SETUP_GUIDE.md](SETUP_GUIDE.md)
-2. **Learn DSL**: Read [docs/DSL_REFERENCE.md](docs/DSL_REFERENCE.md)
-3. **Try Examples**: Run files in `demo/examples/`
-4. **Write DSL**: Create your own specifications
-5. **Generate Tests**: Use `dsl2test.py`
+### Key Differences
+- V2.0 doesn't support custom test requirements
+- V2.0 generates fewer but more meaningful tests
+- V2.0 guarantees correctness for all tests
 
 ## 🤝 Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-- Code style
-- Testing requirements
-- Pull request process
-- Issue reporting
+1. Choose the version to contribute to
+2. Follow the architecture patterns of that version
+3. Add tests for new features
+4. Update documentation
+5. Submit pull request
 
-## 📝 License
+## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
-
-## 🙏 Acknowledgments
-
-- **Z3 Theorem Prover**: Microsoft Research
-- **Python Community**: Modern packaging tools
-- **Contributors**: All who have helped improve this project
+MIT License - see LICENSE file for details

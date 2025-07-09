@@ -213,30 +213,63 @@ class TestCaseGenerator:
     ) -> List[Dict[str, Any]]:
         """Generate combinatorial test cases."""
         test_cases = []
-        attributes = model.get_all_attributes()
+        all_attributes = model.get_all_attributes()
         
+        # Get attributes to combine
         if focus:
-            attributes = [a for a in attributes if a.name in focus]
+            # Find attributes by name, handling entity prefixes
+            attributes = []
+            for attr_name in focus:
+                for attr in all_attributes:
+                    # Check both plain name and full entity_attribute name
+                    if attr.name == attr_name or attr.name.endswith(f"_{attr_name}"):
+                        attributes.append(attr)
+                        break
+        else:
+            attributes = all_attributes
         
-        # For simplicity, generate pairwise combinations for boolean attributes
-        bool_attrs = [a for a in attributes if a.type == DSLType.BOOLEAN]
-        
-        if len(bool_attrs) >= strength:
-            from itertools import combinations, product
-            
-            for attr_combo in combinations(bool_attrs, strength):
-                for value_combo in product([True, False], repeat=strength):
-                    constraints = {}
-                    for attr, value in zip(attr_combo, value_combo):
+        # If we have focused attributes, generate combinations based on their types
+        if len(attributes) >= 2:
+            # For numeric attributes, generate value combinations
+            for i in range(strength):  # Generate 'strength' number of test cases
+                constraints = {}
+                
+                for attr in attributes:
+                    if attr.type in [DSLType.INTEGER, DSLType.REAL]:
+                        # Generate different values for each combination
+                        if i == 0:
+                            # Low values
+                            if attr.min_value is not None:
+                                value = attr.min_value
+                            else:
+                                value = 0.0 if attr.type == DSLType.REAL else 0
+                        elif i == 1:
+                            # High values
+                            if attr.max_value is not None:
+                                value = attr.max_value
+                            else:
+                                value = 100.0 if attr.type == DSLType.REAL else 100
+                        else:
+                            # Middle values
+                            if attr.min_value is not None and attr.max_value is not None:
+                                value = (attr.min_value + attr.max_value) / 2
+                            else:
+                                value = 50.0 if attr.type == DSLType.REAL else 50
+                        
                         constraints[attr.name] = value
-                    
-                    test_case = self._generate_with_constraint(
-                        solver,
-                        f"combo_{'_'.join(a.name for a in attr_combo)}",
-                        constraints
-                    )
-                    if test_case:
-                        test_cases.append(test_case)
+                    elif attr.type == DSLType.BOOLEAN:
+                        # Alternate boolean values
+                        constraints[attr.name] = (i % 2 == 0)
+                    elif attr.type == DSLType.STRING:
+                        constraints[attr.name] = f"test_{attr.name}_{i}"
+                
+                test_case = self._generate_with_constraint(
+                    solver,
+                    f"combo_{'_'.join(a.name for a in attributes[:2])}_{i+1}",
+                    constraints
+                )
+                if test_case:
+                    test_cases.append(test_case)
         
         return test_cases
     

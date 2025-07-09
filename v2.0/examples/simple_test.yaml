@@ -1,0 +1,41 @@
+domain: Simple Test System
+
+entities:
+  - name: User
+    attributes:
+      - name: age
+        type: integer
+        min: 18
+        max: 100
+      - name: is_premium
+        type: boolean
+
+  - name: Order
+    attributes:
+      - name: amount
+        type: real
+        min: 0.01
+        max: 10000.0
+      - name: discount
+        type: integer
+        min: 0
+        max: 50
+
+constraints:
+  - expression: "user_age >= 18"
+    description: "Users must be adults"
+  - expression: "order_discount >= 0 and order_discount <= 50"
+    description: "Discount must be between 0 and 50"
+
+rules:
+  - name: Premium Discount
+    if: "user_is_premium == true"
+    then: "order_discount >= 10"
+    priority: 10
+    description: "Premium users get at least 10% discount"
+    
+  - name: Senior Discount
+    if: "user_age >= 65"
+    then: "order_discount >= 15"
+    priority: 8
+    description: "Senior citizens get at least 15% discount"

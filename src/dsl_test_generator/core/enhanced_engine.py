@@ -22,7 +22,7 @@ class EnhancedDSLEngine(DSLEngine):
     def generate_tests(self, model: DSLModel) -> List[Dict[str, Any]]:
         """Generate comprehensive test cases from DSL model."""
         # Reset solver
-        self.solver = Z3Solver()
+        self.solver = Z3Solver(self.config)
         
         # Create variables
         self.solver.create_variables(model)
@@ -48,9 +48,17 @@ class EnhancedDSLEngine(DSLEngine):
                 self.solver.add_constraint(z3_rule)
         
         # Generate comprehensive test suite
-        return self.test_generator.generate_comprehensive_test_suite(
+        test_cases = self.test_generator.generate_comprehensive_test_suite(
             self.solver, model, translator
         )
+        
+        # Validate and fix test cases if business logic validation is enabled
+        if self.config.test_generation.validate_business_logic:
+            from ..validators import BusinessLogicValidator
+            validator = BusinessLogicValidator(model, self.config)
+            test_cases = validator.validate_test_suite(test_cases)
+        
+        return test_cases
     
     def generate_tests_with_extended_ranges(self, model: DSLModel) -> List[Dict[str, Any]]:
         """Generate tests with temporarily extended attribute ranges for negative tests."""

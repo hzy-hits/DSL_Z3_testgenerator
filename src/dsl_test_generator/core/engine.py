@@ -56,6 +56,12 @@ class DSLEngine:
             test_cases.extend(self._generate_rule_coverage_tests(model, translator))
             test_cases.extend(self._generate_collection_tests(model))
         
+        # Validate and fix test cases if business logic validation is enabled
+        if self.config.test_generation.validate_business_logic:
+            from ..validators import BusinessLogicValidator
+            validator = BusinessLogicValidator(model, self.config)
+            test_cases = validator.validate_test_suite(test_cases)
+        
         return self._deduplicate_tests(test_cases)
     
     def _generate_for_requirement(
@@ -125,16 +131,26 @@ class DSLEngine:
         )
     
     def _deduplicate_tests(self, test_cases: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Remove duplicate test cases."""
+        """Remove duplicate test cases while preserving test diversity."""
         seen = set()
         unique_tests = []
         
         for test in test_cases:
-            # Create hashable representation
-            test_key = tuple(sorted(
-                (k, tuple(v) if isinstance(v, list) else v)
-                for k, v in test.get('values', {}).items()
-            ))
+            # Include test type and name in the key to preserve different test purposes
+            test_type = test.get('type', 'unknown')
+            test_name = test.get('name', '')
+            
+            # For combinatorial tests, include the test name to preserve variations
+            if test_type == 'combination' or 'combo' in test_name:
+                # Use name as part of the key to keep all combinations
+                test_key = (test_name, test_type)
+            else:
+                # For other tests, deduplicate based on values
+                values_key = tuple(sorted(
+                    (k, tuple(v) if isinstance(v, list) else v)
+                    for k, v in test.get('values', {}).items()
+                ))
+                test_key = (values_key, test_type)
             
             if test_key not in seen:
                 seen.add(test_key)

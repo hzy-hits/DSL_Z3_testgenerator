@@ -100,6 +100,9 @@ class BusinessLogicValidator:
         
         fixed_data = test_data.copy()
         
+        # First, fix any None values that should have defaults
+        fixed_data = self._fix_none_values(fixed_data)
+        
         # Fix cross-entity equality rules
         for rule in self.cross_entity_rules:
             if rule['type'] == 'attribute_matching':
@@ -132,8 +135,14 @@ class BusinessLogicValidator:
         # Fix dependent attribute relationships
         fixed_data = self._fix_dependent_attributes(fixed_data)
         
+        # Validate and fix rule consistency
+        fixed_data = self._validate_rule_consistency(fixed_data)
+        
         # Domain-specific fixes
         fixed_data = self._apply_domain_specific_fixes(fixed_data)
+        
+        # Final validation of constraints
+        fixed_data = self._validate_constraints(fixed_data)
         
         return fixed_data
     
@@ -162,41 +171,15 @@ class BusinessLogicValidator:
         return fixed_data
     
     def _apply_domain_specific_fixes(self, test_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Apply domain-specific business logic fixes."""
+        """Apply domain-specific business logic fixes based on rules and constraints."""
         fixed_data = test_data.copy()
         
-        # Insurance domain fixes
-        if 'claim_amount' in fixed_data and 'coverage_amount' in fixed_data:
-            # Ensure claim doesn't exceed coverage
-            if fixed_data['claim_amount'] > fixed_data['coverage_amount']:
-                fixed_data['claim_amount'] = fixed_data['coverage_amount'] * 0.8
+        # Instead of hardcoding domain logic, derive it from the model's rules and constraints
+        # This method is left as a hook for future extensions where domain-specific
+        # validators can be registered dynamically
         
-        if 'claim_amount' in fixed_data and 'deductible' in fixed_data:
-            # Ensure claim is reasonable compared to deductible
-            if fixed_data['claim_amount'] > 0 and fixed_data['claim_amount'] < fixed_data['deductible']:
-                # Make claim at least 2x deductible for it to make sense
-                fixed_data['claim_amount'] = fixed_data['deductible'] * 2
-        
-        # Hotel booking domain fixes
-        if 'booking_is_peak_season' in fixed_data and 'booking_discount_percent' in fixed_data:
-            # In peak season, limit discounts
-            if fixed_data['booking_is_peak_season'] and fixed_data['booking_discount_percent'] > 10:
-                fixed_data['booking_discount_percent'] = 10
-        
-        if 'customer_is_vip' in fixed_data and 'booking_discount_percent' in fixed_data:
-            # VIP customers should have meaningful discounts
-            if fixed_data['customer_is_vip'] and fixed_data['booking_discount_percent'] < 15:
-                fixed_data['booking_discount_percent'] = 15
-        
-        # Fix total price calculations if present
-        if all(key in fixed_data for key in ['room_base_price', 'booking_days', 'booking_discount_percent', 'booking_total_price']):
-            base_total = fixed_data['room_base_price'] * fixed_data['booking_days']
-            discount_amount = base_total * (fixed_data['booking_discount_percent'] / 100)
-            expected_total = base_total - discount_amount
-            
-            # Allow some tolerance for floating point
-            if abs(fixed_data['booking_total_price'] - expected_total) > 1.0:
-                fixed_data['booking_total_price'] = round(expected_total, 2)
+        # For now, we only apply fixes that are explicitly defined in the DSL model
+        # through rules and constraints, which are already handled by other methods
         
         return fixed_data
     
@@ -216,3 +199,124 @@ class BusinessLogicValidator:
                 validated_cases.append(self.validate_and_fix_test_case(test_case))
         
         return validated_cases
+    
+    def _fix_none_values(self, test_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Replace None values with appropriate defaults based on attribute type."""
+        fixed_data = test_data.copy()
+        
+        for key, value in test_data.items():
+            if value is None or value == "None":
+                # Find the attribute definition
+                for entity in self.model.entities:
+                    for attr in entity.attributes:
+                        full_name = f"{entity.name.lower()}_{attr.name}"
+                        if full_name == key:
+                            # Provide appropriate default based on type
+                            if attr.type == "integer":
+                                fixed_data[key] = attr.min_value if attr.min_value is not None else 0
+                            elif attr.type == "real":
+                                fixed_data[key] = attr.min_value if attr.min_value is not None else 0.0
+                            elif attr.type == "boolean":
+                                fixed_data[key] = False
+                            elif attr.type == "string":
+                                fixed_data[key] = f"default_{attr.name}"
+                            break
+        
+        return fixed_data
+    
+    def _validate_rule_consistency(self, test_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Ensure test data is consistent with activated rules."""
+        fixed_data = test_data.copy()
+        
+        for rule in self.model.rules:
+            # Check if rule condition is satisfied
+            if self._is_rule_activated(rule.condition, fixed_data):
+                # Ensure the action is also satisfied
+                if rule.action:
+                    fixed_data = self._enforce_rule_action(rule.action, fixed_data)
+        
+        return fixed_data
+    
+    def _is_rule_activated(self, condition: str, test_data: Dict[str, Any]) -> bool:
+        """Check if a rule condition is satisfied by the test data."""
+        try:
+            # Simple evaluation for common patterns
+            if '>=' in condition:
+                parts = condition.split('>=')
+                if len(parts) == 2:
+                    var, val = parts[0].strip(), parts[1].strip()
+                    if var in test_data:
+                        return test_data[var] >= float(val)
+            
+            if '<=' in condition:
+                parts = condition.split('<=')
+                if len(parts) == 2:
+                    var, val = parts[0].strip(), parts[1].strip()
+                    if var in test_data:
+                        return test_data[var] <= float(val)
+            
+            if '==' in condition:
+                parts = condition.split('==')
+                if len(parts) == 2:
+                    var, val = parts[0].strip(), parts[1].strip()
+                    if var in test_data:
+                        try:
+                            return test_data[var] == float(val)
+                        except:
+                            return str(test_data[var]) == val
+            
+            return False
+        except:
+            return False
+    
+    def _enforce_rule_action(self, action: str, test_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Enforce a rule action by modifying test data."""
+        fixed_data = test_data.copy()
+        
+        # Parse and apply the action
+        if '==' in action:
+            parts = action.split('==')
+            if len(parts) == 2:
+                var, val = parts[0].strip(), parts[1].strip()
+                if var in fixed_data:
+                    try:
+                        fixed_data[var] = float(val)
+                    except:
+                        fixed_data[var] = val
+        
+        return fixed_data
+    
+    def _validate_constraints(self, test_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Ensure all constraints are satisfied."""
+        fixed_data = test_data.copy()
+        
+        for constraint in self.model.constraints:
+            expr = constraint.expression
+            
+            # Handle simple >= constraints
+            if '>=' in expr and ' and ' not in expr:
+                parts = expr.split('>=')
+                if len(parts) == 2:
+                    var, min_val = parts[0].strip(), parts[1].strip()
+                    if var in fixed_data:
+                        try:
+                            min_num = float(min_val)
+                            if fixed_data[var] < min_num:
+                                fixed_data[var] = min_num
+                        except:
+                            pass
+            
+            # Handle simple <= constraints
+            if '<=' in expr and ' and ' not in expr:
+                parts = expr.split('<=')
+                if len(parts) == 2:
+                    var, max_val = parts[0].strip(), parts[1].strip()
+                    if var in fixed_data:
+                        try:
+                            max_num = float(max_val)
+                            if fixed_data[var] > max_num:
+                                fixed_data[var] = max_num
+                        except:
+                            pass
+        
+        return fixed_data

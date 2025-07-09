@@ -328,19 +328,29 @@ class EnhancedTestGenerator(TestCaseGenerator):
         return []
     
     def _deduplicate_tests(self, test_cases: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Remove duplicate test cases."""
+        """Remove duplicate test cases while preserving test diversity."""
         seen = set()
         unique_tests = []
         
         for test in test_cases:
-            # Create a unique key based on test values
-            key = (
-                test['name'],
-                tuple(sorted(test.get('values', {}).items()))
-            )
+            # Include test type and name in the key to preserve different test purposes
+            test_type = test.get('type', 'unknown')
+            test_name = test.get('name', '')
             
-            if key not in seen:
-                seen.add(key)
+            # For combinatorial tests, include the test name to preserve variations
+            if test_type == 'combination' or 'combo' in test_name:
+                # Use name as part of the key to keep all combinations
+                test_key = (test_name, test_type)
+            else:
+                # For other tests, deduplicate based on values
+                values_key = tuple(sorted(
+                    (k, tuple(v) if isinstance(v, list) else v)
+                    for k, v in test.get('values', {}).items()
+                ))
+                test_key = (values_key, test_type, test_name)
+            
+            if test_key not in seen:
+                seen.add(test_key)
                 unique_tests.append(test)
         
         return unique_tests

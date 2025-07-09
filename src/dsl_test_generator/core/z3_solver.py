@@ -150,8 +150,16 @@ class Z3Solver:
                     values[var_name] = bool(model[var])
                 else:
                     values[var_name] = str(model[var])
-            except:
-                values[var_name] = None
+            except Exception as e:
+                # Provide reasonable defaults based on type
+                if z3.is_int(var):
+                    values[var_name] = 0
+                elif z3.is_real(var):
+                    values[var_name] = 0.0
+                elif z3.is_bool(var):
+                    values[var_name] = False
+                else:
+                    values[var_name] = f"default_{var_name}"
         
         # Extract array values
         for var_name, array in self.array_vars.items():
@@ -171,8 +179,16 @@ class Z3Solver:
                             array_values.append(bool(elem))
                         else:
                             array_values.append(str(elem))
-                    except:
-                        array_values.append(None)
+                    except Exception as e:
+                        # Provide type-appropriate defaults without business assumptions
+                        if z3.is_int(array[i].sort()):
+                            array_values.append(0)
+                        elif z3.is_real(array[i].sort()):
+                            array_values.append(0.0)
+                        elif z3.is_bool(array[i].sort()):
+                            array_values.append(False)
+                        else:
+                            array_values.append(0)
                 
                 values[var_name] = array_values
         

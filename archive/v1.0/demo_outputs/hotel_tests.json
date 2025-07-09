@@ -1,0 +1,1092 @@
+{
+  "summary": {
+    "total_tests": 59,
+    "positive_tests": 34,
+    "negative_tests": 25,
+    "coverage_rate": "100%",
+    "test_distribution": {
+      "boundary": 16,
+      "generated": 10,
+      "rule_coverage": 5,
+      "constraint_violation": 2,
+      "negative": 23,
+      "combination": 3
+    }
+  },
+  "test_suites": {
+    "boundary": [
+      {
+        "id": 1,
+        "name": "boundary_age_min",
+        "description": "Minimum valid age",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 18,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "boundary_age_max",
+        "description": "Maximum valid age",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 3,
+        "name": "boundary_member_level_min",
+        "description": "Minimum valid member_level",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 1,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 4,
+        "name": "boundary_member_level_max",
+        "description": "Activate rule: 金卡会员折扣 - 金卡会员至少享受20%折扣",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 3,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 5,
+        "name": "boundary_room_type_min",
+        "description": "Minimum valid room_type",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 1,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 6,
+        "name": "boundary_room_type_max",
+        "description": "Activate rule: 套房最少住宿天数 - 套房至少预订2天",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 3,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 7,
+        "name": "boundary_base_price_min",
+        "description": "Minimum valid base_price",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 200.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 8,
+        "name": "boundary_base_price_max",
+        "description": "Maximum valid base_price",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 3000.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 9,
+        "name": "boundary_booking_days_min",
+        "description": "Minimum valid booking_days",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 1,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 10,
+        "name": "boundary_booking_days_max",
+        "description": "Maximum valid booking_days",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 30,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 11,
+        "name": "boundary_guest_count_min",
+        "description": "Minimum valid guest_count",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 1,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 12,
+        "name": "boundary_guest_count_max",
+        "description": "Maximum valid guest_count",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 4,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 13,
+        "name": "boundary_discount_percent_min",
+        "description": "Minimum valid discount_percent",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 0,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 14,
+        "name": "boundary_discount_percent_max",
+        "description": "Maximum valid discount_percent",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 50,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 15,
+        "name": "boundary_total_price_min",
+        "description": "Minimum valid total_price",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 16,
+        "name": "boundary_total_price_max",
+        "description": "Maximum valid total_price",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 100000.0
+        }
+      }
+    ],
+    "generated": [
+      {
+        "id": 1,
+        "name": "age_min_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 18,
+          "member_level": 1,
+          "is_vip": false,
+          "room_type": 4,
+          "base_price": 0.0,
+          "booking_days": 1,
+          "guest_count": 1,
+          "discount_percent": 0,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "age_max_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 1,
+          "is_vip": false,
+          "room_type": 4,
+          "base_price": 0.0,
+          "booking_days": 1,
+          "guest_count": 1,
+          "discount_percent": 0,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 3,
+        "name": "member_level_max_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 3,
+          "is_vip": false,
+          "room_type": 4,
+          "base_price": 0.0,
+          "booking_days": 1,
+          "guest_count": 1,
+          "discount_percent": 20,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 4,
+        "name": "room_type_min_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 3,
+          "is_vip": false,
+          "room_type": 1,
+          "base_price": 200.0,
+          "booking_days": 1,
+          "guest_count": 1,
+          "discount_percent": 20,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 5,
+        "name": "base_price_min_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 3,
+          "is_vip": false,
+          "room_type": 4,
+          "base_price": 200.0,
+          "booking_days": 1,
+          "guest_count": 1,
+          "discount_percent": 20,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 6,
+        "name": "booking_days_max_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 3,
+          "is_vip": false,
+          "room_type": 4,
+          "base_price": 200.0,
+          "booking_days": 30,
+          "guest_count": 1,
+          "discount_percent": 20,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 7,
+        "name": "guest_count_max_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 3,
+          "is_vip": false,
+          "room_type": 5,
+          "base_price": 200.0,
+          "booking_days": 30,
+          "guest_count": 4,
+          "discount_percent": 20,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 8,
+        "name": "discount_percent_min_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 1,
+          "is_vip": false,
+          "room_type": 5,
+          "base_price": 200.0,
+          "booking_days": 6,
+          "guest_count": 4,
+          "discount_percent": 0,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 9,
+        "name": "discount_percent_max_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 1,
+          "is_vip": false,
+          "room_type": 5,
+          "base_price": 200.0,
+          "booking_days": 6,
+          "guest_count": 4,
+          "discount_percent": 50,
+          "is_peak_season": false,
+          "total_price": 0.0
+        }
+      },
+      {
+        "id": 10,
+        "name": "total_price_max_boundary",
+        "description": "",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 120,
+          "member_level": 1,
+          "is_vip": false,
+          "room_type": 5,
+          "base_price": 200.0,
+          "booking_days": 6,
+          "guest_count": 4,
+          "discount_percent": 50,
+          "is_peak_season": false,
+          "total_price": 100000.0
+        }
+      }
+    ],
+    "rule_coverage": [
+      {
+        "id": 1,
+        "name": "rule__active",
+        "description": "Tests room_room_type == 1 -> room_base_price below valid range",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "rule_vip_active",
+        "description": "Activate rule: VIP客户特权 - VIP客户至少享受15%折扣",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": "true",
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 3,
+        "name": "rule__active",
+        "description": "Activate rule: 旺季折扣限制 - 旺季最多10%折扣",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": "true",
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 4,
+        "name": "rule__active",
+        "description": "Activate rule: 长期住宿优惠 - 住宿7天以上至少5%折扣",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 7,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 5,
+        "name": "rule__inactive",
+        "description": "Rule not activated: 长期住宿优惠",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 6,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      }
+    ],
+    "constraint_violation": [
+      {
+        "id": 1,
+        "name": "constraint_violation_customer_age_18_1",
+        "description": "Violate: customer_age >= 18",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 17,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "constraint_violation_booking_total_price_0_0_1",
+        "description": "total_price = -1.0 (below minimum 0.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": -1.0
+        }
+      }
+    ],
+    "negative": [
+      {
+        "id": 1,
+        "name": "negative_customer_member_level_below_range",
+        "description": "Tests customer_member_level below valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 0.0,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "negative_customer_member_level_above_range",
+        "description": "Tests customer_member_level above valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 4.0,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 3,
+        "name": "negative_room_base_price_above_range",
+        "description": "Tests room_base_price above valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 501.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 4,
+        "name": "negative_room_base_price_above_range",
+        "description": "Tests room_base_price above valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1001.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 5,
+        "name": "negative_room_base_price_above_range",
+        "description": "base_price = 3001.0 (above maximum 3000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 3001.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 6,
+        "name": "negative_booking_booking_days_below_range",
+        "description": "Tests booking_booking_days below valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 0.0,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 7,
+        "name": "negative_booking_booking_days_above_range",
+        "description": "Tests booking_booking_days above valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 31.0,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 8,
+        "name": "negative_booking_guest_count_below_range",
+        "description": "Tests booking_guest_count below valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 0.0,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 9,
+        "name": "negative_booking_guest_count_above_range",
+        "description": "Tests booking_guest_count above valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 5.0,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 10,
+        "name": "negative_booking_discount_percent_below_range",
+        "description": "Tests booking_discount_percent below valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": -1.0,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 11,
+        "name": "negative_booking_discount_percent_above_range",
+        "description": "Tests booking_discount_percent above valid range",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 51.0,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 12,
+        "name": "negative_age_below_min_1",
+        "description": "age = 0 (below minimum 18)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 0,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 13,
+        "name": "negative_age_above_max_1",
+        "description": "age = 121 (above maximum 120)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 121,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 14,
+        "name": "negative_member_level_above_max_2",
+        "description": "member_level = 13 (above maximum 3)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 13,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 15,
+        "name": "negative_room_type_below_min_1",
+        "description": "room_type = 0 (below minimum 1)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 0,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 16,
+        "name": "negative_room_type_above_max_1",
+        "description": "room_type = 4 (above maximum 3)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 4,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 17,
+        "name": "negative_room_type_above_max_2",
+        "description": "room_type = 13 (above maximum 3)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 13,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 18,
+        "name": "negative_base_price_below_min_1",
+        "description": "base_price = 0 (below minimum 200.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 19,
+        "name": "negative_base_price_below_min_2",
+        "description": "base_price = 199.0 (below minimum 200.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 199.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 20,
+        "name": "negative_booking_days_above_max_2",
+        "description": "booking_days = 40 (above maximum 30)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 40,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 21,
+        "name": "negative_guest_count_above_max_2",
+        "description": "guest_count = 14 (above maximum 4)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 14,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 22,
+        "name": "negative_discount_percent_above_max_2",
+        "description": "discount_percent = 60 (above maximum 50)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 60,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 23,
+        "name": "negative_total_price_above_max_1",
+        "description": "total_price = 100001.0 (above maximum 100000.0)",
+        "expected_result": "fail",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1040.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 100001.0
+        }
+      }
+    ],
+    "combination": [
+      {
+        "id": 1,
+        "name": "combination_1_room_base_price+room_room_type",
+        "description": "Test combination of: room_base_price, room_room_type",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 1,
+          "base_price": 200.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "combination_2_room_base_price+room_room_type",
+        "description": "Test combination of: room_base_price, room_room_type",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 3,
+          "base_price": 3000.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      },
+      {
+        "id": 3,
+        "name": "combination_3_room_base_price+room_room_type",
+        "description": "Test combination of: room_base_price, room_room_type",
+        "expected_result": "pass",
+        "test_data": {
+          "age": 69,
+          "member_level": 2,
+          "is_vip": true,
+          "room_type": 2,
+          "base_price": 1600.0,
+          "booking_days": 15,
+          "guest_count": 2,
+          "discount_percent": 25,
+          "is_peak_season": true,
+          "total_price": 30000.0
+        }
+      }
+    ]
+  }
+}
