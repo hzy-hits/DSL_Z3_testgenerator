@@ -12,6 +12,7 @@ from ..core.models import (
     DSLModel, AttributeType, TestObjective, TestPlan,
     Constraint, Rule, TestHint
 )
+from .pairwise_test_planner import PairwiseTestPlanner, RuleCombinationAnalyzer
 
 
 logger = logging.getLogger(__name__)
@@ -127,10 +128,49 @@ class TestPlanner:
                         priority=5,
                         reason=f"Test typical value: {attr.full_name}"
                     ))
+        
+        # 5. State transition coverage
+        for sm in self.model.state_machines:
+            for transition in sm.transitions:
+                if transition.condition.lower() != 'false':
+                    # Valid transition test
+                    self.coverage_requirements.append(CoverageRequirement(
+                        type="state_transition_valid",
+                        target=f"{sm.name}:{transition.name}",
+                        priority=9,
+                        reason=f"Test valid transition: {transition.from_state} -> {transition.to_state}"
+                    ))
+                else:
+                    # Invalid transition test (explicitly forbidden)
+                    self.coverage_requirements.append(CoverageRequirement(
+                        type="state_transition_invalid",
+                        target=f"{sm.name}:{transition.name}",
+                        priority=8,
+                        reason=f"Test forbidden transition: {transition.from_state} cannot go to {transition.to_state}"
+                    ))
     
     def _create_test_objectives(self) -> List[TestObjective]:
         """Convert coverage requirements to test objectives"""
         objectives = []
+        
+        # Add pairwise testing objectives if there are multiple rules
+        if len(self.model.rules) > 1:
+            pairwise_planner = PairwiseTestPlanner(self.model)
+            # Focus on attributes involved in rules
+            rule_attributes = set()
+            for rule in self.model.rules:
+                # Extract attributes from conditions and consequences
+                for attr in self.model.get_all_attributes():
+                    if attr.full_name in rule.condition or attr.full_name in rule.consequence:
+                        rule_attributes.add(attr.full_name)
+            
+            if len(rule_attributes) >= 2:
+                pairwise_objectives = pairwise_planner.generate_pairwise_objectives(
+                    focus_attributes=list(rule_attributes),
+                    max_values_per_param=3
+                )
+                objectives.extend(pairwise_objectives)
+                logger.info(f"Added {len(pairwise_objectives)} pairwise test objectives")
         
         for req in self.coverage_requirements:
             if req.type == "boundary_min":

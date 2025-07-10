@@ -1,0 +1,212 @@
+# 高级电商系统 DSL 示例
+# 展示 V3 的高级特性：复杂约束、时间约束、自定义验证器
+
+domain: Advanced E-commerce Platform
+
+entities:
+  - name: Product
+    attributes:
+      - name: sku
+        type: string
+        pattern: "^[A-Z]{3}-[0-9]{6}$"
+        description: "Product SKU in format XXX-123456"
+      - name: price
+        type: real
+        min: 0.01
+        max: 999999.99
+        format: money
+      - name: cost
+        type: real
+        min: 0.01
+        max: 999999.99
+        format: money
+      - name: stock_quantity
+        type: integer
+        min: 0
+        max: 999999
+      - name: created_at
+        type: integer
+        format: timestamp
+        min: 1640000000  # 2021-12-20
+      - name: release_date
+        type: integer
+        format: timestamp
+        optional: true
+      - name: categories
+        type: array[string]
+        min: 1
+        max: 5
+      - name: is_active
+        type: boolean
+        default: true
+      - name: supplier_email
+        type: string
+        format: email
+      - name: warehouse_location
+        type: string
+        enum: ["US-EAST", "US-WEST", "EU-CENTRAL", "ASIA-PACIFIC"]
+
+  - name: Order
+    attributes:
+      - name: order_id
+        type: string
+        pattern: "^ORD-[0-9]{10}$"
+      - name: customer_email
+        type: string
+        format: email
+      - name: items
+        type: array[string]
+        min: 1
+        max: 50
+      - name: subtotal
+        type: real
+        min: 0.01
+        format: money
+      - name: tax_amount
+        type: real
+        min: 0
+        format: money
+      - name: shipping_cost
+        type: real
+        min: 0
+        format: money
+      - name: total_amount
+        type: real
+        min: 0.01
+        format: money
+      - name: discount_percentage
+        type: integer
+        min: 0
+        max: 100
+        default: 0
+      - name: order_date
+        type: integer
+        format: timestamp
+      - name: shipping_date
+        type: integer
+        format: timestamp
+        optional: true
+      - name: delivery_date
+        type: integer
+        format: timestamp
+        optional: true
+      - name: status
+        type: string
+        enum: ["pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"]
+      - name: payment_method
+        type: string
+        enum: ["credit_card", "debit_card", "paypal", "apple_pay", "google_pay", "bank_transfer"]
+      - name: shipping_address
+        type: string
+      - name: billing_address
+        type: string
+        optional: true
+
+constraints:
+  # 基本业务约束
+  - "Product.price > Product.cost"  # 价格必须高于成本
+  - "Product.stock_quantity >= 0"   # 库存不能为负
+  - "Order.total_amount == Order.subtotal + Order.tax_amount + Order.shipping_cost - (Order.subtotal * Order.discount_percentage / 100)"
+  - "Order.tax_amount >= 0"
+  - "Order.shipping_cost >= 0"
+  - "size(Order.items) > 0"         # 订单必须包含商品
+  
+  # 时间约束
+  - "Product.release_date >= Product.created_at"  # 发布日期不能早于创建日期
+  - "Order.shipping_date >= Order.order_date"     # 发货日期不能早于下单日期
+  - "Order.delivery_date >= Order.shipping_date"  # 送达日期不能早于发货日期
+  
+  # 复杂业务约束
+  - "(Order.status == 'shipped' || Order.status == 'delivered') => Order.shipping_date != null"
+  - "Order.status == 'delivered' => Order.delivery_date != null"
+  - "Order.discount_percentage > 50 => Order.total_amount > 100"  # 高折扣仅适用于大额订单
+
+rules:
+  - name: "Free Shipping for Large Orders"
+    condition: "Order.subtotal > 100"
+    action: "Order.shipping_cost = 0"
+    
+  - name: "VIP Discount"
+    condition: "Order.subtotal > 500"
+    action: "Order.discount_percentage = 15"
+    
+  - name: "Tax Calculation"
+    condition: "Order.subtotal > 0"
+    action: "Order.tax_amount = Order.subtotal * 0.08"  # 8% tax rate
+    
+  - name: "Stock Alert"
+    condition: "Product.stock_quantity < 10"
+    action: "send_low_stock_alert(Product.sku)"
+    
+  - name: "Auto Deactivate Out of Stock"
+    condition: "Product.stock_quantity == 0"
+    action: "Product.is_active = false"
+
+state_machines:
+  - name: OrderLifecycle
+    initial: pending
+    states:
+      - pending
+      - paid
+      - processing
+      - shipped
+      - delivered
+      - cancelled
+      - refunded
+    transitions:
+      - from: pending
+        to: paid
+        event: payment_received
+        condition: "Order.total_amount > 0"
+      - from: pending
+        to: cancelled
+        event: cancel_order
+      - from: paid
+        to: processing
+        event: start_processing
+      - from: paid
+        to: refunded
+        event: refund_order
+      - from: processing
+        to: shipped
+        event: ship_order
+        condition: "Order.shipping_date != null"
+      - from: shipped
+        to: delivered
+        event: mark_delivered
+        condition: "Order.delivery_date != null"
+      - from: shipped
+        to: refunded
+        event: refund_after_shipping
+
+scenarios:
+  - name: "Complete Order Flow"
+    description: "Test complete order lifecycle from creation to delivery"
+    steps:
+      - create_order:
+          items: ["PROD-001", "PROD-002"]
+          subtotal: 150.00
+      - apply_rules  # Should trigger free shipping and calculate tax
+      - verify:
+          shipping_cost: 0
+          tax_amount: 12.00
+          total_amount: 162.00
+      - transition: payment_received
+      - transition: start_processing
+      - transition: ship_order
+      - transition: mark_delivered
+    tags: ["e2e", "happy_path"]
+    
+  - name: "High Value Order with VIP Discount"
+    description: "Test VIP discount application"
+    steps:
+      - create_order:
+          items: ["PROD-001", "PROD-002", "PROD-003"]
+          subtotal: 600.00
+      - apply_rules  # Should trigger VIP discount, free shipping, and tax
+      - verify:
+          discount_percentage: 15
+          shipping_cost: 0
+          tax_amount: 48.00  # 8% of 600
+          total_amount: 558.00  # 600 + 48 - 90 (15% discount)
+    tags: ["discount", "vip"]

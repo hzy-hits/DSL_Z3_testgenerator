@@ -11,7 +11,8 @@ from pathlib import Path
 
 from ..core.models import (
     DSLModel, Entity, Attribute, AttributeType, 
-    Constraint, ConstraintType, Rule, TestHint
+    Constraint, ConstraintType, Rule, TestHint,
+    State, Transition, StateMachine
 )
 
 
@@ -83,6 +84,12 @@ class DSLParser:
             hint = self._parse_test_hint(hint_data)
             test_hints.append(hint)
         
+        # Parse state machines
+        state_machines = []
+        for sm_data in data.get('state_machines', []):
+            state_machine = self._parse_state_machine(sm_data)
+            state_machines.append(state_machine)
+        
         # Create model
         model = DSLModel(
             domain=domain,
@@ -90,6 +97,7 @@ class DSLParser:
             constraints=constraints,
             rules=rules,
             test_hints=test_hints,
+            state_machines=state_machines,
             metadata=data.get('metadata', {})
         )
         
@@ -248,6 +256,77 @@ class DSLParser:
             type=data['type'],
             target=target,
             reason=data.get('reason')
+        )
+    
+    def _parse_state_machine(self, data: Dict[str, Any]) -> StateMachine:
+        """Parse state machine definition"""
+        if 'name' not in data:
+            raise DSLParseError("State machine missing required field: name")
+        if 'entity' not in data:
+            raise DSLParseError("State machine missing required field: entity")
+        if 'state_attribute' not in data:
+            raise DSLParseError("State machine missing required field: state_attribute")
+        if 'states' not in data:
+            raise DSLParseError("State machine missing required field: states")
+        if 'transitions' not in data:
+            raise DSLParseError("State machine missing required field: transitions")
+        
+        # Parse states
+        states = []
+        state_value_map = {}  # Map state names to numeric values
+        for i, state_data in enumerate(data['states']):
+            if isinstance(state_data, str):
+                # Simple state name
+                state = State(name=state_data, value=i+1)
+            else:
+                # Detailed state definition
+                if 'name' not in state_data:
+                    raise DSLParseError("State missing required field: name")
+                state = State(
+                    name=state_data['name'],
+                    value=state_data.get('value', i+1),
+                    description=state_data.get('description')
+                )
+            states.append(state)
+            state_value_map[state.name] = state.value
+        
+        # Parse transitions
+        transitions = []
+        for trans_data in data['transitions']:
+            if 'name' not in trans_data:
+                raise DSLParseError("Transition missing required field: name")
+            if 'from' not in trans_data:
+                raise DSLParseError(f"Transition {trans_data['name']} missing required field: from")
+            if 'to' not in trans_data:
+                raise DSLParseError(f"Transition {trans_data['name']} missing required field: to")
+            
+            # Normalize condition - handle various formats
+            condition = trans_data.get('condition', 'true')
+            if 'if' in trans_data:
+                condition = trans_data['if']
+            
+            transition = Transition(
+                name=trans_data['name'],
+                from_state=trans_data['from'],
+                to_state=trans_data['to'],
+                condition=self._normalize_expression(condition),
+                description=trans_data.get('description')
+            )
+            
+            # Validate states exist
+            if transition.from_state not in state_value_map:
+                raise DSLParseError(f"Transition {transition.name} references unknown state: {transition.from_state}")
+            if transition.to_state not in state_value_map:
+                raise DSLParseError(f"Transition {transition.name} references unknown state: {transition.to_state}")
+            
+            transitions.append(transition)
+        
+        return StateMachine(
+            name=data['name'],
+            entity=data['entity'],
+            state_attribute=data['state_attribute'],
+            states=states,
+            transitions=transitions
         )
 
 

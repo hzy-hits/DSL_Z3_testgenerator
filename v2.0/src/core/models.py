@@ -129,6 +129,7 @@ class DSLModel:
     constraints: List[Constraint] = field(default_factory=list)
     rules: List[Rule] = field(default_factory=list)
     test_hints: List[TestHint] = field(default_factory=list)
+    state_machines: List['StateMachine'] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
     
     def get_all_attributes(self) -> List[Attribute]:
@@ -178,6 +179,65 @@ class DSLModel:
                     pass
         
         return errors
+
+
+# State Machine Models
+
+@dataclass
+class State:
+    """State in a state machine"""
+    name: str
+    value: int  # Numeric representation for Z3
+    description: Optional[str] = None
+    
+    def __hash__(self):
+        return hash(self.name)
+
+
+@dataclass
+class Transition:
+    """State transition with condition"""
+    name: str
+    from_state: str
+    to_state: str
+    condition: str
+    description: Optional[str] = None
+    
+    def __hash__(self):
+        return hash((self.name, self.from_state, self.to_state))
+
+
+@dataclass 
+class StateMachine:
+    """State machine definition"""
+    name: str
+    entity: str  # Which entity this state machine applies to
+    state_attribute: str  # Which attribute represents the state
+    states: List[State]
+    transitions: List[Transition]
+    
+    def get_state_by_name(self, name: str) -> Optional[State]:
+        """Get state by name"""
+        for state in self.states:
+            if state.name == name:
+                return state
+        return None
+    
+    def get_transition_by_name(self, name: str) -> Optional[Transition]:
+        """Get transition by name"""
+        for transition in self.transitions:
+            if transition.name == name:
+                return transition
+        return None
+    
+    def get_valid_transitions_from(self, state_name: str) -> List[Transition]:
+        """Get all valid transitions from a state"""
+        return [t for t in self.transitions 
+                if t.from_state == state_name and t.condition.lower() != 'false']
+    
+    def get_invalid_transitions(self) -> List[Transition]:
+        """Get all explicitly forbidden transitions"""
+        return [t for t in self.transitions if t.condition.lower() == 'false']
 
 
 # Test Generation Models

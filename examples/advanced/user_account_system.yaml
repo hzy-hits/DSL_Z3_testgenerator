@@ -1,0 +1,124 @@
+# User Account System with State Machines
+domain: User Account Management System
+
+entities:
+  - name: User
+    attributes:
+      - name: account_status
+        type: integer
+        min: 1
+        max: 5
+      - name: balance
+        type: real
+        min: 0
+      - name: failed_logins
+        type: integer
+        min: 0
+        max: 10
+      - name: is_verified
+        type: boolean
+      - name: last_activity
+        type: integer
+        min: 1640000000
+
+constraints:
+  - user_balance >= 0
+  - user_failed_logins >= 0
+  - user_failed_logins <= 10
+
+rules:
+  - name: Active users must be verified
+    condition: user_account_status == 1
+    implies: user_is_verified == true
+
+  - name: Suspended users have failed logins
+    condition: user_account_status == 4
+    implies: user_failed_logins >= 3
+
+  - name: Frozen accounts have zero balance
+    condition: user_account_status == 5
+    implies: user_balance == 0
+
+state_machines:
+  - name: UserAccountFlow
+    entity: User
+    state_attribute: account_status
+    states:
+      - name: Active
+        description: "正常活跃账户"
+      - name: Inactive
+        description: "不活跃账户"
+      - name: Locked
+        description: "锁定账户"
+      - name: Suspended
+        description: "暂停账户"
+      - name: Frozen
+        description: "冻结账户"
+    
+    transitions:
+      - name: Deactivate
+        from: Active
+        to: Inactive
+        condition: user_last_activity < 1672531200  # 2023-01-01
+        description: "长时间未活跃，账户变为不活跃"
+      
+      - name: Reactivate
+        from: Inactive
+        to: Active
+        condition: user_is_verified == true
+        description: "重新激活账户"
+      
+      - name: LockAccount
+        from: Active
+        to: Locked
+        condition: user_failed_logins >= 3
+        description: "登录失败次数过多，锁定账户"
+      
+      - name: UnlockAccount
+        from: Locked
+        to: Active
+        condition: user_is_verified == true and user_failed_logins < 3
+        description: "解锁账户"
+      
+      - name: SuspendAccount
+        from: Active
+        to: Suspended
+        condition: true
+        description: "管理员暂停账户"
+      
+      - name: SuspendInactive
+        from: Inactive
+        to: Suspended
+        condition: true
+        description: "暂停不活跃账户"
+      
+      - name: FreezeAccount
+        from: Suspended
+        to: Frozen
+        condition: user_balance == 0
+        description: "冻结账户"
+      
+      - name: CannotReactivateFrozen
+        from: Frozen
+        to: Active
+        condition: false
+        description: "冻结账户不能直接激活"
+      
+      - name: CannotLockInactive
+        from: Inactive
+        to: Locked
+        condition: false
+        description: "不活跃账户不能被锁定"
+
+test_requirements:
+  - name: Account state coverage
+    type: state_machine
+  
+  - name: Balance boundary tests
+    type: boundary
+    focus: [balance, failed_logins]
+  
+  - name: Verification combinations
+    type: combinatorial
+    combinations: 2
+    focus: [is_verified, account_status]

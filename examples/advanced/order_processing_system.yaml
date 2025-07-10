@@ -1,0 +1,84 @@
+# Order Processing System with State Machines
+domain: Order Processing System
+
+entities:
+  - name: Order
+    attributes:
+      - name: status
+        type: integer
+        min: 1
+        max: 4
+      - name: amount
+        type: real
+        min: 0
+      - name: has_stock
+        type: boolean
+      - name: customer_id
+        type: integer
+        min: 1
+      - name: created_at
+        type: integer
+        min: 1640000000  # Unix timestamp
+
+constraints:
+  - order_amount > 0
+  - order_customer_id > 0
+
+rules:
+  - name: Stock required for payment
+    condition: order_status == 1
+    implies: order_has_stock == true -> order_amount > 0
+
+  - name: Shipped orders have positive amount
+    condition: order_status == 3
+    implies: order_amount > 0
+
+state_machines:
+  - name: OrderStatusFlow
+    entity: Order
+    state_attribute: status
+    states:
+      - name: PendingPayment
+        description: "待支付"
+      - name: PendingShipment
+        description: "待发货"
+      - name: Shipped
+        description: "已发货"
+      - name: Cancelled
+        description: "已取消"
+    
+    transitions:
+      - name: PayOrder
+        from: PendingPayment
+        to: PendingShipment
+        condition: order_has_stock == true and order_amount > 0
+        description: "库存充足且金额大于0时，支付订单"
+      
+      - name: CancelOrder
+        from: PendingPayment
+        to: Cancelled
+        condition: true
+        description: "取消待支付订单"
+      
+      - name: ShipOrder
+        from: PendingShipment
+        to: Shipped
+        condition: true
+        description: "发货订单"
+      
+      - name: CannotCancelShippedOrder
+        from: Shipped
+        to: Cancelled
+        condition: false
+        description: "已发货订单不能取消"
+
+test_requirements:
+  - name: Order boundary tests
+    type: boundary
+    focus: [amount]
+  
+  - name: State machine tests
+    type: state_machine
+  
+  - name: Rule coverage tests
+    type: rule_coverage

@@ -1,0 +1,1105 @@
+{
+  "meta": {
+    "generator": "Unified DSL Test Generator v2.0",
+    "domain": "User Account Management System",
+    "timestamp": "2025-07-10T23:29:12.783189",
+    "dsl_file": "User Account Management System.yaml",
+    "config": {
+      "max_tests_per_type": 20,
+      "enable_combinatorial": true,
+      "combinatorial_strength": 2,
+      "enable_scenarios": true,
+      "optimize_tests": true,
+      "value_strategy": "realistic"
+    }
+  },
+  "summary": {
+    "total_tests": 40,
+    "coverage_rate": "90.0%",
+    "test_distribution": {
+      "functional": 2,
+      "state_transition": 9,
+      "scenario": 1,
+      "rule_activation": 2,
+      "constraint_violation": 2,
+      "boundary": 6,
+      "rule_deactivation": 3,
+      "negative": 14,
+      "combinatorial": 1
+    },
+    "tag_distribution": {
+      "smoke": 1,
+      "required_fields": 1,
+      "state_machine": 9,
+      "transition": 9,
+      "user": 1,
+      "generic": 1,
+      "scenario": 1,
+      "security": 1,
+      "registration": 1,
+      "init": 1,
+      "rule": 5,
+      "activation": 2,
+      "constraint": 2,
+      "negative": 16,
+      "boundary": 10,
+      "minimum": 4,
+      "maximum": 2,
+      "deactivation": 3,
+      "missing_field": 5,
+      "defaults": 1,
+      "type_validation": 5,
+      "combinatorial": 1,
+      "2way": 1
+    },
+    "priority_distribution": {
+      "high": 21,
+      "medium": 19,
+      "low": 0
+    }
+  },
+  "test_suites": {
+    "functional": [
+      {
+        "id": "TEST_0001",
+        "name": "Create User with minimal data",
+        "type": "functional",
+        "description": "Test creating User with only required fields",
+        "rationale": "Verify entity can be created with minimal required data",
+        "test_data": {
+          "user_account_status": 2,
+          "user_balance": 10.0,
+          "user_failed_logins": 0,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "entity:User:minimal"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 9,
+        "tags": [
+          "smoke",
+          "required_fields"
+        ]
+      },
+      {
+        "id": "TEST_0002",
+        "name": "Create User with default values",
+        "type": "functional",
+        "description": "Test creating User relying on default values",
+        "rationale": "Verify default value handling",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "entity:User:defaults"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "defaults"
+        ]
+      }
+    ],
+    "state_transition": [
+      {
+        "id": "TEST_0033",
+        "name": "UserAccountFlow: Deactivate",
+        "type": "state_transition",
+        "description": "Test transition from Active to Inactive",
+        "rationale": "长时间未活跃，账户变为不活跃",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Active->Inactive",
+          "transition:Deactivate"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0034",
+        "name": "UserAccountFlow: Reactivate",
+        "type": "state_transition",
+        "description": "Test transition from Inactive to Active",
+        "rationale": "重新激活账户",
+        "test_data": {
+          "user_account_status": 2,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Inactive->Active",
+          "transition:Reactivate"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0035",
+        "name": "UserAccountFlow: LockAccount",
+        "type": "state_transition",
+        "description": "Test transition from Active to Locked",
+        "rationale": "登录失败次数过多，锁定账户",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Active->Locked",
+          "transition:LockAccount"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0036",
+        "name": "UserAccountFlow: UnlockAccount",
+        "type": "state_transition",
+        "description": "Test transition from Locked to Active",
+        "rationale": "解锁账户",
+        "test_data": {
+          "user_account_status": 3,
+          "user_balance": 10.0,
+          "user_failed_logins": 2,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Locked->Active",
+          "transition:UnlockAccount"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0037",
+        "name": "UserAccountFlow: SuspendAccount",
+        "type": "state_transition",
+        "description": "Test transition from Active to Suspended",
+        "rationale": "管理员暂停账户",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 2,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Active->Suspended",
+          "transition:SuspendAccount"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0038",
+        "name": "UserAccountFlow: SuspendInactive",
+        "type": "state_transition",
+        "description": "Test transition from Inactive to Suspended",
+        "rationale": "暂停不活跃账户",
+        "test_data": {
+          "user_account_status": 2,
+          "user_balance": 10.0,
+          "user_failed_logins": 2,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Inactive->Suspended",
+          "transition:SuspendInactive"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0039",
+        "name": "UserAccountFlow: FreezeAccount",
+        "type": "state_transition",
+        "description": "Test transition from Suspended to Frozen",
+        "rationale": "冻结账户",
+        "test_data": {
+          "user_account_status": 4,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Suspended->Frozen",
+          "transition:FreezeAccount"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0040",
+        "name": "UserAccountFlow: CannotReactivateFrozen",
+        "type": "state_transition",
+        "description": "Test transition from Frozen to Active",
+        "rationale": "冻结账户不能直接激活",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Frozen->Active",
+          "transition:CannotReactivateFrozen"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0041",
+        "name": "UserAccountFlow: CannotLockInactive",
+        "type": "state_transition",
+        "description": "Test transition from Inactive to Locked",
+        "rationale": "不活跃账户不能被锁定",
+        "test_data": {
+          "user_account_status": 2,
+          "user_balance": 10.0,
+          "user_failed_logins": 3,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "state:UserAccountFlow:Inactive->Locked",
+          "transition:CannotLockInactive"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      }
+    ],
+    "scenario": [
+      {
+        "id": "TEST_0030",
+        "name": "Scenario: New user registration",
+        "type": "scenario",
+        "description": "Test system with initial/default data",
+        "rationale": "Verify security feature works correctly",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "scenario:initialization",
+          "scenario:user_registration",
+          "scenario:account_lockout"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "user",
+          "generic",
+          "scenario",
+          "security",
+          "registration",
+          "init"
+        ]
+      }
+    ],
+    "rule_activation": [
+      {
+        "id": "TEST_0013",
+        "name": "Activate rule: Active users must be verified",
+        "type": "rule_activation",
+        "description": "Test that activates 'Active users must be verified'",
+        "rationale": "Verify rule 'Active users must be verified' is enforced when conditions are met",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "rule:Active users must be verified:activated"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [
+          "Active users must be verified"
+        ],
+        "priority": 8,
+        "tags": [
+          "rule",
+          "activation"
+        ]
+      },
+      {
+        "id": "TEST_0015",
+        "name": "Activate rule: Suspended users have failed logins",
+        "type": "rule_activation",
+        "description": "Test that activates 'Suspended users have failed logins'",
+        "rationale": "Verify rule 'Suspended users have failed logins' is enforced when conditions are met",
+        "test_data": {
+          "user_account_status": 4,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "rule:Suspended users have failed logins:activated"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [
+          "Suspended users have failed logins"
+        ],
+        "priority": 8,
+        "tags": [
+          "rule",
+          "activation"
+        ]
+      }
+    ],
+    "constraint_violation": [
+      {
+        "id": "TEST_0018",
+        "name": "Violate constraint: user_failed_logins >= 0",
+        "type": "constraint_violation",
+        "description": "Test data that violates: user_failed_logins >= 0",
+        "rationale": "Verify system properly rejects constraint-violating data",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": -1,
+          "user_is_verified": false,
+          "user_last_activity": "user_last_activity"
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "constraint:violation:1"
+        ],
+        "constraints_tested": [
+          "user_failed_logins >= 0"
+        ],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0019",
+        "name": "Violate constraint: user_failed_logins <= 10",
+        "type": "constraint_violation",
+        "description": "Test data that violates: user_failed_logins <= 10",
+        "rationale": "Verify system properly rejects constraint-violating data",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 11,
+          "user_is_verified": false,
+          "user_last_activity": "user_last_activity"
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "constraint:violation:2"
+        ],
+        "constraints_tested": [
+          "user_failed_logins <= 10"
+        ],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "negative"
+        ]
+      }
+    ],
+    "boundary": [
+      {
+        "id": "TEST_0003",
+        "name": "Boundary: user_account_status at minimum (1)",
+        "type": "boundary",
+        "description": "Test user_account_status at its minimum boundary",
+        "rationale": "Verify system handles minimum values correctly",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "boundary:user_account_status:min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "boundary",
+          "minimum"
+        ]
+      },
+      {
+        "id": "TEST_0004",
+        "name": "Boundary: user_account_status at maximum (5)",
+        "type": "boundary",
+        "description": "Test user_account_status at its maximum boundary",
+        "rationale": "Verify system handles maximum values correctly",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "boundary:user_account_status:max"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "boundary",
+          "maximum"
+        ]
+      },
+      {
+        "id": "TEST_0006",
+        "name": "Boundary: user_balance at minimum (0)",
+        "type": "boundary",
+        "description": "Test user_balance at its minimum boundary",
+        "rationale": "Verify system handles minimum values correctly",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 0,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "boundary:user_balance:min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "boundary",
+          "minimum"
+        ]
+      },
+      {
+        "id": "TEST_0008",
+        "name": "Boundary: user_failed_logins at minimum (0)",
+        "type": "boundary",
+        "description": "Test user_failed_logins at its minimum boundary",
+        "rationale": "Verify system handles minimum values correctly",
+        "test_data": {
+          "user_account_status": 3,
+          "user_balance": 10.0,
+          "user_failed_logins": 0,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "boundary:user_failed_logins:min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "boundary",
+          "minimum"
+        ]
+      },
+      {
+        "id": "TEST_0009",
+        "name": "Boundary: user_failed_logins at maximum (10)",
+        "type": "boundary",
+        "description": "Test user_failed_logins at its maximum boundary",
+        "rationale": "Verify system handles maximum values correctly",
+        "test_data": {
+          "user_account_status": 3,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "boundary:user_failed_logins:max"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "boundary",
+          "maximum"
+        ]
+      },
+      {
+        "id": "TEST_0011",
+        "name": "Boundary: user_last_activity at minimum (1640000000)",
+        "type": "boundary",
+        "description": "Test user_last_activity at its minimum boundary",
+        "rationale": "Verify system handles minimum values correctly",
+        "test_data": {
+          "user_account_status": 3,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "boundary:user_last_activity:min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 8,
+        "tags": [
+          "boundary",
+          "minimum"
+        ]
+      }
+    ],
+    "rule_deactivation": [
+      {
+        "id": "TEST_0014",
+        "name": "Deactivate rule: Active users must be verified",
+        "type": "rule_deactivation",
+        "description": "Test that does not activate 'Active users must be verified'",
+        "rationale": "Verify system behavior when rule 'Active users must be verified' is not applicable",
+        "test_data": {
+          "user_account_status": 2,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "rule:Active users must be verified:deactivated"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [
+          "Active users must be verified"
+        ],
+        "priority": 7,
+        "tags": [
+          "rule",
+          "deactivation"
+        ]
+      },
+      {
+        "id": "TEST_0016",
+        "name": "Deactivate rule: Suspended users have failed logins",
+        "type": "rule_deactivation",
+        "description": "Test that does not activate 'Suspended users have failed logins'",
+        "rationale": "Verify system behavior when rule 'Suspended users have failed logins' is not applicable",
+        "test_data": {
+          "user_account_status": 3,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "rule:Suspended users have failed logins:deactivated"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [
+          "Suspended users have failed logins"
+        ],
+        "priority": 7,
+        "tags": [
+          "rule",
+          "deactivation"
+        ]
+      },
+      {
+        "id": "TEST_0017",
+        "name": "Deactivate rule: Frozen accounts have zero balance",
+        "type": "rule_deactivation",
+        "description": "Test that does not activate 'Frozen accounts have zero balance'",
+        "rationale": "Verify system behavior when rule 'Frozen accounts have zero balance' is not applicable",
+        "test_data": {
+          "user_account_status": 3,
+          "user_balance": 10.0,
+          "user_failed_logins": 10,
+          "user_is_verified": false,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "rule:Frozen accounts have zero balance:deactivated"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [
+          "Frozen accounts have zero balance"
+        ],
+        "priority": 7,
+        "tags": [
+          "rule",
+          "deactivation"
+        ]
+      }
+    ],
+    "negative": [
+      {
+        "id": "TEST_0005",
+        "name": "Boundary: user_account_status below minimum (0)",
+        "type": "negative",
+        "description": "Test user_account_status below its minimum boundary",
+        "rationale": "Verify system rejects out-of-range values",
+        "test_data": {
+          "user_account_status": 0,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "boundary:user_account_status:below_min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0007",
+        "name": "Boundary: user_balance below minimum (-1)",
+        "type": "negative",
+        "description": "Test user_balance below its minimum boundary",
+        "rationale": "Verify system rejects out-of-range values",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": -1,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "boundary:user_balance:below_min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0010",
+        "name": "Boundary: user_failed_logins below minimum (-1)",
+        "type": "negative",
+        "description": "Test user_failed_logins below its minimum boundary",
+        "rationale": "Verify system rejects out-of-range values",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": -1,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "boundary:user_failed_logins:below_min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0012",
+        "name": "Boundary: user_last_activity below minimum (1639999999)",
+        "type": "negative",
+        "description": "Test user_last_activity below its minimum boundary",
+        "rationale": "Verify system rejects out-of-range values",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1639999999
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "boundary:user_last_activity:below_min"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0020",
+        "name": "Missing required field: user_account_status",
+        "type": "negative",
+        "description": "Test with missing required field user_account_status",
+        "rationale": "Verify system enforces required fields",
+        "test_data": {
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_account_status:missing"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "negative",
+          "missing_field"
+        ]
+      },
+      {
+        "id": "TEST_0021",
+        "name": "Missing required field: user_balance",
+        "type": "negative",
+        "description": "Test with missing required field user_balance",
+        "rationale": "Verify system enforces required fields",
+        "test_data": {
+          "user_account_status": 5,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_balance:missing"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "negative",
+          "missing_field"
+        ]
+      },
+      {
+        "id": "TEST_0022",
+        "name": "Missing required field: user_failed_logins",
+        "type": "negative",
+        "description": "Test with missing required field user_failed_logins",
+        "rationale": "Verify system enforces required fields",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_failed_logins:missing"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "negative",
+          "missing_field"
+        ]
+      },
+      {
+        "id": "TEST_0023",
+        "name": "Missing required field: user_is_verified",
+        "type": "negative",
+        "description": "Test with missing required field user_is_verified",
+        "rationale": "Verify system enforces required fields",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_is_verified:missing"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "negative",
+          "missing_field"
+        ]
+      },
+      {
+        "id": "TEST_0024",
+        "name": "Missing required field: user_last_activity",
+        "type": "negative",
+        "description": "Test with missing required field user_last_activity",
+        "rationale": "Verify system enforces required fields",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_last_activity:missing"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 7,
+        "tags": [
+          "negative",
+          "missing_field"
+        ]
+      },
+      {
+        "id": "TEST_0025",
+        "name": "Invalid type for: user_account_status",
+        "type": "negative",
+        "description": "Test with invalid data type for user_account_status",
+        "rationale": "Verify system validates data types",
+        "test_data": {
+          "user_account_status": "not_a_number",
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_account_status:invalid_type"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation"
+        ]
+      },
+      {
+        "id": "TEST_0026",
+        "name": "Invalid type for: user_balance",
+        "type": "negative",
+        "description": "Test with invalid data type for user_balance",
+        "rationale": "Verify system validates data types",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": "not_a_float",
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_balance:invalid_type"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation"
+        ]
+      },
+      {
+        "id": "TEST_0027",
+        "name": "Invalid type for: user_failed_logins",
+        "type": "negative",
+        "description": "Test with invalid data type for user_failed_logins",
+        "rationale": "Verify system validates data types",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": "not_a_number",
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_failed_logins:invalid_type"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation"
+        ]
+      },
+      {
+        "id": "TEST_0028",
+        "name": "Invalid type for: user_is_verified",
+        "type": "negative",
+        "description": "Test with invalid data type for user_is_verified",
+        "rationale": "Verify system validates data types",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": "not_a_bool",
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_is_verified:invalid_type"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation"
+        ]
+      },
+      {
+        "id": "TEST_0029",
+        "name": "Invalid type for: user_last_activity",
+        "type": "negative",
+        "description": "Test with invalid data type for user_last_activity",
+        "rationale": "Verify system validates data types",
+        "test_data": {
+          "user_account_status": 5,
+          "user_balance": 99.99,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": "not_a_number"
+        },
+        "expected_result": "fail",
+        "coverage_points": [
+          "negative:user_last_activity:invalid_type"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation"
+        ]
+      }
+    ],
+    "combinatorial": [
+      {
+        "id": "TEST_0042",
+        "name": "Combination: account_status=1, failed_logins=0",
+        "type": "combinatorial",
+        "description": "Test combination of 2 attributes",
+        "rationale": "Verify system handles 2-way interactions correctly",
+        "test_data": {
+          "user_account_status": 1,
+          "user_balance": 10.0,
+          "user_failed_logins": 0,
+          "user_is_verified": true,
+          "user_last_activity": 1640000000
+        },
+        "expected_result": "pass",
+        "coverage_points": [
+          "combo:2way:user"
+        ],
+        "constraints_tested": [],
+        "rules_tested": [],
+        "priority": 6,
+        "tags": [
+          "combinatorial",
+          "2way"
+        ]
+      }
+    ]
+  },
+  "executable_tests": "#!/usr/bin/env python3\n\"\"\"\n自动生成的测试代码\n领域: User Account Management System\n生成时间: 2025-07-10T23:29:12.782426\n测试框架: pytest\n\"\"\"\n\nimport pytest\nimport json\nfrom typing import Dict, Any, List\nfrom dataclasses import dataclass\n\n\n@dataclass\nclass APIResponse:\n    \"\"\"API 响应对象\"\"\"\n    status: str\n    message: str\n    data: Dict[str, Any] = None\n    errors: List[str] = None\n\n\nclass UserAccountManagementSystemAPI:\n    \"\"\"\n    User Account Management System API 客户端\n    \n    这是一个模拟的 API 客户端，实际使用时应该替换为真实的 API 调用\n    \"\"\"\n    \n    @staticmethod\n    def create(data: Dict[str, Any]) -> APIResponse:\n        \"\"\"创建实体\"\"\"\n        # TODO: 实现实际的 API 调用\n        # 这里是模拟实现\n        \n        # 基本验证\n        if not data:\n            return APIResponse(\"fail\", \"Empty data\", errors=[\"No data provided\"])\n        \n        # 模拟验证逻辑\n        errors = UserAccountManagementSystemAPI._validate(data)\n        if errors:\n            return APIResponse(\"fail\", \"Validation failed\", errors=errors)\n        \n        return APIResponse(\"pass\", \"Created successfully\", data=data)\n    \n    @staticmethod\n    def update(id: Any, data: Dict[str, Any]) -> APIResponse:\n        \"\"\"更新实体\"\"\"\n        # TODO: 实现实际的 API 调用\n        errors = UserAccountManagementSystemAPI._validate(data)\n        if errors:\n            return APIResponse(\"fail\", \"Validation failed\", errors=errors)\n        \n        return APIResponse(\"pass\", \"Updated successfully\", data=data)\n    \n    @staticmethod\n    def validate(data: Dict[str, Any]) -> APIResponse:\n        \"\"\"验证数据\"\"\"\n        errors = UserAccountManagementSystemAPI._validate(data)\n        if errors:\n            return APIResponse(\"fail\", \"Validation failed\", errors=errors)\n        \n        return APIResponse(\"pass\", \"Valid data\")\n    \n    @staticmethod\n    def _validate(data: Dict[str, Any]) -> List[str]:\n        \"\"\"内部验证方法\"\"\"\n        errors = []\n        \n        # TODO: 实现基于 DSL 的验证逻辑\n        # 示例验证\n        for key, value in data.items():\n            if value is None and not key.endswith('_optional'):\n                errors.append(f\"{key} is required\")\n            \n            # 类型验证\n            if '_id' in key and not isinstance(value, (int, str)):\n                errors.append(f\"{key} must be an integer or string\")\n            \n            if '_price' in key or '_amount' in key:\n                if not isinstance(value, (int, float)) or value < 0:\n                    errors.append(f\"{key} must be a positive number\")\n        \n        return errors\n\n\n# 测试基类\nclass TestUserAccountManagementSystemBase:\n    \"\"\"测试基类，提供共享的设置和工具方法\"\"\"\n    \n    @pytest.fixture(autouse=True)\n    def setup(self):\n        \"\"\"测试前的设置\"\"\"\n        # TODO: 添加测试设置代码\n        pass\n    \n    def assert_success(self, response: APIResponse, message: str = None):\n        \"\"\"断言响应成功\"\"\"\n        assert response.status == \"pass\", f\"Expected success but got: {response.message}\"\n        if message:\n            assert message in response.message\n    \n    def assert_failure(self, response: APIResponse, message: str = None):\n        \"\"\"断言响应失败\"\"\"\n        assert response.status == \"fail\", f\"Expected failure but got: {response.message}\"\n        if message:\n            assert message in response.message or any(message in e for e in (response.errors or []))\n\n\n\n\nclass TestFunctional(TestUserAccountManagementSystemBase):\n    \"\"\"Functional 测试\"\"\"\n\n    def test_create_user_with_minimal_data_0001(self):\n        \"\"\"\n        Test creating User with only required fields\n        \n        理由: Verify entity can be created with minimal required data\n        类型: functional\n        优先级: 9\n        预期结果: pass\n        标签: smoke, required_fields\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 2,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: entity:User:minimal\n\n    def test_create_user_with_default_values_0002(self):\n        \"\"\"\n        Test creating User relying on default values\n        \n        理由: Verify default value handling\n        类型: functional\n        优先级: 7\n        预期结果: pass\n        标签: defaults\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: entity:User:defaults\n\n\nclass TestStateTransition(TestUserAccountManagementSystemBase):\n    \"\"\"State Transition 测试\"\"\"\n\n    def test_useraccountflow_deactivate_0033(self):\n        \"\"\"\n        Test transition from Active to Inactive\n        \n        理由: 长时间未活跃，账户变为不活跃\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Active->Inactive, transition:Deactivate\n\n    def test_useraccountflow_reactivate_0034(self):\n        \"\"\"\n        Test transition from Inactive to Active\n        \n        理由: 重新激活账户\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 2,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Inactive->Active, transition:Reactivate\n\n    def test_useraccountflow_lockaccount_0035(self):\n        \"\"\"\n        Test transition from Active to Locked\n        \n        理由: 登录失败次数过多，锁定账户\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Active->Locked, transition:LockAccount\n\n    def test_useraccountflow_unlockaccount_0036(self):\n        \"\"\"\n        Test transition from Locked to Active\n        \n        理由: 解锁账户\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 3,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 2,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Locked->Active, transition:UnlockAccount\n\n    def test_useraccountflow_suspendaccount_0037(self):\n        \"\"\"\n        Test transition from Active to Suspended\n        \n        理由: 管理员暂停账户\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 2,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Active->Suspended, transition:SuspendAccount\n\n    def test_useraccountflow_suspendinactive_0038(self):\n        \"\"\"\n        Test transition from Inactive to Suspended\n        \n        理由: 暂停不活跃账户\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 2,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 2,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Inactive->Suspended, transition:SuspendInactive\n\n    def test_useraccountflow_freezeaccount_0039(self):\n        \"\"\"\n        Test transition from Suspended to Frozen\n        \n        理由: 冻结账户\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 4,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Suspended->Frozen, transition:FreezeAccount\n\n    def test_useraccountflow_cannotreactivatefrozen_0040(self):\n        \"\"\"\n        Test transition from Frozen to Active\n        \n        理由: 冻结账户不能直接激活\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Frozen->Active, transition:CannotReactivateFrozen\n\n    def test_useraccountflow_cannotlockinactive_0041(self):\n        \"\"\"\n        Test transition from Inactive to Locked\n        \n        理由: 不活跃账户不能被锁定\n        类型: state_transition\n        优先级: 8\n        预期结果: pass\n        标签: state_machine, transition\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 2,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 3,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: state:UserAccountFlow:Inactive->Locked, transition:CannotLockInactive\n\n\nclass TestScenario(TestUserAccountManagementSystemBase):\n    \"\"\"Scenario 测试\"\"\"\n\n    def test_scenario_new_user_registration_0030(self):\n        \"\"\"\n        Test system with initial/default data\n        \n        理由: Verify security feature works correctly\n        类型: scenario\n        优先级: 8\n        预期结果: pass\n        标签: user, generic, scenario, security, registration, init\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: scenario:initialization, scenario:user_registration, scenario:account_lockout\n\n\nclass TestRuleActivation(TestUserAccountManagementSystemBase):\n    \"\"\"Rule Activation 测试\"\"\"\n\n    def test_activate_rule_active_users_must_be_verified_0013(self):\n        \"\"\"\n        Test that activates 'Active users must be verified'\n        \n        理由: Verify rule 'Active users must be verified' is enforced when conditions are met\n        类型: rule_activation\n        优先级: 8\n        预期结果: pass\n        标签: rule, activation\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: rule:Active users must be verified:activated\n        # 测试规则: Active users must be verified\n\n    def test_activate_rule_suspended_users_have_failed_logins_0015(self):\n        \"\"\"\n        Test that activates 'Suspended users have failed logins'\n        \n        理由: Verify rule 'Suspended users have failed logins' is enforced when conditions are met\n        类型: rule_activation\n        优先级: 8\n        预期结果: pass\n        标签: rule, activation\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 4,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: rule:Suspended users have failed logins:activated\n        # 测试规则: Suspended users have failed logins\n\n\nclass TestConstraintViolation(TestUserAccountManagementSystemBase):\n    \"\"\"Constraint Violation 测试\"\"\"\n\n    def test_violate_constraint_user_failed_logins_0_0018(self):\n        \"\"\"\n        Test data that violates: user_failed_logins >= 0\n        \n        理由: Verify system properly rejects constraint-violating data\n        类型: constraint_violation\n        优先级: 8\n        预期结果: fail\n        标签: constraint, negative\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": -1,\n            \"user_is_verified\": false,\n            \"user_last_activity\": \"user_last_activity\"\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: constraint:violation:1\n        # 测试约束: user_failed_logins >= 0\n\n    def test_violate_constraint_user_failed_logins_10_0019(self):\n        \"\"\"\n        Test data that violates: user_failed_logins <= 10\n        \n        理由: Verify system properly rejects constraint-violating data\n        类型: constraint_violation\n        优先级: 8\n        预期结果: fail\n        标签: constraint, negative\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 11,\n            \"user_is_verified\": false,\n            \"user_last_activity\": \"user_last_activity\"\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: constraint:violation:2\n        # 测试约束: user_failed_logins <= 10\n\n\nclass TestBoundary(TestUserAccountManagementSystemBase):\n    \"\"\"Boundary 测试\"\"\"\n\n    def test_boundary_user_account_status_at_minimum_1_0003(self):\n        \"\"\"\n        Test user_account_status at its minimum boundary\n        \n        理由: Verify system handles minimum values correctly\n        类型: boundary\n        优先级: 8\n        预期结果: pass\n        标签: boundary, minimum\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: boundary:user_account_status:min\n\n    def test_boundary_user_account_status_at_maximum_5_0004(self):\n        \"\"\"\n        Test user_account_status at its maximum boundary\n        \n        理由: Verify system handles maximum values correctly\n        类型: boundary\n        优先级: 8\n        预期结果: pass\n        标签: boundary, maximum\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: boundary:user_account_status:max\n\n    def test_boundary_user_balance_at_minimum_0_0006(self):\n        \"\"\"\n        Test user_balance at its minimum boundary\n        \n        理由: Verify system handles minimum values correctly\n        类型: boundary\n        优先级: 8\n        预期结果: pass\n        标签: boundary, minimum\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 0,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: boundary:user_balance:min\n\n    def test_boundary_user_failed_logins_at_minimum_0_0008(self):\n        \"\"\"\n        Test user_failed_logins at its minimum boundary\n        \n        理由: Verify system handles minimum values correctly\n        类型: boundary\n        优先级: 8\n        预期结果: pass\n        标签: boundary, minimum\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 3,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: boundary:user_failed_logins:min\n\n    def test_boundary_user_failed_logins_at_maximum_10_0009(self):\n        \"\"\"\n        Test user_failed_logins at its maximum boundary\n        \n        理由: Verify system handles maximum values correctly\n        类型: boundary\n        优先级: 8\n        预期结果: pass\n        标签: boundary, maximum\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 3,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: boundary:user_failed_logins:max\n\n    def test_boundary_user_last_activity_at_minimum_1640000000_0011(self):\n        \"\"\"\n        Test user_last_activity at its minimum boundary\n        \n        理由: Verify system handles minimum values correctly\n        类型: boundary\n        优先级: 8\n        预期结果: pass\n        标签: boundary, minimum\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 3,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: boundary:user_last_activity:min\n\n\nclass TestRuleDeactivation(TestUserAccountManagementSystemBase):\n    \"\"\"Rule Deactivation 测试\"\"\"\n\n    def test_deactivate_rule_active_users_must_be_verified_0014(self):\n        \"\"\"\n        Test that does not activate 'Active users must be verified'\n        \n        理由: Verify system behavior when rule 'Active users must be verified' is not applicable\n        类型: rule_deactivation\n        优先级: 7\n        预期结果: pass\n        标签: rule, deactivation\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 2,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: rule:Active users must be verified:deactivated\n        # 测试规则: Active users must be verified\n\n    def test_deactivate_rule_suspended_users_have_failed_logins_0016(self):\n        \"\"\"\n        Test that does not activate 'Suspended users have failed logins'\n        \n        理由: Verify system behavior when rule 'Suspended users have failed logins' is not applicable\n        类型: rule_deactivation\n        优先级: 7\n        预期结果: pass\n        标签: rule, deactivation\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 3,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: rule:Suspended users have failed logins:deactivated\n        # 测试规则: Suspended users have failed logins\n\n    def test_deactivate_rule_frozen_accounts_have_zero_balance_0017(self):\n        \"\"\"\n        Test that does not activate 'Frozen accounts have zero balance'\n        \n        理由: Verify system behavior when rule 'Frozen accounts have zero balance' is not applicable\n        类型: rule_deactivation\n        优先级: 7\n        预期结果: pass\n        标签: rule, deactivation\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 3,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 10,\n            \"user_is_verified\": false,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: rule:Frozen accounts have zero balance:deactivated\n        # 测试规则: Frozen accounts have zero balance\n\n\nclass TestNegative(TestUserAccountManagementSystemBase):\n    \"\"\"Negative 测试\"\"\"\n\n    def test_boundary_user_account_status_below_minimum_0_0005(self):\n        \"\"\"\n        Test user_account_status below its minimum boundary\n        \n        理由: Verify system rejects out-of-range values\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: boundary, negative\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 0,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: boundary:user_account_status:below_min\n\n    def test_boundary_user_balance_below_minimum_1_0007(self):\n        \"\"\"\n        Test user_balance below its minimum boundary\n        \n        理由: Verify system rejects out-of-range values\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: boundary, negative\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": -1,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: boundary:user_balance:below_min\n\n    def test_boundary_user_failed_logins_below_minimum_1_0010(self):\n        \"\"\"\n        Test user_failed_logins below its minimum boundary\n        \n        理由: Verify system rejects out-of-range values\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: boundary, negative\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": -1,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: boundary:user_failed_logins:below_min\n\n    def test_boundary_user_last_activity_below_minimum_16399_012_0012(self):\n        \"\"\"\n        Test user_last_activity below its minimum boundary\n        \n        理由: Verify system rejects out-of-range values\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: boundary, negative\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1639999999\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: boundary:user_last_activity:below_min\n\n    def test_missing_required_field_user_account_status_0020(self):\n        \"\"\"\n        Test with missing required field user_account_status\n        \n        理由: Verify system enforces required fields\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: negative, missing_field\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: negative:user_account_status:missing\n\n    def test_missing_required_field_user_balance_0021(self):\n        \"\"\"\n        Test with missing required field user_balance\n        \n        理由: Verify system enforces required fields\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: negative, missing_field\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: negative:user_balance:missing\n\n    def test_missing_required_field_user_failed_logins_0022(self):\n        \"\"\"\n        Test with missing required field user_failed_logins\n        \n        理由: Verify system enforces required fields\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: negative, missing_field\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: negative:user_failed_logins:missing\n\n    def test_missing_required_field_user_is_verified_0023(self):\n        \"\"\"\n        Test with missing required field user_is_verified\n        \n        理由: Verify system enforces required fields\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: negative, missing_field\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: negative:user_is_verified:missing\n\n    def test_missing_required_field_user_last_activity_0024(self):\n        \"\"\"\n        Test with missing required field user_last_activity\n        \n        理由: Verify system enforces required fields\n        类型: negative\n        优先级: 7\n        预期结果: fail\n        标签: negative, missing_field\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 5,\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: negative:user_last_activity:missing\n\n    def test_invalid_type_for_user_account_status_0025(self):\n        \"\"\"\n        Test with invalid data type for user_account_status\n        \n        理由: Verify system validates data types\n        类型: negative\n        优先级: 6\n        预期结果: fail\n        标签: negative, type_validation\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": \"not_a_number\",\n            \"user_balance\": 99.99,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_failure(response)\n        \n        # 覆盖点: negative:user_account_status:invalid_type\n\n\nclass TestCombinatorial(TestUserAccountManagementSystemBase):\n    \"\"\"Combinatorial 测试\"\"\"\n\n    def test_combination_account_status_1_failed_logins_0_0042(self):\n        \"\"\"\n        Test combination of 2 attributes\n        \n        理由: Verify system handles 2-way interactions correctly\n        类型: combinatorial\n        优先级: 6\n        预期结果: pass\n        标签: combinatorial, 2way\n        \"\"\"\n        # 测试数据\n        test_data = {\n            \"user_account_status\": 1,\n            \"user_balance\": 10.0,\n            \"user_failed_logins\": 0,\n            \"user_is_verified\": true,\n            \"user_last_activity\": 1640000000\n}\n        \n        # 执行测试\n        response = UserAccountManagementSystemAPI.create(test_data)\n        \n        # 验证结果\n        self.assert_success(response)\n        \n        # 覆盖点: combo:2way:user\n\n\n\nif __name__ == \"__main__\":\n    # 运行测试\n    pytest.main([__file__, \"-v\", \"--tb=short\"])\n"
+}

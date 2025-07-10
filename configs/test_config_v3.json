@@ -1,0 +1,15 @@
+{
+  "max_tests_per_type": 15,
+  "enable_combinatorial": true,
+  "combinatorial_strength": 2,
+  "enable_scenarios": true,
+  "optimize_tests": true,
+  "value_strategy": "realistic",
+  "enable_templates": true,
+  "template_coverage": 0.8,
+  "performance_mode": true,
+  "cache_size": 1000,
+  "parallel_generation": false,
+  "constraint_solver_timeout": 5000,
+  "custom_strategies": []
+}

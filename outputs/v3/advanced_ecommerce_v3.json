@@ -1,0 +1,1033 @@
+{
+  "meta": {
+    "generator": "Unified DSL Test Generator v3.0",
+    "domain": "Advanced E-commerce Platform",
+    "timestamp": "2025-07-10T23:36:45.851694",
+    "dsl_file": "examples/advanced_ecommerce.yaml",
+    "config": {
+      "max_tests_per_type": 20,
+      "enable_combinatorial": true,
+      "enable_templates": true,
+      "value_strategy": "realistic",
+      "performance_mode": true
+    },
+    "generation_stats": {
+      "start_time": 1752161805.823144,
+      "solver_calls": 2,
+      "cache_hits": 29,
+      "tests_generated": 57,
+      "end_time": 1752161805.8516748,
+      "duration": 0.02853083610534668
+    }
+  },
+  "summary": {
+    "total_tests": 57,
+    "test_distribution": {
+      "functional": 1,
+      "boundary": 25,
+      "rule_activation": 1,
+      "state_transition": 7,
+      "security": 2,
+      "negative": 20,
+      "performance": 1
+    },
+    "tag_distribution": {
+      "functional": 1,
+      "product": 2,
+      "boundary": 25,
+      "product_price": 7,
+      "product_cost": 7,
+      "product_stock_quantity": 7,
+      "product_created_at": 3,
+      "order_subtotal": 2,
+      "order_tax_amount": 2,
+      "order_shipping_cost": 2,
+      "order_total_amount": 2,
+      "order_discount_percentage": 2,
+      "rule": 1,
+      "activation": 1,
+      "state_machine": 7,
+      "transition": 7,
+      "security": 2,
+      "sql_injection": 2,
+      "template": 3,
+      "order": 2,
+      "negative": 20,
+      "type_validation": 20,
+      "product_sku": 1,
+      "product_release_date": 1,
+      "product_is_active": 1,
+      "product_supplier_email": 1,
+      "product_warehouse_location": 1,
+      "order_order_id": 1,
+      "order_customer_email": 1,
+      "order_order_date": 1,
+      "order_shipping_date": 1,
+      "order_delivery_date": 1,
+      "order_status": 1,
+      "performance": 1,
+      "volume": 1
+    },
+    "priority_distribution": {
+      "high": 1,
+      "medium": 56
+    }
+  },
+  "test_suites": {
+    "functional": [
+      {
+        "id": "TEST_0001",
+        "name": "Create Product with valid data",
+        "type": "functional",
+        "description": "Functional test for Product",
+        "test_data": {
+          "product_price": 0.01,
+          "product_cost": 0.01,
+          "product_stock_quantity": 0,
+          "product_created_at": 1640000000,
+          "product_is_active": false,
+          "product_warehouse_location": "US-EAST"
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "functional",
+          "product"
+        ]
+      }
+    ],
+    "boundary": [
+      {
+        "id": "TEST_0003",
+        "name": "Boundary test for product_price = -0.99",
+        "type": "boundary",
+        "description": "Testing boundary value -0.99",
+        "test_data": {
+          "product_price": -0.99
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0004",
+        "name": "Boundary test for product_price = 0.01",
+        "type": "boundary",
+        "description": "Testing boundary value 0.01",
+        "test_data": {
+          "product_price": 0.01
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0005",
+        "name": "Boundary test for product_price = 1.01",
+        "type": "boundary",
+        "description": "Testing boundary value 1.01",
+        "test_data": {
+          "product_price": 1.01
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0006",
+        "name": "Boundary test for product_price = 999998.99",
+        "type": "boundary",
+        "description": "Testing boundary value 999998.99",
+        "test_data": {
+          "product_price": 999998.99
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0007",
+        "name": "Boundary test for product_price = 999999.99",
+        "type": "boundary",
+        "description": "Testing boundary value 999999.99",
+        "test_data": {
+          "product_price": 999999.99
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0008",
+        "name": "Boundary test for product_price = 1000000.99",
+        "type": "boundary",
+        "description": "Testing boundary value 1000000.99",
+        "test_data": {
+          "product_price": 1000000.99
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0009",
+        "name": "Boundary test for product_cost = -0.99",
+        "type": "boundary",
+        "description": "Testing boundary value -0.99",
+        "test_data": {
+          "product_cost": -0.99
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0010",
+        "name": "Boundary test for product_cost = 0.01",
+        "type": "boundary",
+        "description": "Testing boundary value 0.01",
+        "test_data": {
+          "product_cost": 0.01
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0011",
+        "name": "Boundary test for product_cost = 1.01",
+        "type": "boundary",
+        "description": "Testing boundary value 1.01",
+        "test_data": {
+          "product_cost": 1.01
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0012",
+        "name": "Boundary test for product_cost = 999998.99",
+        "type": "boundary",
+        "description": "Testing boundary value 999998.99",
+        "test_data": {
+          "product_cost": 999998.99
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0013",
+        "name": "Boundary test for product_cost = 999999.99",
+        "type": "boundary",
+        "description": "Testing boundary value 999999.99",
+        "test_data": {
+          "product_cost": 999999.99
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0014",
+        "name": "Boundary test for product_cost = 1000000.99",
+        "type": "boundary",
+        "description": "Testing boundary value 1000000.99",
+        "test_data": {
+          "product_cost": 1000000.99
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0015",
+        "name": "Boundary test for product_stock_quantity = -1",
+        "type": "boundary",
+        "description": "Testing boundary value -1",
+        "test_data": {
+          "product_stock_quantity": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0016",
+        "name": "Boundary test for product_stock_quantity = 0",
+        "type": "boundary",
+        "description": "Testing boundary value 0",
+        "test_data": {
+          "product_stock_quantity": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0017",
+        "name": "Boundary test for product_stock_quantity = 1",
+        "type": "boundary",
+        "description": "Testing boundary value 1",
+        "test_data": {
+          "product_stock_quantity": 1
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0018",
+        "name": "Boundary test for product_stock_quantity = 999998",
+        "type": "boundary",
+        "description": "Testing boundary value 999998",
+        "test_data": {
+          "product_stock_quantity": 999998
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0019",
+        "name": "Boundary test for product_stock_quantity = 999999",
+        "type": "boundary",
+        "description": "Testing boundary value 999999",
+        "test_data": {
+          "product_stock_quantity": 999999
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0020",
+        "name": "Boundary test for product_stock_quantity = 1000000",
+        "type": "boundary",
+        "description": "Testing boundary value 1000000",
+        "test_data": {
+          "product_stock_quantity": 1000000
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0021",
+        "name": "Boundary test for product_created_at = 1639999999",
+        "type": "boundary",
+        "description": "Testing boundary value 1639999999",
+        "test_data": {
+          "product_created_at": 1639999999
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_created_at"
+        ]
+      },
+      {
+        "id": "TEST_0022",
+        "name": "Boundary test for product_created_at = 1640000000",
+        "type": "boundary",
+        "description": "Testing boundary value 1640000000",
+        "test_data": {
+          "product_created_at": 1640000000
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "product_created_at"
+        ]
+      },
+      {
+        "id": "TEST_0023",
+        "name": "Boundary test for order_subtotal = -0.99",
+        "type": "boundary",
+        "description": "Testing boundary value -0.99",
+        "test_data": {
+          "order_subtotal": -0.99
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_subtotal"
+        ]
+      },
+      {
+        "id": "TEST_0024",
+        "name": "Boundary test for order_tax_amount = -1",
+        "type": "boundary",
+        "description": "Testing boundary value -1",
+        "test_data": {
+          "order_tax_amount": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_tax_amount"
+        ]
+      },
+      {
+        "id": "TEST_0025",
+        "name": "Boundary test for order_shipping_cost = -1",
+        "type": "boundary",
+        "description": "Testing boundary value -1",
+        "test_data": {
+          "order_shipping_cost": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_shipping_cost"
+        ]
+      },
+      {
+        "id": "TEST_0026",
+        "name": "Boundary test for order_total_amount = -0.99",
+        "type": "boundary",
+        "description": "Testing boundary value -0.99",
+        "test_data": {
+          "order_total_amount": -0.99
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_total_amount"
+        ]
+      },
+      {
+        "id": "TEST_0027",
+        "name": "Boundary test for order_discount_percentage = -1",
+        "type": "boundary",
+        "description": "Testing boundary value -1",
+        "test_data": {
+          "order_discount_percentage": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_discount_percentage"
+        ]
+      }
+    ],
+    "rule_activation": [
+      {
+        "id": "TEST_0051",
+        "name": "Rule activation: Free Shipping for Large Orders",
+        "type": "rule_activation",
+        "description": "Test rule activation conditions",
+        "test_data": {},
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "rule",
+          "activation"
+        ]
+      }
+    ],
+    "state_transition": [
+      {
+        "id": "TEST_0078",
+        "name": "State transition: pending -> paid",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "pending",
+          "event": "payment_received",
+          "expected_state": "paid"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0079",
+        "name": "State transition: pending -> cancelled",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "pending",
+          "event": "cancel_order",
+          "expected_state": "cancelled"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0080",
+        "name": "State transition: paid -> processing",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "paid",
+          "event": "start_processing",
+          "expected_state": "processing"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0081",
+        "name": "State transition: paid -> refunded",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "paid",
+          "event": "refund_order",
+          "expected_state": "refunded"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0082",
+        "name": "State transition: processing -> shipped",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "processing",
+          "event": "ship_order",
+          "expected_state": "shipped"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0083",
+        "name": "State transition: shipped -> delivered",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "shipped",
+          "event": "mark_delivered",
+          "expected_state": "delivered"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0084",
+        "name": "State transition: shipped -> refunded",
+        "type": "state_transition",
+        "description": "Test state machine transition",
+        "test_data": {
+          "current_state": "shipped",
+          "event": "refund_after_shipping",
+          "expected_state": "refunded"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition"
+        ]
+      }
+    ],
+    "security": [
+      {
+        "id": "TEST_0085",
+        "name": "SQL Injection Test for Product",
+        "type": "security",
+        "description": "Test with SQL injection patterns",
+        "test_data": {
+          "product_sku": "sku_value_92",
+          "product_price": 185795.22,
+          "product_cost": 836362.22,
+          "product_stock_quantity": 614560,
+          "product_created_at": 1750865805,
+          "product_release_date": 1752161805,
+          "product_categories": [
+            "item_0"
+          ],
+          "product_is_active": false,
+          "product_supplier_email": "test_6615@example.com",
+          "product_warehouse_location": "ASIA-PACIFIC"
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "security",
+          "sql_injection",
+          "product",
+          "template"
+        ]
+      },
+      {
+        "id": "TEST_0088",
+        "name": "SQL Injection Test for Order",
+        "type": "security",
+        "description": "Test with SQL injection patterns",
+        "test_data": {
+          "order_order_id": "1 OR 1=1",
+          "order_customer_email": "test_3549@example.com",
+          "order_items": [
+            "item_0"
+          ],
+          "order_subtotal": 329.56,
+          "order_tax_amount": 9252.43,
+          "order_shipping_cost": 3349.48,
+          "order_total_amount": 5928.14,
+          "order_discount_percentage": 14,
+          "order_order_date": 1750606605,
+          "order_shipping_date": 1751297805,
+          "order_delivery_date": 1751211405,
+          "order_status": "delivered",
+          "order_payment_method": "credit_card",
+          "order_shipping_address": "shipping_address_value_45",
+          "order_billing_address": "billing_address_value_78"
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "security",
+          "sql_injection",
+          "order",
+          "template"
+        ]
+      }
+    ],
+    "negative": [
+      {
+        "id": "TEST_0028",
+        "name": "Type validation for product_sku",
+        "type": "negative",
+        "description": "Testing wrong type for product_sku",
+        "test_data": {
+          "product_sku": 12345
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_sku"
+        ]
+      },
+      {
+        "id": "TEST_0029",
+        "name": "Type validation for product_price",
+        "type": "negative",
+        "description": "Testing wrong type for product_price",
+        "test_data": {
+          "product_price": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_price"
+        ]
+      },
+      {
+        "id": "TEST_0030",
+        "name": "Type validation for product_cost",
+        "type": "negative",
+        "description": "Testing wrong type for product_cost",
+        "test_data": {
+          "product_cost": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_cost"
+        ]
+      },
+      {
+        "id": "TEST_0031",
+        "name": "Type validation for product_stock_quantity",
+        "type": "negative",
+        "description": "Testing wrong type for product_stock_quantity",
+        "test_data": {
+          "product_stock_quantity": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_stock_quantity"
+        ]
+      },
+      {
+        "id": "TEST_0032",
+        "name": "Type validation for product_created_at",
+        "type": "negative",
+        "description": "Testing wrong type for product_created_at",
+        "test_data": {
+          "product_created_at": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_created_at"
+        ]
+      },
+      {
+        "id": "TEST_0033",
+        "name": "Type validation for product_release_date",
+        "type": "negative",
+        "description": "Testing wrong type for product_release_date",
+        "test_data": {
+          "product_release_date": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_release_date"
+        ]
+      },
+      {
+        "id": "TEST_0034",
+        "name": "Type validation for product_is_active",
+        "type": "negative",
+        "description": "Testing wrong type for product_is_active",
+        "test_data": {
+          "product_is_active": "not_a_bool"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_is_active"
+        ]
+      },
+      {
+        "id": "TEST_0035",
+        "name": "Type validation for product_supplier_email",
+        "type": "negative",
+        "description": "Testing wrong type for product_supplier_email",
+        "test_data": {
+          "product_supplier_email": 12345
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_supplier_email"
+        ]
+      },
+      {
+        "id": "TEST_0036",
+        "name": "Type validation for product_warehouse_location",
+        "type": "negative",
+        "description": "Testing wrong type for product_warehouse_location",
+        "test_data": {
+          "product_warehouse_location": 12345
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "product_warehouse_location"
+        ]
+      },
+      {
+        "id": "TEST_0037",
+        "name": "Type validation for order_order_id",
+        "type": "negative",
+        "description": "Testing wrong type for order_order_id",
+        "test_data": {
+          "order_order_id": 12345
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_order_id"
+        ]
+      },
+      {
+        "id": "TEST_0038",
+        "name": "Type validation for order_customer_email",
+        "type": "negative",
+        "description": "Testing wrong type for order_customer_email",
+        "test_data": {
+          "order_customer_email": 12345
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_customer_email"
+        ]
+      },
+      {
+        "id": "TEST_0039",
+        "name": "Type validation for order_subtotal",
+        "type": "negative",
+        "description": "Testing wrong type for order_subtotal",
+        "test_data": {
+          "order_subtotal": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_subtotal"
+        ]
+      },
+      {
+        "id": "TEST_0040",
+        "name": "Type validation for order_tax_amount",
+        "type": "negative",
+        "description": "Testing wrong type for order_tax_amount",
+        "test_data": {
+          "order_tax_amount": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_tax_amount"
+        ]
+      },
+      {
+        "id": "TEST_0041",
+        "name": "Type validation for order_shipping_cost",
+        "type": "negative",
+        "description": "Testing wrong type for order_shipping_cost",
+        "test_data": {
+          "order_shipping_cost": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_shipping_cost"
+        ]
+      },
+      {
+        "id": "TEST_0042",
+        "name": "Type validation for order_total_amount",
+        "type": "negative",
+        "description": "Testing wrong type for order_total_amount",
+        "test_data": {
+          "order_total_amount": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_total_amount"
+        ]
+      },
+      {
+        "id": "TEST_0043",
+        "name": "Type validation for order_discount_percentage",
+        "type": "negative",
+        "description": "Testing wrong type for order_discount_percentage",
+        "test_data": {
+          "order_discount_percentage": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_discount_percentage"
+        ]
+      },
+      {
+        "id": "TEST_0044",
+        "name": "Type validation for order_order_date",
+        "type": "negative",
+        "description": "Testing wrong type for order_order_date",
+        "test_data": {
+          "order_order_date": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_order_date"
+        ]
+      },
+      {
+        "id": "TEST_0045",
+        "name": "Type validation for order_shipping_date",
+        "type": "negative",
+        "description": "Testing wrong type for order_shipping_date",
+        "test_data": {
+          "order_shipping_date": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_shipping_date"
+        ]
+      },
+      {
+        "id": "TEST_0046",
+        "name": "Type validation for order_delivery_date",
+        "type": "negative",
+        "description": "Testing wrong type for order_delivery_date",
+        "test_data": {
+          "order_delivery_date": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_delivery_date"
+        ]
+      },
+      {
+        "id": "TEST_0047",
+        "name": "Type validation for order_status",
+        "type": "negative",
+        "description": "Testing wrong type for order_status",
+        "test_data": {
+          "order_status": 12345
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_status"
+        ]
+      }
+    ],
+    "performance": [
+      {
+        "id": "TEST_0089",
+        "name": "Large Data Volume Test for Order",
+        "type": "performance",
+        "description": "Test with large data volumes",
+        "test_data": {
+          "order_order_id": "order_id_value_72",
+          "order_customer_email": "test_3549@example.com",
+          "order_items": [
+            "item_0"
+          ],
+          "order_subtotal": 329.56,
+          "order_tax_amount": 9252.43,
+          "order_shipping_cost": 3349.48,
+          "order_total_amount": 5928.14,
+          "order_discount_percentage": 14,
+          "order_order_date": 1750606605,
+          "order_shipping_date": 1751297805,
+          "order_delivery_date": 1751211405,
+          "order_status": "delivered",
+          "order_payment_method": "credit_card",
+          "order_shipping_address": "shipping_address_value_45",
+          "order_billing_address": "billing_address_value_78"
+        },
+        "expected_result": "pass",
+        "priority": 6,
+        "tags": [
+          "performance",
+          "volume",
+          "order",
+          "template"
+        ]
+      }
+    ]
+  }
+}

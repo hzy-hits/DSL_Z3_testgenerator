@@ -273,6 +273,15 @@ class Z3ConstraintSolver:
                     solver.add(z3.Not(condition))
                 except Exception as e:
                     logger.warning(f"Failed to deactivate rule {rule.name}: {e}")
+        
+        elif objective.type == "pairwise":
+            # Pairwise test - add specific value constraints
+            for constraint_expr in objective.constraints:
+                try:
+                    z3_expr = self._ast_to_z3(self.parser.parse(constraint_expr), variables)
+                    solver.add(z3_expr)
+                except Exception as e:
+                    logger.warning(f"Failed to add pairwise constraint '{constraint_expr}': {e}")
     
     def _extract_values(self, model: z3.ModelRef) -> Dict[str, Any]:
         """Extract concrete values from Z3 model"""
