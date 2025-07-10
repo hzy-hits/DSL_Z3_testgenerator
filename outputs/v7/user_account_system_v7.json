@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "generator": "Unified DSL Test Generator v7.0",
+    "domain": "User Account Management System",
+    "timestamp": "2025-07-11T07:42:37.357877",
+    "dsl_file": "examples/advanced/user_account_system.yaml",
+    "test_requirements_parsed": true
+  },
+  "summary": {
+    "total_tests": 31,
+    "test_distribution": {
+      "boundary": 8,
+      "functional": 2,
+      "constraint_satisfaction": 3,
+      "constraint_violation": 1,
+      "rule_deactivation": 1,
+      "rule_activation": 2,
+      "negative": 5,
+      "state_transition": 9
+    },
+    "tag_distribution": {
+      "boundary": 8,
+      "account_status": 3,
+      "min": 4,
+      "required_test": 8,
+      "below_min": 4,
+      "negative": 10,
+      "balance": 3,
+      "failed_logins": 3,
+      "last_activity": 3,
+      "functional": 2,
+      "user": 2,
+      "business_data": 1,
+      "complete": 1,
+      "constraint": 4,
+      "satisfaction": 3,
+      "violation": 1,
+      "rule": 3,
+      "deactivation": 1,
+      "active_users_must_be_verified": 1,
+      "activation": 2,
+      "suspended_users_have_failed_logins": 1,
+      "frozen_accounts_have_zero_balance": 1,
+      "type_validation": 5,
+      "is_verified": 1,
+      "state_machine": 9,
+      "useraccountflow": 9,
+      "transition": 9
+    },
+    "priority_distribution": {
+      "medium": 24,
+      "high": 7
+    },
+    "requirements_coverage": {
+      "test_requirements": [
+        {
+          "name": "Account state coverage",
+          "type": "state_machine",
+          "covered": true
+        },
+        {
+          "name": "Balance boundary tests",
+          "type": "boundary",
+          "covered": true
+        },
+        {
+          "name": "Verification combinations",
+          "type": "combinatorial",
+          "covered": true
+        }
+      ],
+      "constraints": [
+        {
+          "constraint": "user_balance >= 0",
+          "covered": true
+        },
+        {
+          "constraint": "user_failed_logins >= 0",
+          "covered": true
+        },
+        {
+          "constraint": "user_failed_logins <= 10",
+          "covered": true
+        }
+      ],
+      "rules": [
+        {
+          "rule": "Active users must be verified",
+          "covered": true
+        },
+        {
+          "rule": "Suspended users have failed logins",
+          "covered": true
+        },
+        {
+          "rule": "Frozen accounts have zero balance",
+          "covered": true
+        }
+      ]
+    }
+  },
+  "test_suites": {
+    "boundary": [
+      {
+        "id": "TEST_0001",
+        "name": "Boundary test: account_status = 1",
+        "type": "boundary",
+        "description": "Test minimum value for account_status",
+        "test_data": {
+          "user_account_status": 1
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "account_status",
+          "min",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0002",
+        "name": "Boundary test: account_status < min",
+        "type": "boundary",
+        "description": "Test below minimum value for account_status",
+        "test_data": {
+          "user_account_status": 0
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "account_status",
+          "below_min",
+          "negative",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0003",
+        "name": "Boundary test: balance = 0",
+        "type": "boundary",
+        "description": "Test minimum value for balance",
+        "test_data": {
+          "user_balance": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "balance",
+          "min",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0004",
+        "name": "Boundary test: balance < min",
+        "type": "boundary",
+        "description": "Test below minimum value for balance",
+        "test_data": {
+          "user_balance": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "balance",
+          "below_min",
+          "negative",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0005",
+        "name": "Boundary test: failed_logins = 0",
+        "type": "boundary",
+        "description": "Test minimum value for failed_logins",
+        "test_data": {
+          "user_failed_logins": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "failed_logins",
+          "min",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0006",
+        "name": "Boundary test: failed_logins < min",
+        "type": "boundary",
+        "description": "Test below minimum value for failed_logins",
+        "test_data": {
+          "user_failed_logins": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "failed_logins",
+          "below_min",
+          "negative",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0007",
+        "name": "Boundary test: last_activity = 0",
+        "type": "boundary",
+        "description": "Test minimum value for last_activity",
+        "test_data": {
+          "user_last_activity": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "last_activity",
+          "min",
+          "required_test"
+        ]
+      },
+      {
+        "id": "TEST_0008",
+        "name": "Boundary test: last_activity < min",
+        "type": "boundary",
+        "description": "Test below minimum value for last_activity",
+        "test_data": {
+          "user_last_activity": 1639999999
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "last_activity",
+          "below_min",
+          "negative",
+          "required_test"
+        ]
+      }
+    ],
+    "functional": [
+      {
+        "id": "TEST_0009",
+        "name": "Create User with valid business data",
+        "type": "functional",
+        "description": "Test creating User with realistic data",
+        "test_data": {
+          "user_account_status": "pending",
+          "user_balance": 713.86,
+          "user_failed_logins": 4,
+          "user_is_verified": true,
+          "user_last_activity": 64
+        },
+        "expected_result": "pass",
+        "priority": 9,
+        "tags": [
+          "functional",
+          "user",
+          "business_data"
+        ]
+      },
+      {
+        "id": "TEST_0010",
+        "name": "Create User with all fields",
+        "type": "functional",
+        "description": "Test User with all optional fields",
+        "test_data": {
+          "user_account_status": "pending",
+          "user_balance": 484.94,
+          "user_failed_logins": 10,
+          "user_is_verified": true,
+          "user_last_activity": 73
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "functional",
+          "user",
+          "complete"
+        ]
+      }
+    ],
+    "constraint_satisfaction": [
+      {
+        "id": "TEST_0011",
+        "name": "Constraint satisfaction: user_balance >= 0",
+        "type": "constraint_satisfaction",
+        "description": "Test constraint is satisfied",
+        "test_data": {
+          "user_balance": 8.18
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "satisfaction"
+        ],
+        "constraints_tested": [
+          "user_balance >= 0"
+        ]
+      },
+      {
+        "id": "TEST_0013",
+        "name": "Constraint satisfaction: user_failed_logins >= 0",
+        "type": "constraint_satisfaction",
+        "description": "Test constraint is satisfied",
+        "test_data": {
+          "user_failed_logins": 4.63
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "satisfaction"
+        ],
+        "constraints_tested": [
+          "user_failed_logins >= 0"
+        ]
+      },
+      {
+        "id": "TEST_0015",
+        "name": "Constraint satisfaction: user_failed_logins <= 10",
+        "type": "constraint_satisfaction",
+        "description": "Test constraint is satisfied",
+        "test_data": {
+          "user_failed_logins": 9.68
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "satisfaction"
+        ],
+        "constraints_tested": [
+          "user_failed_logins <= 10"
+        ]
+      }
+    ],
+    "constraint_violation": [
+      {
+        "id": "TEST_0016",
+        "name": "Constraint violation: user_failed_logins <= 10",
+        "type": "constraint_violation",
+        "description": "Test constraint is violated",
+        "test_data": {
+          "user_failed_logins": 18.19
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "constraint",
+          "violation",
+          "negative"
+        ],
+        "constraints_tested": [
+          "user_failed_logins <= 10"
+        ]
+      }
+    ],
+    "rule_deactivation": [
+      {
+        "id": "TEST_0026",
+        "name": "Rule deactivation: Active users must be verified",
+        "type": "rule_deactivation",
+        "description": "Test Active users must be verified when condition is false",
+        "test_data": {},
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "rule",
+          "deactivation",
+          "active_users_must_be_verified"
+        ],
+        "rules_tested": [
+          "Active users must be verified"
+        ]
+      }
+    ],
+    "rule_activation": [
+      {
+        "id": "TEST_0027",
+        "name": "Rule activation: Suspended users have failed logins",
+        "type": "rule_activation",
+        "description": "Test Suspended users have failed logins when condition is true",
+        "test_data": {
+          "user_account_status": 4
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "rule",
+          "activation",
+          "suspended_users_have_failed_logins"
+        ],
+        "rules_tested": [
+          "Suspended users have failed logins"
+        ]
+      },
+      {
+        "id": "TEST_0029",
+        "name": "Rule activation: Frozen accounts have zero balance",
+        "type": "rule_activation",
+        "description": "Test Frozen accounts have zero balance when condition is true",
+        "test_data": {
+          "user_account_status": 5
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "rule",
+          "activation",
+          "frozen_accounts_have_zero_balance"
+        ],
+        "rules_tested": [
+          "Frozen accounts have zero balance"
+        ]
+      }
+    ],
+    "negative": [
+      {
+        "id": "TEST_0031",
+        "name": "Type validation for account_status",
+        "type": "negative",
+        "description": "Testing wrong type for account_status",
+        "test_data": {
+          "user_account_status": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "account_status"
+        ]
+      },
+      {
+        "id": "TEST_0032",
+        "name": "Type validation for balance",
+        "type": "negative",
+        "description": "Testing wrong type for balance",
+        "test_data": {
+          "user_balance": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "balance"
+        ]
+      },
+      {
+        "id": "TEST_0033",
+        "name": "Type validation for failed_logins",
+        "type": "negative",
+        "description": "Testing wrong type for failed_logins",
+        "test_data": {
+          "user_failed_logins": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "failed_logins"
+        ]
+      },
+      {
+        "id": "TEST_0034",
+        "name": "Type validation for is_verified",
+        "type": "negative",
+        "description": "Testing wrong type for is_verified",
+        "test_data": {
+          "user_is_verified": "not_a_bool"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "is_verified"
+        ]
+      },
+      {
+        "id": "TEST_0035",
+        "name": "Type validation for last_activity",
+        "type": "negative",
+        "description": "Testing wrong type for last_activity",
+        "test_data": {
+          "user_last_activity": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "last_activity"
+        ]
+      }
+    ],
+    "state_transition": [
+      {
+        "id": "TEST_0036",
+        "name": "UserAccountFlow: Active -> Inactive",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Active",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Inactive",
+          "user_last_activity": 1672531194.2
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0037",
+        "name": "UserAccountFlow: Inactive -> Active",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Inactive",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Active",
+          "user_is_verified": 1
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0038",
+        "name": "UserAccountFlow: Active -> Locked",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Active",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Locked",
+          "user_failed_logins": 10.24
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0039",
+        "name": "UserAccountFlow: Locked -> Active",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Locked",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Active",
+          "user_is_verified": 1,
+          "user_failed_logins": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0040",
+        "name": "UserAccountFlow: Active -> Suspended",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Active",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Suspended"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0041",
+        "name": "UserAccountFlow: Inactive -> Suspended",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Inactive",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Suspended"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0042",
+        "name": "UserAccountFlow: Suspended -> Frozen",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Suspended",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Frozen",
+          "user_balance": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0043",
+        "name": "UserAccountFlow: Frozen -> Active",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Frozen",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Active"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      },
+      {
+        "id": "TEST_0044",
+        "name": "UserAccountFlow: Inactive -> Locked",
+        "type": "state_transition",
+        "description": "Test state transition in UserAccountFlow",
+        "test_data": {
+          "useraccountflow_current_state": "Inactive",
+          "useraccountflow_event": "transition",
+          "useraccountflow_expected_state": "Locked"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "useraccountflow",
+          "transition"
+        ]
+      }
+    ]
+  }
+}
