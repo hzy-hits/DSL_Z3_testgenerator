@@ -1,0 +1,507 @@
+{
+  "meta": {
+    "generator": "Unified DSL Test Generator v5.0",
+    "domain": "Order Processing System",
+    "timestamp": "2025-07-11T00:31:01.508649",
+    "dsl_file": "examples/advanced/order_processing_system.yaml",
+    "test_requirements_parsed": true
+  },
+  "summary": {
+    "total_tests": 23,
+    "test_distribution": {
+      "functional": 2,
+      "constraint_satisfaction": 2,
+      "constraint_violation": 1,
+      "boundary": 9,
+      "negative": 5,
+      "state_transition": 4
+    },
+    "tag_distribution": {
+      "functional": 2,
+      "order": 2,
+      "business_data": 1,
+      "complete": 1,
+      "constraint": 3,
+      "satisfaction": 2,
+      "violation": 1,
+      "negative": 10,
+      "boundary": 9,
+      "order_amount": 3,
+      "min": 4,
+      "below_min": 4,
+      "order_status": 4,
+      "max": 1,
+      "order_customer_id": 3,
+      "order_created_at": 3,
+      "type_validation": 5,
+      "order_has_stock": 1,
+      "state_machine": 4,
+      "transition": 4,
+      "orderstatusflow": 4
+    },
+    "priority_distribution": {
+      "high": 4,
+      "medium": 19
+    },
+    "requirements_coverage": {
+      "test_requirements": [
+        {
+          "name": "Order boundary tests",
+          "type": "boundary",
+          "covered": true
+        },
+        {
+          "name": "State machine tests",
+          "type": "state_machine",
+          "covered": false
+        },
+        {
+          "name": "Rule coverage tests",
+          "type": "rule_coverage",
+          "covered": false
+        }
+      ],
+      "constraints": [
+        {
+          "constraint": "order_amount > 0",
+          "covered": true
+        },
+        {
+          "constraint": "order_customer_id > 0",
+          "covered": true
+        }
+      ],
+      "rules": [
+        {
+          "rule": "Stock required for payment",
+          "covered": false
+        },
+        {
+          "rule": "Shipped orders have positive amount",
+          "covered": false
+        }
+      ]
+    }
+  },
+  "test_suites": {
+    "functional": [
+      {
+        "id": "TEST_0001",
+        "name": "Create Order with valid business data",
+        "type": "functional",
+        "description": "Test creating Order with realistic data",
+        "test_data": {
+          "order_status": 1,
+          "order_amount": 82.0,
+          "order_has_stock": true,
+          "order_customer_id": 1,
+          "order_created_at": 1640000000
+        },
+        "expected_result": "pass",
+        "priority": 9,
+        "tags": [
+          "functional",
+          "order",
+          "business_data"
+        ]
+      },
+      {
+        "id": "TEST_0002",
+        "name": "Create Order with all fields",
+        "type": "functional",
+        "description": "Test Order with all optional fields",
+        "test_data": {
+          "order_status": 1,
+          "order_amount": 172.99,
+          "order_has_stock": false,
+          "order_customer_id": 2,
+          "order_created_at": 1640000000
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "functional",
+          "order",
+          "complete"
+        ]
+      }
+    ],
+    "constraint_satisfaction": [
+      {
+        "id": "TEST_0003",
+        "name": "Constraint satisfaction: order_amount > 0",
+        "type": "constraint_satisfaction",
+        "description": "Test constraint is satisfied",
+        "test_data": {
+          "order_amount": 89.42837515446787,
+          "order_status": 1,
+          "order_has_stock": false,
+          "order_customer_id": 3,
+          "order_created_at": 1640000000
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "satisfaction"
+        ],
+        "constraints_tested": [
+          "order_amount > 0"
+        ]
+      },
+      {
+        "id": "TEST_0005",
+        "name": "Constraint satisfaction: order_customer_id > 0",
+        "type": "constraint_satisfaction",
+        "description": "Test constraint is satisfied",
+        "test_data": {
+          "order_customer_id": 99.31277017995109,
+          "order_status": 1,
+          "order_amount": 94.95,
+          "order_has_stock": false,
+          "order_created_at": 1640000000
+        },
+        "expected_result": "pass",
+        "priority": 8,
+        "tags": [
+          "constraint",
+          "satisfaction"
+        ],
+        "constraints_tested": [
+          "order_customer_id > 0"
+        ]
+      }
+    ],
+    "constraint_violation": [
+      {
+        "id": "TEST_0004",
+        "name": "Constraint violation: order_amount > 0",
+        "type": "constraint_violation",
+        "description": "Test constraint is violated",
+        "test_data": {
+          "order_amount": 0.0,
+          "order_status": 1,
+          "order_has_stock": true,
+          "order_customer_id": 4,
+          "order_created_at": 1640000000
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "constraint",
+          "violation",
+          "negative"
+        ],
+        "constraints_tested": [
+          "order_amount > 0"
+        ]
+      }
+    ],
+    "boundary": [
+      {
+        "id": "TEST_0006",
+        "name": "Boundary test: order_amount = 0",
+        "type": "boundary",
+        "description": "Test minimum value for order_amount",
+        "test_data": {
+          "order_amount": 0
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_amount",
+          "min"
+        ]
+      },
+      {
+        "id": "TEST_0007",
+        "name": "Boundary test: order_amount < min",
+        "type": "boundary",
+        "description": "Test below minimum value for order_amount",
+        "test_data": {
+          "order_amount": -1
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_amount",
+          "below_min",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0008",
+        "name": "Boundary test: order_status = 1",
+        "type": "boundary",
+        "description": "Test minimum value for order_status",
+        "test_data": {
+          "order_status": 1
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_status",
+          "min"
+        ]
+      },
+      {
+        "id": "TEST_0009",
+        "name": "Boundary test: order_status < min",
+        "type": "boundary",
+        "description": "Test below minimum value for order_status",
+        "test_data": {
+          "order_status": 0
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_status",
+          "below_min",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0010",
+        "name": "Boundary test: order_status = 4",
+        "type": "boundary",
+        "description": "Test maximum value for order_status",
+        "test_data": {
+          "order_status": 4
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_status",
+          "max"
+        ]
+      },
+      {
+        "id": "TEST_0013",
+        "name": "Boundary test: order_customer_id = 1",
+        "type": "boundary",
+        "description": "Test minimum value for order_customer_id",
+        "test_data": {
+          "order_customer_id": 1
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_customer_id",
+          "min"
+        ]
+      },
+      {
+        "id": "TEST_0014",
+        "name": "Boundary test: order_customer_id < min",
+        "type": "boundary",
+        "description": "Test below minimum value for order_customer_id",
+        "test_data": {
+          "order_customer_id": 0
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_customer_id",
+          "below_min",
+          "negative"
+        ]
+      },
+      {
+        "id": "TEST_0015",
+        "name": "Boundary test: order_created_at = 1640000000",
+        "type": "boundary",
+        "description": "Test minimum value for order_created_at",
+        "test_data": {
+          "order_created_at": 1640000000
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_created_at",
+          "min"
+        ]
+      },
+      {
+        "id": "TEST_0016",
+        "name": "Boundary test: order_created_at < min",
+        "type": "boundary",
+        "description": "Test below minimum value for order_created_at",
+        "test_data": {
+          "order_created_at": 1639999999
+        },
+        "expected_result": "fail",
+        "priority": 7,
+        "tags": [
+          "boundary",
+          "order_created_at",
+          "below_min",
+          "negative"
+        ]
+      }
+    ],
+    "negative": [
+      {
+        "id": "TEST_0017",
+        "name": "Type validation for order_status",
+        "type": "negative",
+        "description": "Testing wrong type for order_status",
+        "test_data": {
+          "order_status": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_status"
+        ]
+      },
+      {
+        "id": "TEST_0018",
+        "name": "Type validation for order_amount",
+        "type": "negative",
+        "description": "Testing wrong type for order_amount",
+        "test_data": {
+          "order_amount": "not_a_float"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_amount"
+        ]
+      },
+      {
+        "id": "TEST_0019",
+        "name": "Type validation for order_has_stock",
+        "type": "negative",
+        "description": "Testing wrong type for order_has_stock",
+        "test_data": {
+          "order_has_stock": "not_a_bool"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_has_stock"
+        ]
+      },
+      {
+        "id": "TEST_0020",
+        "name": "Type validation for order_customer_id",
+        "type": "negative",
+        "description": "Testing wrong type for order_customer_id",
+        "test_data": {
+          "order_customer_id": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_customer_id"
+        ]
+      },
+      {
+        "id": "TEST_0021",
+        "name": "Type validation for order_created_at",
+        "type": "negative",
+        "description": "Testing wrong type for order_created_at",
+        "test_data": {
+          "order_created_at": "not_a_number"
+        },
+        "expected_result": "fail",
+        "priority": 6,
+        "tags": [
+          "negative",
+          "type_validation",
+          "order_created_at"
+        ]
+      }
+    ],
+    "state_transition": [
+      {
+        "id": "TEST_0022",
+        "name": "OrderStatusFlow: PendingPayment -> PendingShipment",
+        "type": "state_transition",
+        "description": "Test state transition in OrderStatusFlow",
+        "test_data": {
+          "orderstatusflow_current_state": "PendingPayment",
+          "orderstatusflow_event": "transition",
+          "orderstatusflow_expected_state": "PendingShipment"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition",
+          "orderstatusflow"
+        ]
+      },
+      {
+        "id": "TEST_0023",
+        "name": "OrderStatusFlow: PendingPayment -> Cancelled",
+        "type": "state_transition",
+        "description": "Test state transition in OrderStatusFlow",
+        "test_data": {
+          "orderstatusflow_current_state": "PendingPayment",
+          "orderstatusflow_event": "transition",
+          "orderstatusflow_expected_state": "Cancelled"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition",
+          "orderstatusflow"
+        ]
+      },
+      {
+        "id": "TEST_0024",
+        "name": "OrderStatusFlow: PendingShipment -> Shipped",
+        "type": "state_transition",
+        "description": "Test state transition in OrderStatusFlow",
+        "test_data": {
+          "orderstatusflow_current_state": "PendingShipment",
+          "orderstatusflow_event": "transition",
+          "orderstatusflow_expected_state": "Shipped"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition",
+          "orderstatusflow"
+        ]
+      },
+      {
+        "id": "TEST_0025",
+        "name": "OrderStatusFlow: Shipped -> Cancelled",
+        "type": "state_transition",
+        "description": "Test state transition in OrderStatusFlow",
+        "test_data": {
+          "orderstatusflow_current_state": "Shipped",
+          "orderstatusflow_event": "transition",
+          "orderstatusflow_expected_state": "Cancelled"
+        },
+        "expected_result": "pass",
+        "priority": 7,
+        "tags": [
+          "state_machine",
+          "transition",
+          "orderstatusflow"
+        ]
+      }
+    ]
+  }
+}
