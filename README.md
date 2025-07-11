@@ -31,42 +31,83 @@
 pip install -r requirements.txt
 ```
 
-### 生成测试
+### 基本用法
 
 ```bash
-# 推荐：使用最终优化版
-python v8_final_optimized.py examples/intermediate/shopping_cart.yaml
+# 生成测试用例
+python main.py generate examples/intermediate/shopping_cart.yaml
+
+# 使用旧版兼容模式（直接传入文件）
+python main.py examples/intermediate/shopping_cart.yaml
+
+# 指定输出文件
+python main.py generate examples/intermediate/shopping_cart.yaml -o outputs/cart_tests.json
 
 # 批量处理
-python v8_final_optimized.py --batch examples/
+python main.py generate --batch examples/
 
 # 生成详细报告
-python v8_final_optimized.py examples/advanced/advanced_ecommerce.yaml --report --format markdown
+python main.py generate examples/advanced/advanced_ecommerce.yaml --report --format markdown
 
 # 评估测试质量
-python evaluate_test_quality.py output.json
+python main.py evaluate outputs/cart_tests.json
 ```
 
 ## 📁 项目结构
 
 ```
 v2.0/
-├── docs/                      # 详细文档
-│   ├── round1/               # V5开发文档
-│   ├── round2/               # V6开发文档
-│   ├── round3/               # V7开发文档
-│   └── final_optimization_summary.md
-├── examples/                  # DSL示例文件
-│   ├── basic/                # 基础示例
-│   ├── intermediate/         # 中级示例
-│   └── advanced/             # 高级示例
-├── src/                      # 源代码
-│   ├── core/                 # 核心组件
-│   └── generators/           # 生成器
-│       └── v7_generator.py   # 最终版本生成器
-├── outputs/                  # 生成的测试
-│   └── v7/                   # V7输出
-└── tests/                    # 单元测试
+├── main.py                    # 统一入口程序
+├── src/                       # 源代码
+│   ├── cli/                   # 命令行工具
+│   │   ├── generate.py        # 测试生成CLI
+│   │   └── evaluate.py        # 质量评估CLI
+│   ├── core/                  # 核心组件
+│   │   ├── combination_engine.py
+│   │   └── concrete_value_generator.py
+│   ├── generators/            # 生成器
+│   │   ├── v8/               # V8核心模块
+│   │   ├── v8_improved/      # V8优化模块
+│   │   └── v8_modular/       # V8模块化版本
+│   ├── layers/               # 分层架构
+│   ├── strategies/           # 测试策略
+│   └── utils/                # 工具模块
+├── examples/                 # DSL示例文件
+│   ├── basic/               # 基础示例
+│   ├── intermediate/        # 中级示例
+│   └── advanced/            # 高级示例
+├── outputs/                 # 生成的测试输出
+├── docs/                    # 详细文档
+└── tests/                   # 单元测试
+```
+
+## 🛠️ 命令行接口
+
+### generate 子命令
+生成测试用例
+
+```bash
+python main.py generate [选项] <DSL文件>
+
+选项:
+  -o, --output      输出文件路径
+  -v, --verbose     启用详细日志
+  --report          生成详细质量报告
+  --batch           批量处理目录下的所有YAML文件
+  --validate        验证生成的测试
+  --format          输出格式 (json/yaml/markdown/csv)
+```
+
+### evaluate 子命令
+评估测试质量
+
+```bash
+python main.py evaluate [选项] <测试文件>
+
+选项:
+  -v, --verbose     显示详细信息
+  -o, --output      输出报告文件路径
+  --format          报告格式 (json/markdown/text)
 ```
 
 ## 🔧 支持的约束类型
@@ -86,7 +127,7 @@ v2.0/
 ## 📈 性能指标
 
 - **文件成功率**: 100% (7/7)
-- **平均质量分**: 95.8/100
+- **测试通过率**: 91.4%+
 - **约束覆盖率**: 95%+
 - **测试生成速度**: <1秒/文件
 
@@ -94,20 +135,20 @@ v2.0/
 
 ### 核心组件
 
-1. **ExpressionParser**: 完整的表达式解析器
-   - 递归下降解析
-   - 支持所有运算符
-   - 函数调用处理
+1. **TypeAwareValueGenerator**: 类型感知值生成器
+   - 正确识别和生成集合类型
+   - 智能业务值生成
+   - 边界值精确处理
 
-2. **RobustBusinessValueGeneratorV7**: 业务值生成器
-   - 领域特定规则
-   - 安全范围验证
-   - 连续ID生成
+2. **EnhancedConstraintSolver**: 增强约束求解器
+   - Z3 SMT求解器集成
+   - 智能回退策略
+   - 多层求解机制
 
-3. **RobustConstraintParserV7**: 约束解析器
-   - 表达式求值
-   - 约束满足生成
-   - 错误恢复机制
+3. **ImprovedTestGenerator**: 改进的测试生成器
+   - 模块化架构
+   - 策略模式设计
+   - 自动约束验证
 
 ## 📚 详细文档
 
@@ -116,7 +157,7 @@ v2.0/
 - [DSL语法指南](DSL_GUIDE.md)
 - [贡献指南](CONTRIBUTING.md)
 - [项目概览](PROJECT_OVERVIEW.md)
-- [优化总结](docs/final_optimization_summary.md)
+- [项目结构](PROJECT_STRUCTURE.md)
 
 ## 🤝 贡献
 
@@ -132,6 +173,6 @@ v2.0/
 
 ---
 
-**当前版本**: v7.0  
-**最后更新**: 2025-01-11  
+**当前版本**: v8.0 (Final Optimized)  
+**最后更新**: 2025-01-12  
 **维护者**: DSL Test Generator Team

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 DSL Test Generator - 主入口程序
-使用 V3 版本作为默认生成器
+整合V8优化版本，提供统一的命令行接口
 """
 
 import argparse
@@ -9,90 +9,87 @@ import sys
 from pathlib import Path
 
 # 添加 src 到 Python 路径
-sys.path.insert(0, str(Path(__file__).parent / 'src'))
+sys.path.insert(0, str(Path(__file__).parent))
 
-from generators.v3_generator import UnifiedDSLTestGeneratorV3, TestGenerationConfig
+from src.cli.generate import TestGeneratorCLI
+from src.cli.evaluate import TestQualityEvaluator
 
 
 def main():
+    """主入口函数"""
     parser = argparse.ArgumentParser(
-        description="DSL Test Generator - 自动生成高质量测试用例",
+        description="DSL Test Generator - 高质量测试用例生成工具",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
+子命令:
+  generate    生成测试用例
+  evaluate    评估测试质量
+
 示例:
-  # 基础用法
-  python main.py examples/intermediate/user_account_system.yaml
+  # 生成测试用例
+  python main.py generate examples/intermediate/shopping_cart.yaml
   
-  # 指定输出文件
-  python main.py examples/intermediate/shopping_cart.yaml -o outputs/v3/cart_tests.json
+  # 批量生成
+  python main.py generate --batch examples/
   
-  # 使用配置文件
-  python main.py examples/advanced/advanced_ecommerce.yaml -c configs/test_config_v3.json
+  # 评估测试质量
+  python main.py evaluate outputs/shopping_cart_tests.json
   
-  # 启用性能模式
-  python main.py examples/advanced/advanced_ecommerce.yaml --performance
+  # 使用旧版兼容模式（直接传入文件）
+  python main.py examples/intermediate/shopping_cart.yaml
+
+更多帮助:
+  python main.py generate --help
+  python main.py evaluate --help
         """
     )
     
-    parser.add_argument("dsl_file", help="DSL YAML 文件路径")
-    parser.add_argument("-o", "--output", help="输出文件路径 (默认: outputs/v3/<filename>_tests.json)")
-    parser.add_argument("-c", "--config", help="配置文件路径 (JSON)")
-    parser.add_argument("--max-tests", type=int, default=20, help="每种类型的最大测试数 (默认: 20)")
-    parser.add_argument("--strategy", choices=['realistic', 'boundary', 'random'], 
-                       default='realistic', help="值生成策略 (默认: realistic)")
-    parser.add_argument("--performance", action="store_true", help="启用性能模式（缓存优化）")
-    parser.add_argument("--no-templates", action="store_true", help="禁用模板测试")
-    parser.add_argument("--version", action="version", version="DSL Test Generator v3.0")
+    parser.add_argument('--version', action='version', version='DSL Test Generator v8.0 (Optimized)')
     
+    # 创建子命令
+    subparsers = parser.add_subparsers(dest='command', help='可用命令')
+    
+    # generate 子命令
+    parser_generate = subparsers.add_parser('generate', help='生成测试用例')
+    parser_generate.add_argument('dsl_file', nargs='?', help='DSL YAML文件路径')
+    parser_generate.add_argument('-o', '--output', help='输出文件路径')
+    parser_generate.add_argument('-v', '--verbose', action='store_true', help='启用详细日志')
+    parser_generate.add_argument('--report', action='store_true', help='生成详细质量报告')
+    parser_generate.add_argument('--batch', help='批量处理目录下的所有YAML文件')
+    parser_generate.add_argument('--validate', action='store_true', help='验证生成的测试')
+    parser_generate.add_argument('--format', choices=['json', 'yaml', 'markdown', 'csv'], 
+                              default='json', help='输出格式')
+    
+    # evaluate 子命令
+    parser_evaluate = subparsers.add_parser('evaluate', help='评估测试质量')
+    parser_evaluate.add_argument('test_file', help='测试文件路径（JSON格式）')
+    parser_evaluate.add_argument('-v', '--verbose', action='store_true', help='显示详细信息')
+    parser_evaluate.add_argument('-o', '--output', help='输出报告文件路径')
+    parser_evaluate.add_argument('--format', choices=['json', 'markdown', 'text'], 
+                              default='text', help='报告格式')
+    
+    # 兼容旧版用法：如果第一个参数是.yaml文件，自动使用generate命令
+    if len(sys.argv) > 1 and sys.argv[1].endswith(('.yaml', '.yml')):
+        # 重构参数以支持旧版用法
+        sys.argv.insert(1, 'generate')
+    
+    # 解析参数
     args = parser.parse_args()
     
-    # 验证输入文件
-    dsl_path = Path(args.dsl_file)
-    if not dsl_path.exists():
-        print(f"错误: DSL 文件不存在: {args.dsl_file}")
-        sys.exit(1)
-    
-    # 设置默认输出路径
-    if not args.output:
-        output_dir = Path("outputs/v3")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = output_dir / f"{dsl_path.stem}_tests.json"
-        args.output = str(output_file)
-    
-    # 加载配置
-    config_dict = {}
-    if args.config:
-        import json
-        with open(args.config, 'r') as f:
-            config_dict = json.load(f)
-    
-    # 命令行参数覆盖配置
-    config_dict['max_tests_per_type'] = args.max_tests
-    config_dict['value_strategy'] = args.strategy
-    config_dict['performance_mode'] = args.performance
-    config_dict['enable_templates'] = not args.no_templates
-    
-    config = TestGenerationConfig.from_dict(config_dict)
-    
-    try:
-        # 生成测试
-        print(f"使用 DSL 文件: {args.dsl_file}")
-        generator = UnifiedDSLTestGeneratorV3(args.dsl_file, config)
-        result = generator.generate_tests()
-        
-        # 保存结果
-        import json
-        with open(args.output, 'w', encoding='utf-8') as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
-        
-        print(f"\n✅ 测试生成成功！")
-        print(f"📄 输出文件: {args.output}")
-        print(f"📊 生成了 {result['summary']['total_tests']} 个测试用例")
-        
-    except Exception as e:
-        print(f"\n❌ 错误: {str(e)}")
-        import traceback
-        traceback.print_exc()
+    # 执行相应的命令
+    if args.command == 'generate':
+        # 使用新的参数创建CLI实例
+        sys.argv = ['main.py'] + sys.argv[2:]  # 移除'generate'子命令
+        cli = TestGeneratorCLI()
+        cli.run()
+    elif args.command == 'evaluate':
+        # 使用新的参数创建评估器实例
+        sys.argv = ['main.py'] + sys.argv[2:]  # 移除'evaluate'子命令
+        evaluator = TestQualityEvaluator()
+        evaluator.run()
+    else:
+        # 没有指定命令，显示帮助
+        parser.print_help()
         sys.exit(1)
 
 
