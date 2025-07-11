@@ -1,0 +1,180 @@
+{
+  "dsl_file": "examples/advanced/order_processing_system.yaml",
+  "generation_time": "2025-07-11T09:16:44.376473",
+  "total_tests": 10,
+  "tests": [
+    {
+      "test_name": "Order_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of Order",
+      "test_data": {
+        "status": 2,
+        "amount": 244.59,
+        "has_stock": false,
+        "customer_id": 10001,
+        "created_at": 10
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Order_test_1",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376445"
+    },
+    {
+      "test_name": "Order_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of Order",
+      "test_data": {
+        "status": 72,
+        "amount": 141.51,
+        "has_stock": true,
+        "customer_id": 10002,
+        "created_at": 31
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Order_test_2",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376453"
+    },
+    {
+      "test_name": "Order_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of Order",
+      "test_data": {
+        "status": 9,
+        "amount": 398.41,
+        "has_stock": true,
+        "customer_id": 10003,
+        "created_at": 52
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Order_test_3",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376454"
+    },
+    {
+      "test_name": "Order_status_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for status",
+      "test_data": {
+        "status": 0,
+        "amount": 463.55,
+        "has_stock": true,
+        "customer_id": 10004,
+        "created_at": 100
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Order_test_4",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376455"
+    },
+    {
+      "test_name": "Order_status_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for status",
+      "test_data": {
+        "status": 999999,
+        "amount": 220.98,
+        "has_stock": true,
+        "customer_id": 10005,
+        "created_at": 4
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Order_test_5",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376456"
+    },
+    {
+      "test_name": "Order_amount_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for amount",
+      "test_data": {
+        "status": 95,
+        "amount": 0.01,
+        "has_stock": true,
+        "customer_id": 10006,
+        "created_at": 38
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Order_test_6",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376457"
+    },
+    {
+      "test_name": "Order_amount_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for amount",
+      "test_data": {
+        "status": 10,
+        "amount": 999999.99,
+        "has_stock": true,
+        "customer_id": 10007,
+        "created_at": 80
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Order_test_7",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376457"
+    },
+    {
+      "test_name": "Order_status_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for status",
+      "test_data": {
+        "status": "not_a_number",
+        "amount": 322.95,
+        "has_stock": false,
+        "customer_id": 10008,
+        "created_at": 93
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Order_test_8",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376458"
+    },
+    {
+      "test_name": "Order_amount_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for amount",
+      "test_data": {
+        "status": 58,
+        "amount": null,
+        "has_stock": true,
+        "customer_id": 10009,
+        "created_at": 10
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Order_test_9",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376459"
+    },
+    {
+      "test_name": "Order_status_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for status",
+      "test_data": {
+        "status": 100,
+        "amount": 356.9,
+        "has_stock": true,
+        "customer_id": 10010,
+        "created_at": 45
+      },
+      "constraint": "status >= 0",
+      "expected_result": "pass",
+      "priority": 6,
+      "test_id": "Order_test_10",
+      "entity": "Order",
+      "timestamp": "2025-07-11T09:16:44.376459"
+    }
+  ]
+}

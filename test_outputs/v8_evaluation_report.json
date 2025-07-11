@@ -1,0 +1,120 @@
+{
+  "evaluation_time": "2025-07-11T09:16:44.614880",
+  "total_files": 7,
+  "average_score": 92.02857142857144,
+  "results": [
+    {
+      "file": "examples/advanced/student_system_mixed.yaml",
+      "total_score": 88.9,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 1.0,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.33636363636363636,
+        "business_realism": 1.0
+      },
+      "test_count": 20,
+      "issues": [],
+      "improvements": []
+    },
+    {
+      "file": "examples/advanced/user_account_system.yaml",
+      "total_score": 96.7,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 1.0,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.8,
+        "business_realism": 1.0
+      },
+      "test_count": 10,
+      "issues": [],
+      "improvements": []
+    },
+    {
+      "file": "examples/advanced/advanced_ecommerce.yaml",
+      "total_score": 89.6,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 0.9916666666666667,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.42833333333333334,
+        "business_realism": 0.9565217391304348
+      },
+      "test_count": 24,
+      "issues": [
+        "Invalid price/amount in Product_price_invalid_type"
+      ],
+      "improvements": []
+    },
+    {
+      "file": "examples/advanced/order_processing_system.yaml",
+      "total_score": 96.7,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 0.9800000000000001,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.82,
+        "business_realism": 1.0
+      },
+      "test_count": 10,
+      "issues": [
+        "Invalid price/amount in Order_amount_invalid_type"
+      ],
+      "improvements": []
+    },
+    {
+      "file": "examples/basic/simple_arrays.yaml",
+      "total_score": 95.0,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 1.0,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.7,
+        "business_realism": 1.0
+      },
+      "test_count": 10,
+      "issues": [],
+      "improvements": []
+    },
+    {
+      "file": "examples/intermediate/permission_system.yaml",
+      "total_score": 91.0,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 1.0,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.46078431372549017,
+        "business_realism": 1.0
+      },
+      "test_count": 17,
+      "issues": [],
+      "improvements": []
+    },
+    {
+      "file": "examples/intermediate/shopping_cart.yaml",
+      "total_score": 86.3,
+      "scores": {
+        "completeness": 1.0,
+        "coverage": 1.0,
+        "data_quality": 0.9681818181818183,
+        "constraint_handling": 1.0,
+        "test_diversity": 0.4090909090909091,
+        "business_realism": 0.8
+      },
+      "test_count": 22,
+      "issues": [
+        "'items' should be a list in Cart_items_invalid_type",
+        "Invalid price/amount in Cart_total_price_invalid_type",
+        "Invalid price/amount in Product_price_invalid_type"
+      ],
+      "improvements": []
+    }
+  ]
+}

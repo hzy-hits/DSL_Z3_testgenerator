@@ -1,0 +1,438 @@
+{
+  "dsl_file": "examples/advanced/student_system_mixed.yaml",
+  "generation_time": "2025-07-11T09:16:44.419216",
+  "total_tests": 20,
+  "tests": [
+    {
+      "test_name": "Student_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of Student",
+      "test_data": {
+        "student_id": 2024001,
+        "name": "Alice Smith",
+        "grade_level": 1,
+        "score": 0,
+        "subjects": [
+          "subjects_1"
+        ],
+        "honors": [
+          "honors_1"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Student_test_1",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419135"
+    },
+    {
+      "test_name": "Student_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of Student",
+      "test_data": {
+        "student_id": 2024002,
+        "name": "Charlie Brown",
+        "grade_level": 3,
+        "score": 25,
+        "subjects": [
+          "subjects_1",
+          "subjects_2"
+        ],
+        "honors": [
+          "honors_1"
+        ],
+        "is_excellent": true
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Student_test_2",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419141"
+    },
+    {
+      "test_name": "Student_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of Student",
+      "test_data": {
+        "student_id": 2024003,
+        "name": "David Davis",
+        "grade_level": 4,
+        "score": 58,
+        "subjects": [
+          "subjects_1"
+        ],
+        "honors": [
+          "honors_1",
+          "honors_2"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Student_test_3",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419142"
+    },
+    {
+      "test_name": "Student_grade_level_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for grade_level",
+      "test_data": {
+        "student_id": 2024004,
+        "name": "Emma Wilson",
+        "grade_level": 0,
+        "score": 68,
+        "subjects": [
+          "subjects_1",
+          "subjects_2",
+          "subjects_3"
+        ],
+        "honors": [
+          "honors_1"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Student_test_4",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419143"
+    },
+    {
+      "test_name": "Student_grade_level_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for grade_level",
+      "test_data": {
+        "student_id": 2024005,
+        "name": "Alice Smith",
+        "grade_level": 999999,
+        "score": 82,
+        "subjects": [
+          "subjects_1"
+        ],
+        "honors": [
+          "honors_1",
+          "honors_2",
+          "honors_3"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Student_test_5",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419144"
+    },
+    {
+      "test_name": "Student_score_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for score",
+      "test_data": {
+        "student_id": 2024006,
+        "name": "Bob Johnson",
+        "grade_level": 7,
+        "score": 0,
+        "subjects": [
+          "subjects_1"
+        ],
+        "honors": [
+          "honors_1",
+          "honors_2",
+          "honors_3"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Student_test_6",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419144"
+    },
+    {
+      "test_name": "Student_score_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for score",
+      "test_data": {
+        "student_id": 2024007,
+        "name": "Charlie Brown",
+        "grade_level": 8,
+        "score": 999999,
+        "subjects": [
+          "subjects_1",
+          "subjects_2",
+          "subjects_3"
+        ],
+        "honors": [
+          "honors_1"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Student_test_7",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419145"
+    },
+    {
+      "test_name": "Student_subjects_empty_collection",
+      "test_type": "boundary",
+      "description": "Test empty collection for subjects",
+      "test_data": {
+        "student_id": 2024008,
+        "name": "David Davis",
+        "grade_level": 9,
+        "score": 57,
+        "subjects": [],
+        "honors": [
+          "honors_1",
+          "honors_2"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Student_test_8",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419146"
+    },
+    {
+      "test_name": "Student_subjects_large_collection",
+      "test_type": "boundary",
+      "description": "Test large collection for subjects",
+      "test_data": {
+        "student_id": 2024009,
+        "name": "Emma Wilson",
+        "grade_level": 10,
+        "score": 69,
+        "subjects": [
+          "subjects_0",
+          "subjects_1",
+          "subjects_2",
+          "subjects_3",
+          "subjects_4",
+          "subjects_5",
+          "subjects_6",
+          "subjects_7",
+          "subjects_8",
+          "subjects_9"
+        ],
+        "honors": [
+          "honors_1"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Student_test_9",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419146"
+    },
+    {
+      "test_name": "Student_student_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for student_id",
+      "test_data": {
+        "student_id": 12345,
+        "name": "Alice Smith",
+        "grade_level": 11,
+        "score": 99,
+        "subjects": [
+          "subjects_1",
+          "subjects_2"
+        ],
+        "honors": [
+          "honors_1",
+          "honors_2"
+        ],
+        "is_excellent": true
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Student_test_10",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419147"
+    },
+    {
+      "test_name": "Student_name_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for name",
+      "test_data": {
+        "student_id": 2024011,
+        "name": 12345,
+        "grade_level": 12,
+        "score": 5,
+        "subjects": [
+          "subjects_1"
+        ],
+        "honors": [
+          "honors_1",
+          "honors_2"
+        ],
+        "is_excellent": false
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Student_test_11",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419148"
+    },
+    {
+      "test_name": "Student_grade_level_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for grade_level",
+      "test_data": {
+        "student_id": 2024012,
+        "name": "Charlie Brown",
+        "grade_level": 1,
+        "score": 23,
+        "subjects": [
+          "subjects_1"
+        ],
+        "honors": [
+          "honors_1"
+        ],
+        "is_excellent": true
+      },
+      "constraint": "grade_level >= 0",
+      "expected_result": "pass",
+      "priority": 6,
+      "test_id": "Student_test_12",
+      "entity": "Student",
+      "timestamp": "2025-07-11T09:16:44.419148"
+    },
+    {
+      "test_name": "Course_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of Course",
+      "test_data": {
+        "course_code": "CODE1001",
+        "course_name": "Alice Smith",
+        "credit_hours": 19,
+        "is_required": false
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Course_test_1",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419201"
+    },
+    {
+      "test_name": "Course_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of Course",
+      "test_data": {
+        "course_code": "CODE1002",
+        "course_name": "Charlie Brown",
+        "credit_hours": 36,
+        "is_required": true
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Course_test_2",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419202"
+    },
+    {
+      "test_name": "Course_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of Course",
+      "test_data": {
+        "course_code": "CODE1004",
+        "course_name": "David Davis",
+        "credit_hours": 65,
+        "is_required": true
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Course_test_3",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419203"
+    },
+    {
+      "test_name": "Course_credit_hours_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for credit_hours",
+      "test_data": {
+        "course_code": "CODE1005",
+        "course_name": "Emma Wilson",
+        "credit_hours": 0,
+        "is_required": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Course_test_4",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419204"
+    },
+    {
+      "test_name": "Course_credit_hours_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for credit_hours",
+      "test_data": {
+        "course_code": "CODE1006",
+        "course_name": "Alice Smith",
+        "credit_hours": 999999,
+        "is_required": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Course_test_5",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419204"
+    },
+    {
+      "test_name": "Course_course_code_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for course_code",
+      "test_data": {
+        "course_code": 12345,
+        "course_name": "Bob Johnson",
+        "credit_hours": 49,
+        "is_required": false
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Course_test_6",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419205"
+    },
+    {
+      "test_name": "Course_course_name_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for course_name",
+      "test_data": {
+        "course_code": "CODE1008",
+        "course_name": 12345,
+        "credit_hours": 52,
+        "is_required": false
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Course_test_7",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419206"
+    },
+    {
+      "test_name": "Course_credit_hours_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for credit_hours",
+      "test_data": {
+        "course_code": "CODE1009",
+        "course_name": "David Davis",
+        "credit_hours": 92,
+        "is_required": false
+      },
+      "constraint": "credit_hours >= 0",
+      "expected_result": "pass",
+      "priority": 6,
+      "test_id": "Course_test_8",
+      "entity": "Course",
+      "timestamp": "2025-07-11T09:16:44.419206"
+    }
+  ]
+}

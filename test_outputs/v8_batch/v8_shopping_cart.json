@@ -1,0 +1,461 @@
+{
+  "dsl_file": "examples/intermediate/shopping_cart.yaml",
+  "generation_time": "2025-07-11T09:16:44.590235",
+  "total_tests": 22,
+  "tests": [
+    {
+      "test_name": "Cart_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of Cart",
+      "test_data": {
+        "items": [
+          1007,
+          1015
+        ],
+        "total_price": 29.99,
+        "discount_codes": [
+          "WELCOME20",
+          "BULK15"
+        ],
+        "is_premium_member": false
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Cart_test_1",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590153"
+    },
+    {
+      "test_name": "Cart_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of Cart",
+      "test_data": {
+        "items": [
+          1005,
+          1007,
+          1008,
+          1008
+        ],
+        "total_price": 149.99,
+        "discount_codes": [
+          "SAVE10",
+          "VIP15",
+          "BULK15"
+        ],
+        "is_premium_member": false
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Cart_test_2",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590160"
+    },
+    {
+      "test_name": "Cart_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of Cart",
+      "test_data": {
+        "items": [
+          1004,
+          1018,
+          1003
+        ],
+        "total_price": 6.99,
+        "discount_codes": [],
+        "is_premium_member": false
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Cart_test_3",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590161"
+    },
+    {
+      "test_name": "Cart_total_price_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for total_price",
+      "test_data": {
+        "items": [
+          1014,
+          1020,
+          1013,
+          1006
+        ],
+        "total_price": 0.01,
+        "discount_codes": [
+          "BULK15",
+          "SUMMER25"
+        ],
+        "is_premium_member": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Cart_test_4",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590162"
+    },
+    {
+      "test_name": "Cart_total_price_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for total_price",
+      "test_data": {
+        "items": [
+          1015,
+          1011,
+          1008,
+          1006,
+          1011
+        ],
+        "total_price": 999999.99,
+        "discount_codes": [],
+        "is_premium_member": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Cart_test_5",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590163"
+    },
+    {
+      "test_name": "Cart_items_empty_collection",
+      "test_type": "boundary",
+      "description": "Test empty collection for items",
+      "test_data": {
+        "items": [],
+        "total_price": 29.99,
+        "discount_codes": [
+          "SUMMER25"
+        ],
+        "is_premium_member": false
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Cart_test_6",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590164"
+    },
+    {
+      "test_name": "Cart_items_large_collection",
+      "test_type": "boundary",
+      "description": "Test large collection for items",
+      "test_data": {
+        "items": [
+          1043,
+          1030,
+          1001,
+          1012,
+          1001,
+          1011,
+          1019,
+          1031,
+          1027,
+          1043
+        ],
+        "total_price": 49.99,
+        "discount_codes": [],
+        "is_premium_member": true
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Cart_test_7",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590164"
+    },
+    {
+      "test_name": "Cart_items_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for items",
+      "test_data": {
+        "items": "not_a_number",
+        "total_price": 179.99,
+        "discount_codes": [
+          "WELCOME20",
+          "SUMMER25",
+          "VIP15"
+        ],
+        "is_premium_member": true
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Cart_test_8",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590165"
+    },
+    {
+      "test_name": "Cart_total_price_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for total_price",
+      "test_data": {
+        "items": [
+          1001,
+          1004
+        ],
+        "total_price": null,
+        "discount_codes": [
+          "SUMMER25"
+        ],
+        "is_premium_member": true
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Cart_test_9",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590166"
+    },
+    {
+      "test_name": "Cart_total_price_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for total_price",
+      "test_data": {
+        "items": [
+          1013,
+          1012,
+          1002,
+          1017,
+          1013
+        ],
+        "total_price": 99.99,
+        "discount_codes": [
+          "BULK15",
+          "SAVE10"
+        ],
+        "is_premium_member": false
+      },
+      "constraint": "total_price >= 0",
+      "expected_result": "pass",
+      "priority": 6,
+      "test_id": "Cart_test_10",
+      "entity": "Cart",
+      "timestamp": "2025-07-11T09:16:44.590166"
+    },
+    {
+      "test_name": "Product_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of Product",
+      "test_data": {
+        "id": 1001,
+        "price": 26.99,
+        "categories": [
+          "sports",
+          "toys",
+          "books"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Product_test_1",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590217"
+    },
+    {
+      "test_name": "Product_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of Product",
+      "test_data": {
+        "id": 1002,
+        "price": 9.99,
+        "categories": [
+          "toys"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Product_test_2",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590218"
+    },
+    {
+      "test_name": "Product_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of Product",
+      "test_data": {
+        "id": 1003,
+        "price": 15.99,
+        "categories": [
+          "clothing",
+          "sports",
+          "books"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "test_id": "Product_test_3",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590219"
+    },
+    {
+      "test_name": "Product_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for id",
+      "test_data": {
+        "id": 0,
+        "price": 149.99,
+        "categories": [
+          "sports",
+          "clothing",
+          "electronics"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Product_test_4",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590219"
+    },
+    {
+      "test_name": "Product_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for id",
+      "test_data": {
+        "id": 999999,
+        "price": 199.99,
+        "categories": [
+          "books",
+          "toys",
+          "sports"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Product_test_5",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590220"
+    },
+    {
+      "test_name": "Product_price_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for price",
+      "test_data": {
+        "id": 1006,
+        "price": 0.01,
+        "categories": [
+          "clothing"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Product_test_6",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590221"
+    },
+    {
+      "test_name": "Product_price_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for price",
+      "test_data": {
+        "id": 1007,
+        "price": 999999.99,
+        "categories": [
+          "sports",
+          "home"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Product_test_7",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590221"
+    },
+    {
+      "test_name": "Product_categories_empty_collection",
+      "test_type": "boundary",
+      "description": "Test empty collection for categories",
+      "test_data": {
+        "id": 1008,
+        "price": 49.99,
+        "categories": []
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Product_test_8",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590222"
+    },
+    {
+      "test_name": "Product_categories_large_collection",
+      "test_type": "boundary",
+      "description": "Test large collection for categories",
+      "test_data": {
+        "id": 1009,
+        "price": 7.99,
+        "categories": [
+          "categories_0",
+          "categories_1",
+          "categories_2",
+          "categories_3",
+          "categories_4",
+          "categories_5",
+          "categories_6",
+          "categories_7",
+          "categories_8",
+          "categories_9"
+        ]
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "test_id": "Product_test_9",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590223"
+    },
+    {
+      "test_name": "Product_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for id",
+      "test_data": {
+        "id": "not_a_number",
+        "price": 119.99,
+        "categories": [
+          "electronics",
+          "home",
+          "sports"
+        ]
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Product_test_10",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590223"
+    },
+    {
+      "test_name": "Product_price_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for price",
+      "test_data": {
+        "id": 1011,
+        "price": null,
+        "categories": [
+          "clothing"
+        ]
+      },
+      "expected_result": "fail",
+      "expected_error": "type_error",
+      "priority": 6,
+      "test_id": "Product_test_11",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590224"
+    },
+    {
+      "test_name": "Product_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for id",
+      "test_data": {
+        "id": 1012,
+        "price": 29.99,
+        "categories": [
+          "electronics",
+          "clothing",
+          "home"
+        ]
+      },
+      "constraint": "id >= 0",
+      "expected_result": "pass",
+      "priority": 6,
+      "test_id": "Product_test_12",
+      "entity": "Product",
+      "timestamp": "2025-07-11T09:16:44.590225"
+    }
+  ]
+}

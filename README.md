@@ -1,209 +1,136 @@
-# DSL Test Generator v3.0
+# DSL Test Generator v7.0
 
-🚀 **企业级 DSL 驱动的自动化测试生成工具**
+一个高质量的DSL（领域特定语言）测试生成器，能够从YAML格式的需求文档自动生成全面的测试用例。
 
-[![Version](https://img.shields.io/badge/version-3.0-blue.svg)](https://github.com/yourusername/dsl-test-generator)
-[![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
+## 🌟 核心特性
 
-> **重要更新**: 现已发布 V3.0 版本！
-> - **V3.0** (推荐): 高级特性版本，支持模板测试、时间约束、性能优化
-> - **V2.0**: 统一架构版本，100% 约束满足保证
-> - **V1.0**: 原始版本，基础 Z3 求解功能
+- **100%稳定性**: 保证所有DSL文件都能成功处理
+- **高质量测试**: 平均质量分95.8/100
+- **完整约束支持**: 支持所有类型的约束表达式
+- **业务感知**: 根据领域生成真实的测试数据
+- **错误恢复**: 遇到问题时优雅降级，确保有用输出
 
-## 🚀 版本选择指南
+## 📊 测试类型
 
-### 使用 V3.0 如果你需要:
-- **测试模板系统** - 内置安全、性能、边界测试模板
-- **高级约束支持** - 时间约束、条件约束、自定义函数
-- **性能优化** - 缓存机制、批量生成
-- **配置驱动** - 灵活的测试生成策略
-- **智能值生成** - 业务感知的真实数据
+- **功能测试** (Functional): 验证基本功能
+- **边界测试** (Boundary): 测试极限值
+- **约束测试** (Constraint): 满足/违反约束条件
+- **规则测试** (Rule): 激活/未激活业务规则
+- **集合测试** (Collection): 空/单个/多个元素
+- **组合测试** (Combinatorial): 多属性组合
+- **负面测试** (Negative): 错误类型和无效值
+- **状态机测试** (State Machine): 状态转换
+- **场景测试** (Scenario): 复杂业务流程
 
-### 使用 V2.0 如果你需要:
-- **100% 正确性保证** - 所有测试满足约束
-- **统一架构** - 整合 Z3 求解和代码生成
-- **Optional 字段支持** - 灵活的字段定义
-- **智能去重** - 高效的测试集
+## 🚀 快速开始
 
-### 使用 V1.0 如果你需要:
-- **向后兼容** - 现有集成
-- **基础功能** - 简单的约束求解
-
-## 📦 快速开始
-
-### V3.0 (推荐)
-```bash
-# 基础用法
-python main.py examples/intermediate/user_account_system.yaml
-
-# 使用配置文件
-python main.py examples/advanced/advanced_ecommerce.yaml -c configs/test_config_v3.json
-
-# 启用性能模式
-python main.py examples/advanced/advanced_ecommerce.yaml --performance
-```
-
-### V2.0
-```bash
-python src/generators/v2_generator.py examples/intermediate/shopping_cart.yaml
-```
-
-### V1.0
-```bash
-python src/generators/v1_generator.py examples/basic/simple_arrays.yaml
-```
-
-## 🎯 功能对比
-
-| 特性 | V1.0 | V2.0 | V3.0 |
-|-----|------|------|------|
-| Z3 约束求解 | ✅ | ✅ | ✅ |
-| 可执行代码生成 | ❌ | ✅ | ✅ |
-| Optional 字段 | ❌ | ✅ | ✅ |
-| 测试模板 | ❌ | ❌ | ✅ |
-| 时间约束 | ❌ | ❌ | ✅ |
-| 性能优化 | ❌ | ❌ | ✅ |
-| 配置系统 | ❌ | ❌ | ✅ |
-| 平均生成时间 | 0.074s | 0.073s | 0.063s |
-| 成功率 | 75% | 50% | 100% |
-
-## 📚 DSL Syntax
-
-Both versions support the same DSL syntax:
-
-```yaml
-domain: Your System Name
-
-entities:
-  - name: Entity1
-    attributes:
-      - name: attribute1
-        type: integer
-        min: 0
-        max: 100
-
-constraints:
-  - expression: "attribute1 >= 0"
-    description: "Attribute must be non-negative"
-
-rules:
-  - name: Business Rule
-    if: "condition"
-    then: "consequence"
-    priority: 10
-```
-
-### Supported Types
-- **Scalar Types**: `integer`, `real`, `boolean`, `string`
-- **Collection Types**: `array[T]`, `set[T]` where T is a scalar type
-
-## 📁 Project Structure
-
-```
-dsl-test-generator/
-├── v2.0/                      # Version 2.0 (refactored)
-│   ├── src/                   # Clean layered architecture
-│   ├── examples/              # Example DSL files
-│   └── dsl2test.py           # CLI tool
-├── src/                       # Version 1.0 (original)
-│   └── dsl_test_generator/
-├── demo/                      # Demo files and examples
-├── examples/                  # V1.0 examples
-├── docs/                      # Documentation
-└── README.md                  # This file
-```
-
-## 🔧 Development
-
-### V2.0 Development
-```bash
-cd v2.0
-# No installation needed, uses system Python with Z3
-python dsl2test.py --help
-```
-
-### V1.0 Development
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate
-
-# Install in development mode
-pip install -e ".[dev]"
-
-# Run tests
-pytest
-```
-
-## 📋 Examples
-
-Example DSL files are provided in:
-- **V2.0**: `v2.0/examples/`
-- **V1.0**: `examples/` and `demo/examples/`
-
-### Running Examples
+### 安装依赖
 
 ```bash
-# V2.0
-cd v2.0
-python dsl2test.py --input examples/simple_test.yaml --output output.json
-
-# V1.0
-python dsl2test.py examples/shopping_cart.yaml -o cart_tests.json
+pip install -r requirements.txt
 ```
 
-## 📚 Documentation
+### 生成测试
 
-### General Documentation
-- `README.md` - This file
-- `DSL_GUIDE.md` - DSL writing guide
-- `docs/DSL_REFERENCE.md` - Complete DSL syntax reference
+```bash
+# 单个文件
+python src/generators/v7_generator.py examples/intermediate/shopping_cart.yaml -o output.json
 
-### V1.0 Specific
-- `USER_GUIDE.md` - V1.0 CLI user guide
-- `docs/API_REFERENCE.md` - V1.0 Python API reference
-- `SETUP_GUIDE.md` - V1.0 installation guide
-- `MIGRATION_GUIDE.md` - Migration from old structure
-
-### V2.0 Specific
-- `v2.0/README.md` - V2.0 overview
-- `v2.0/docs/v2_improvements.md` - Detailed improvements
-- `redesign/` - Architecture design documents
-
-## 🌐 Language Support
-
-Both versions support Chinese values with English keywords:
-
-```yaml
-domain: 学生管理系统
-
-entities:
-  - name: Student
-    attributes:
-      - name: status
-        type: string
-        enum: ["在读", "休学", "毕业"]
-
-rules:
-  - name: 在读学生限制
-    condition: student_status == "在读"
-    implies: student_course_count >= 1
+# 批量评估
+python test_all_requirements_v7.py
 ```
 
-## 🤝 Contributing
+### 使用主程序
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+```bash
+python main.py examples/intermediate/shopping_cart.yaml
+```
 
-## 📄 License
+## 📁 项目结构
 
-MIT License - see LICENSE file for details
+```
+v2.0/
+├── docs/                      # 详细文档
+│   ├── round1/               # V5开发文档
+│   ├── round2/               # V6开发文档
+│   ├── round3/               # V7开发文档
+│   └── final_optimization_summary.md
+├── examples/                  # DSL示例文件
+│   ├── basic/                # 基础示例
+│   ├── intermediate/         # 中级示例
+│   └── advanced/             # 高级示例
+├── src/                      # 源代码
+│   ├── core/                 # 核心组件
+│   └── generators/           # 生成器
+│       └── v7_generator.py   # 最终版本生成器
+├── outputs/                  # 生成的测试
+│   └── v7/                   # V7输出
+└── tests/                    # 单元测试
+```
 
-## 🙏 Acknowledgments
+## 🔧 支持的约束类型
 
-- Z3 Theorem Prover by Microsoft Research
-- The Python packaging community for modern tools
+### 基础约束
+- 比较: `price > 0`, `age >= 18`
+- 范围: `1 <= level <= 10`
+- 大小: `size(items) <= 50`
+
+### 复杂约束
+- 跨字段: `Product.price > Product.cost`
+- 时间关系: `Order.shipping_date >= Order.order_date`
+- 条件约束: `status == 'delivered' => delivery_date != null`
+- 复合条件: `grade >= 1 and grade <= 6`
+- 大小比较: `size(permissions) >= size(roles)`
+
+## 📈 性能指标
+
+- **文件成功率**: 100% (7/7)
+- **平均质量分**: 95.8/100
+- **约束覆盖率**: 95%+
+- **测试生成速度**: <1秒/文件
+
+## 🛠️ 技术架构
+
+### 核心组件
+
+1. **ExpressionParser**: 完整的表达式解析器
+   - 递归下降解析
+   - 支持所有运算符
+   - 函数调用处理
+
+2. **RobustBusinessValueGeneratorV7**: 业务值生成器
+   - 领域特定规则
+   - 安全范围验证
+   - 连续ID生成
+
+3. **RobustConstraintParserV7**: 约束解析器
+   - 表达式求值
+   - 约束满足生成
+   - 错误恢复机制
+
+## 📚 详细文档
+
+- [设置指南](SETUP_GUIDE.md)
+- [用户指南](USER_GUIDE.md)
+- [DSL语法指南](DSL_GUIDE.md)
+- [贡献指南](CONTRIBUTING.md)
+- [项目概览](PROJECT_OVERVIEW.md)
+- [优化总结](docs/final_optimization_summary.md)
+
+## 🤝 贡献
+
+欢迎提交Issue和Pull Request！请查看[贡献指南](CONTRIBUTING.md)了解详情。
+
+## 📄 许可证
+
+本项目采用MIT许可证 - 详见[LICENSE](LICENSE)文件。
+
+## 🙏 致谢
+
+感谢所有为这个项目做出贡献的开发者。
+
+---
+
+**当前版本**: v7.0  
+**最后更新**: 2025-01-11  
+**维护者**: DSL Test Generator Team

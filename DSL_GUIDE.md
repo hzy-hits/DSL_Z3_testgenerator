@@ -3,10 +3,11 @@
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [DSL Structure](#dsl-structure)
-3. [Z3 Solver Considerations](#z3-solver-considerations)
-4. [Best Practices](#best-practices)
-5. [Common Patterns](#common-patterns)
-6. [Troubleshooting](#troubleshooting)
+3. [State Machines](#state-machines)
+4. [Z3 Solver Considerations](#z3-solver-considerations)
+5. [Best Practices](#best-practices)
+6. [Common Patterns](#common-patterns)
+7. [Troubleshooting](#troubleshooting)
 
 ## Introduction
 
@@ -64,6 +65,85 @@ constraints:
   
   - expression: member_type >= 1 and member_type <= 3
     description: Valid membership levels only
+```
+
+## State Machines
+
+State machines allow you to model and test temporal behavior and state transitions in your system. They are particularly useful for testing business processes, workflows, and entity lifecycles.
+
+### Structure
+
+State machines are defined at the top level of your DSL file:
+
+```yaml
+state_machines:
+  - name: OrderStatusFlow
+    entity: Order              # Which entity this state machine applies to
+    state_attribute: status    # Which attribute represents the state
+    states:
+      - name: PendingPayment
+        description: "Order awaiting payment"
+      - name: PendingShipment
+        description: "Order paid, ready to ship"
+      - name: Shipped
+        description: "Order has been shipped"
+      - name: Cancelled
+        description: "Order has been cancelled"
+    
+    transitions:
+      - name: PayOrder
+        from: PendingPayment
+        to: PendingShipment
+        condition: order_has_stock == true and order_amount > 0
+        description: "Complete payment when stock available"
+      
+      - name: CancelOrder
+        from: PendingPayment
+        to: Cancelled
+        condition: true
+        description: "Cancel pending order"
+      
+      - name: ShipOrder
+        from: PendingShipment
+        to: Shipped
+        condition: true
+        description: "Ship paid order"
+      
+      - name: CannotCancelShipped
+        from: Shipped
+        to: Cancelled
+        condition: false
+        description: "Shipped orders cannot be cancelled"
+```
+
+### Generated Test Types
+
+State machines automatically generate several types of tests:
+
+1. **Valid Transition Tests**: Tests for each valid transition when conditions are met
+2. **Invalid Transition Tests**: Tests for transitions marked with `condition: false`
+3. **Undefined Transition Tests**: Tests for state combinations not defined in transitions
+4. **State Coverage Tests**: Tests to ensure all states are reachable
+5. **Condition Boundary Tests**: Tests for when transition conditions are true/false
+
+### State Machine Rules
+
+- States are automatically assigned numeric values (1, 2, 3, ...)
+- The `state_attribute` must exist in the specified entity
+- Transitions with `condition: false` are treated as explicitly forbidden
+- Undefined transitions (not listed) are treated as invalid by default
+- Use `condition: true` for unconditional transitions
+
+### Example Test Requirements
+
+```yaml
+test_requirements:
+  - name: State machine tests
+    type: state_machine
+  
+  - name: Order workflow coverage
+    type: state_machine
+    focus: [OrderStatusFlow]
 ```
 
 ### 4. Rules
