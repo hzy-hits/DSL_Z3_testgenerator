@@ -49,34 +49,174 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Virtual environments
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
 venv/
 ENV/
-env/
-.venv/
+env.bak/
+venv.bak/
 
-# IDEs
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
 .idea/
+
+# VSCode
 .vscode/
-*.swp
-*.swo
-*~
+*.code-workspace
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
 
 # Project specific
+outputs/
+test_outputs/
 output/
 generated/
+*.output
+*.temp
+temp_*
+tmp/
+.temp/
+
+# Log files
+logs/
 *.log
+*.log.*
 .z3-trace
+
+# Editor backups
+*.bak
+*.swp
+*.swo
+*.orig
+
+# Test artifacts
+.benchmarks/
+.ruff_cache/
+
+# Documentation build
+docs/api/
+
+# Local configuration
+local_config.yaml
+.env.local
+.env.*.local
+
+# Performance profiling
+*.prof
+*.lprof
+
+# Security
+*.pem
+*.key
+*.cert
+*.crt
 
 # Keep example outputs
 !demo/outputs/*.json
 
-# Temporary files
-*.tmp
-*.bak
-*.orig
-
-# UV
+# UV package manager
 .uv/
 uv.lock
+
+# pre-commit
+.pre-commit-config.yaml.bak

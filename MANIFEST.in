@@ -1,0 +1,71 @@
+# Include documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include PROJECT_OVERVIEW.md
+include PROJECT_STRUCTURE.md
+include SETUP_GUIDE.md
+include USER_GUIDE.md
+include DSL_GUIDE.md
+include MIGRATION_GUIDE.md
+include GITHUB_SETUP.md
+
+# Include configuration files
+include pyproject.toml
+include setup.cfg
+include requirements.txt
+include requirements-dev.txt
+include Makefile
+include .editorconfig
+include .pre-commit-config.yaml
+
+# Include examples
+recursive-include examples *.yaml *.yml *.md
+
+# Include documentation
+recursive-include docs *.md *.rst *.txt
+
+# Include test files
+recursive-include tests *.py *.yaml *.yml *.json
+
+# Include configuration templates
+recursive-include configs *.json *.yaml *.yml
+
+# Include package data
+recursive-include src *.py *.pyi py.typed
+
+# Exclude unnecessary files
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude .gitignore
+global-exclude .git
+global-exclude .mypy_cache
+global-exclude .pytest_cache
+global-exclude .coverage
+global-exclude .tox
+global-exclude .venv
+global-exclude venv
+global-exclude htmlcov
+global-exclude .idea
+global-exclude .vscode
+
+# Exclude build artifacts
+prune build
+prune dist
+prune *.egg-info
+
+# Exclude output directories
+prune outputs
+prune test_outputs
+
+# Exclude temporary files
+global-exclude *.log
+global-exclude *.tmp
+global-exclude *.temp
+global-exclude *.bak
+global-exclude *.swp
+global-exclude *.swo
+global-exclude *~
