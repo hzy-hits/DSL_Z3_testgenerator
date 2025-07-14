@@ -2,14 +2,14 @@
 
 ## What's Supported / 支持的内容
 
-### ✅ Chinese Values in Data
+###  Chinese Values in Data
 - Domain names: `domain: 电商系统`
 - String values: `name: "张三"`
 - Enum values: `enum: ["待审核", "已通过", "已拒绝"]`
 - Descriptions: `description: 这是一个描述`
 - Rule names: `name: 年龄限制规则`
 
-### ❌ What's NOT Supported
+###  What's NOT Supported
 - Chinese DSL keywords (must use `entities`, not `实体`)
 - Chinese variable names in constraints (use `user_age`, not `用户_年龄`)
 - Chinese operators (use `and`, not `且`)

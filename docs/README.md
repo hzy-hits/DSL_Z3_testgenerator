@@ -2,7 +2,7 @@
 
 Welcome to the DSL Test Generator documentation. This directory contains detailed guides and references for using and understanding the system.
 
-## 📚 Documentation Index
+##  Documentation Index
 
 ### Getting Started
 - [**Setup Guide**](../SETUP_GUIDE.md) - Complete installation and setup instructions for new environments
@@ -27,7 +27,7 @@ Welcome to the DSL Test Generator documentation. This directory contains detaile
 - [**Changelog**](../CHANGELOG.md) - Version history and changes
 - [**Contributing**](../CONTRIBUTING.md) - Guidelines for contributors
 
-## 🚀 Quick Links
+##  Quick Links
 
 ### For Users
 1. Start with the [Setup Guide](../SETUP_GUIDE.md)
@@ -39,7 +39,7 @@ Welcome to the DSL Test Generator documentation. This directory contains detaile
 2. Understand the [Project Overview](../PROJECT_OVERVIEW.md)
 3. Set up development environment per [Setup Guide](../SETUP_GUIDE.md#development-setup)
 
-## 📖 Documentation Structure
+##  Documentation Structure
 
 ```
 docs/
@@ -60,7 +60,7 @@ Project Root/
 └── README.md             # Project introduction
 ```
 
-## 💡 Common Tasks
+##  Common Tasks
 
 ### Generate Test Cases
 ```bash
@@ -79,7 +79,7 @@ engine = DSLEngine(config)
 ### Write Your First DSL
 See [DSL Reference](DSL_REFERENCE.md) and examples in `demo/examples/`
 
-## 🆘 Getting Help
+##  Getting Help
 
 1. Check [Troubleshooting](TROUBLESHOOTING.md) for common issues
 2. Review examples in `demo/examples/` and `examples/`

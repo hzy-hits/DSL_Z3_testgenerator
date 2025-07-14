@@ -272,7 +272,7 @@ class TestQualityEvaluator:
         """格式化文本报告"""
         lines = []
         lines.append("="*50)
-        lines.append("📊 测试质量评估报告")
+        lines.append("测试质量评估报告")
         lines.append("="*50)
         
         summary = report['summary']
@@ -289,7 +289,7 @@ class TestQualityEvaluator:
         if report['issues']:
             lines.append("\n主要问题:")
             for issue in report['issues']:
-                lines.append(f"  ❌ {issue}")
+                lines.append(f"  {issue}")
         
         if report['recommendations']:
             lines.append("\n改进建议:")
@@ -306,19 +306,19 @@ class TestQualityEvaluator:
         lines.append("# 测试质量评估报告\n")
         
         summary = report['summary']
-        lines.append("## 📊 总体统计\n")
+        lines.append("## 总体统计\n")
         lines.append(f"- **总测试数**: {summary['total_tests']}")
         lines.append(f"- **通过**: {summary['passed_tests']}")
         lines.append(f"- **失败**: {summary['failed_tests']}")
         lines.append(f"- **通过率**: {summary['pass_rate']}")
         lines.append(f"- **质量分数**: {summary['quality_score']}")
         
-        lines.append("\n## 📈 测试类型分布\n")
+        lines.append("\n## 测试类型分布\n")
         for test_type, count in report['test_types'].items():
             lines.append(f"- {test_type}: {count}")
         
         if report['issues']:
-            lines.append("\n## ❌ 主要问题\n")
+            lines.append("\n## 主要问题\n")
             for issue in report['issues']:
                 lines.append(f"- {issue}")
         

@@ -73,7 +73,7 @@ entities:
 
 **Example of conflicting constraints**:
 ```yaml
-# ❌ BAD: Conflicting constraints
+#  BAD: Conflicting constraints
 constraints:
   - user_age >= 18
   - user_age <= 16  # Conflicts with above!
