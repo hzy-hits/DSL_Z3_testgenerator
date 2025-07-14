@@ -1,0 +1,513 @@
+domain: 派单系统架构
+
+entities:
+  - name: ReserveOrder
+    description: 预约单实体
+    attributes:
+      - name: reserve_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 预约单唯一标识
+      
+      - name: reserve_status
+        type: integer
+        enum_values: [1, 2, 3, 4, 5, 6, 7]  # 1=待接单, 2=已派单, 3=已接单, 4=服务中, 5=已完成, 6=已取消, 7=已改约
+        description: 预约单状态
+      
+      - name: user_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 用户ID
+      
+      - name: service_time_minutes
+        type: integer
+        min: 0
+        max: 10080  # 7天内的服务
+        description: 预约服务时间（从当前时刻起的分钟数）
+      
+      - name: service_address_id
+        type: integer
+        min: 1
+        max: 999999
+        description: 服务地址ID
+      
+      - name: is_modified
+        type: boolean
+        description: 是否已修改过预约
+      
+      - name: minutes_since_created
+        type: integer
+        min: 0
+        max: 1440
+        description: 创建后经过的时间（分钟）
+
+  - name: ServiceOrder
+    description: 服务单实体
+    attributes:
+      - name: service_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 服务单唯一标识
+      
+      - name: reserve_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联的预约单ID
+      
+      - name: provider_id
+        type: integer
+        min: 1
+        max: 999999
+        description: 服务人员ID
+      
+      - name: service_status
+        type: integer
+        enum_values: [1, 2, 3, 4, 5]  # 1=待服务, 2=服务中, 3=已完成, 4=已取消, 5=异常结束
+        description: 服务状态
+      
+      - name: actual_start_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 实际开始服务时间
+      
+      - name: actual_end_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 实际结束服务时间
+
+  - name: DispatchOrder
+    description: 调度单实体（支持多次调度）
+    attributes:
+      - name: dispatch_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 调度单唯一标识
+      
+      - name: reserve_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联的预约单ID
+      
+      - name: dispatch_status
+        type: integer
+        enum_values: [1, 2, 3, 4, 5, 6]  # 1=待派单, 2=已派单, 3=已接单, 4=已拒单, 5=已改派, 6=已取消
+        description: 调度单状态
+      
+      - name: dispatch_type
+        type: integer
+        enum_values: [1, 2, 3]  # 1=系统自动派单, 2=人工派单, 3=甩单派单
+        description: 派单方式
+      
+      - name: dispatch_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 派单时间（当天的分钟数）
+      
+      - name: is_reassignment
+        type: boolean
+        description: 是否为改派单
+      
+      - name: provider_status
+        type: integer
+        enum_values: [1, 2, 3, 4]
+        description: 服务人员状态（临时）
+
+  - name: TakeOrderRecord
+    description: 接单记录实体
+    attributes:
+      - name: record_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 接单记录唯一标识
+      
+      - name: dispatch_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联的调度单ID
+      
+      - name: provider_id
+        type: integer
+        min: 1
+        max: 999999
+        description: 服务人员ID
+      
+      - name: record_status
+        type: integer
+        enum_values: [1, 2, 3, 4, 5]  # 1=待查看, 2=已查看, 3=已接单, 4=已拒单, 5=已取消
+        description: 接单记录状态
+      
+      - name: view_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 查看时间（当天的分钟数）
+      
+      - name: reject_reason
+        type: integer
+        enum_values: [0, 1, 2, 3, 4]  # 0=无, 1=时间冲突, 2=距离太远, 3=技能不匹配, 4=其他原因
+        description: 拒单原因
+
+  - name: ServiceProvider
+    description: 服务人员实体
+    attributes:
+      - name: provider_id
+        type: integer
+        min: 1
+        max: 999999
+        description: 服务人员ID
+      
+      - name: provider_status
+        type: integer
+        enum_values: [1, 2, 3, 4, 5]  # 1=空闲, 2=忙碌, 3=休息, 4=下线, 5=黑名单
+        description: 服务人员状态
+      
+      - name: skill_level
+        type: integer
+        min: 1
+        max: 5
+        description: 技能等级
+      
+      - name: service_score
+        type: real
+        min: 0.0
+        max: 5.0
+        description: 服务评分
+      
+      - name: is_available
+        type: boolean
+        description: 是否可接单
+      
+      - name: distance_km
+        type: real
+        min: 0.0
+        max: 50.0
+        description: 距离服务地址的距离（公里）
+
+  - name: TimeSlot
+    description: 时间段实体
+    attributes:
+      - name: slot_id
+        type: integer
+        min: 1
+        max: 999999
+        description: 时间段ID
+      
+      - name: start_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 开始时间（分钟）
+      
+      - name: end_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 结束时间（分钟）
+      
+      - name: is_peak_time
+        type: boolean
+        description: 是否高峰时段
+      
+      - name: available_providers
+        type: integer
+        min: 0
+        max: 100
+        description: 可用服务人员数量
+
+  - name: DispatchEvent
+    description: 派单事件实体
+    attributes:
+      - name: event_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 事件ID
+      
+      - name: event_type
+        type: integer
+        enum_values: [1, 2, 3, 4, 5, 6]  # 1=创建派单, 2=接单, 3=拒单, 4=改派, 5=取消, 6=超时
+        description: 事件类型
+      
+      - name: event_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 事件发生时间
+      
+      - name: related_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联的订单ID
+      
+      - name: old_provider_id
+        type: integer
+        min: 0
+        max: 999999
+        description: 原服务人员ID（改派时使用）
+      
+      - name: new_provider_id
+        type: integer
+        min: 0
+        max: 999999
+        description: 新服务人员ID
+
+  - name: Notification
+    description: 通知实体
+    attributes:
+      - name: notification_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 通知ID
+      
+      - name: notification_type
+        type: integer
+        enum_values: [1, 2, 3, 4, 5]  # 1=派单通知, 2=接单通知, 3=改约通知, 4=取消通知, 5=提醒通知
+        description: 通知类型
+      
+      - name: recipient_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 接收者ID
+      
+      - name: is_sent
+        type: boolean
+        description: 是否已发送
+      
+      - name: send_time_minutes
+        type: integer
+        min: 0
+        max: 1440
+        description: 发送时间
+
+constraints:
+  # 时间约束
+  - service_time_minutes >= 60
+  - actual_start_time_minutes <= actual_end_time_minutes
+  - start_time_minutes < end_time_minutes
+  
+  # 派单业务约束
+  - dispatch_type >= 1 and dispatch_type <= 3
+  - provider_status >= 1 and provider_status <= 5
+  
+  # 状态一致性约束
+  - (dispatch_status == 3) implies (record_status >= 3)
+  - (dispatch_status == 4) implies (reject_reason > 0)
+  - (is_available == true) implies (provider_status == 1)
+  
+  # 评分约束
+  - service_score >= 0.0 and service_score <= 5.0
+  - skill_level >= 1 and skill_level <= 5
+  
+  # 距离约束
+  - distance_km >= 0.0 and distance_km <= 50.0
+
+state_machines:
+  - name: ReserveOrderFlow
+    entity: ReserveOrder
+    state_attribute: reserve_status
+    states:
+      - name: PendingDispatch
+        value: 1
+        description: "待接单"
+      - name: Dispatched
+        value: 2
+        description: "已派单"
+      - name: Accepted
+        value: 3
+        description: "已接单"
+      - name: InService
+        value: 4
+        description: "服务中"
+      - name: Completed
+        value: 5
+        description: "已完成"
+      - name: Cancelled
+        value: 6
+        description: "已取消"
+      - name: Modified
+        value: 7
+        description: "已改约"
+    
+    transitions:
+      - name: DispatchToProvider
+        from: PendingDispatch
+        to: Dispatched
+        condition: dispatch_status == 2
+        description: "派单给服务人员"
+      
+      - name: ProviderAccept
+        from: Dispatched
+        to: Accepted
+        condition: record_status == 3
+        description: "服务人员接单"
+      
+      - name: StartService
+        from: Accepted
+        to: InService
+        condition: actual_start_time_minutes > 0
+        description: "开始服务"
+      
+      - name: CompleteService
+        from: InService
+        to: Completed
+        condition: service_status == 3
+        description: "完成服务"
+      
+      - name: CancelFromPending
+        from: PendingDispatch
+        to: Cancelled
+        condition: dispatch_status == 6
+        description: "从待派单状态取消"
+
+  - name: DispatchOrderFlow
+    entity: DispatchOrder
+    state_attribute: dispatch_status
+    states:
+      - name: Pending
+        value: 1
+        description: "待派单"
+      - name: Dispatched
+        value: 2
+        description: "已派单"
+      - name: Accepted
+        value: 3
+        description: "已接单"
+      - name: Rejected
+        value: 4
+        description: "已拒单"
+      - name: Reassigned
+        value: 5
+        description: "已改派"
+      - name: Cancelled
+        value: 6
+        description: "已取消"
+    
+    transitions:
+      - name: Dispatch
+        from: Pending
+        to: Dispatched
+        condition: provider_id > 0
+        description: "派单"
+      
+      - name: Accept
+        from: Dispatched
+        to: Accepted
+        condition: record_status == 3
+        description: "接单"
+      
+      - name: Reject
+        from: Dispatched
+        to: Rejected
+        condition: record_status == 4
+        description: "拒单"
+
+  - name: ServiceProviderFlow
+    entity: ServiceProvider
+    state_attribute: provider_status
+    states:
+      - name: Available
+        value: 1
+        description: "空闲"
+      - name: Busy
+        value: 2
+        description: "忙碌"
+      - name: Rest
+        value: 3
+        description: "休息"
+      - name: Offline
+        value: 4
+        description: "下线"
+      - name: Blacklisted
+        value: 5
+        description: "黑名单"
+    
+    transitions:
+      - name: StartWork
+        from: Offline
+        to: Available
+        condition: is_available == true
+        description: "上线开始工作"
+      
+      - name: TakeOrder
+        from: Available
+        to: Busy
+        condition: dispatch_status == 3
+        description: "接单变忙碌"
+      
+      - name: CompleteOrder
+        from: Busy
+        to: Available
+        condition: service_status == 3
+        description: "完成订单变空闲"
+
+rules:
+  # 派单时效规则
+  - name: 派单失败通知
+    condition: minutes_since_created > 10 and service_time_minutes > 60 and dispatch_status == 1
+    description: 下单10分钟后仍未派出且时间充足，发送派单失败通知
+  
+  - name: 自动取消通知
+    condition: service_time_minutes <= 60 and dispatch_status == 1
+    description: 服务前1小时仍未派单，自动取消并通知用户
+  
+  # 改派规则
+  - name: 原阿姨优势计算
+    condition: is_reassignment == true and old_provider_id == provider_id
+    description: 改约时原阿姨增加1km距离优势（约10分）
+  
+  - name: 拒单触发重派
+    condition: dispatch_status == 4 and service_time_minutes > 60
+    description: 拒单后时间充足则触发重派流程
+  
+  # 服务人员规则
+  - name: 高峰时段限制
+    condition: is_peak_time == true and available_providers < 10
+    description: 高峰时段可用人员不足时限制派单
+  
+  - name: 评分限制派单
+    condition: service_score < 3.0
+    description: 评分低于3.0的服务人员限制派单
+  
+  # 通知规则
+  - name: 派单通知
+    condition: dispatch_status == 2 and notification_type == 1
+    description: 派单成功后发送通知
+  
+  - name: 接单通知
+    condition: record_status == 3 and notification_type == 2
+    description: 接单成功后通知用户
+
+test_hints:
+  - type: focus
+    target: [dispatch_status, record_status, service_time_minutes, minutes_since_created]
+    reason: 核心派单流程的关键属性
+  
+  - type: focus
+    target: [provider_status, is_reassignment, reject_reason]
+    reason: 影响派单决策的重要属性
+  
+  - type: combine
+    target: [dispatch_type, provider_status]
+    reason: 不同派单方式与服务人员状态的组合
+  
+  - type: combine
+    target: [service_time_minutes, dispatch_status]
+    reason: 时间紧急程度与派单状态的关联
+  
+  - type: combine
+    target: [is_peak_time, available_providers]
+    reason: 高峰时段与可用人员的关系

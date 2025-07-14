@@ -1,0 +1,2901 @@
+{
+  "metadata": {
+    "domain": "派单系统架构",
+    "generation_time": "2025-07-14T18:06:40.208553",
+    "generator_version": "v8_extended",
+    "total_tests": 101,
+    "total_entities": 8,
+    "total_state_machines": 3,
+    "total_test_requirements": 0
+  },
+  "summary": {
+    "test_types": {
+      "functional": 24,
+      "boundary": 32,
+      "negative": 16,
+      "constraint_satisfaction": 8,
+      "scenario": 21
+    },
+    "entities": {
+      "ReserveOrder": 15,
+      "ServiceOrder": 14,
+      "DispatchOrder": 14,
+      "TakeOrderRecord": 14,
+      "ServiceProvider": 11,
+      "TimeSlot": 10,
+      "DispatchEvent": 13,
+      "Notification": 10
+    },
+    "priorities": {
+      "8": 24,
+      "7": 32,
+      "6": 24,
+      "9": 21
+    },
+    "coverage": {
+      "state_coverage": 100.0,
+      "transition_coverage": 100.0,
+      "rule_coverage": 100.0,
+      "constraint_coverage": 100.0,
+      "requirement_coverage": 0.0
+    }
+  },
+  "tests": [
+    {
+      "test_id": "ReserveOrder_functional_1",
+      "test_name": "ReserveOrder_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of ReserveOrder",
+      "test_data": {
+        "reserve_order_id": 10001,
+        "reserve_status": 2,
+        "user_id": 10001,
+        "service_time_minutes": 3,
+        "service_address_id": 10001,
+        "is_modified": true,
+        "minutes_since_created": 11
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207328",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_functional_1",
+      "test_name": "ReserveOrder_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of ReserveOrder",
+      "test_data": {
+        "reserve_order_id": 10002,
+        "reserve_status": 4,
+        "user_id": 10003,
+        "service_time_minutes": 52,
+        "service_address_id": 10003,
+        "is_modified": true,
+        "minutes_since_created": 61
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207333",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_functional_1",
+      "test_name": "ReserveOrder_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of ReserveOrder",
+      "test_data": {
+        "reserve_order_id": 10003,
+        "reserve_status": 6,
+        "user_id": 10004,
+        "service_time_minutes": 90,
+        "service_address_id": 10004,
+        "is_modified": true,
+        "minutes_since_created": 19
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207335",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_boundary_1",
+      "test_name": "ReserveOrder_reserve_order_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for reserve_order_id",
+      "test_data": {
+        "reserve_order_id": 0,
+        "reserve_status": 4,
+        "user_id": 10005,
+        "service_time_minutes": 13,
+        "service_address_id": 10005,
+        "is_modified": false,
+        "minutes_since_created": 49
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207336",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_boundary_1",
+      "test_name": "ReserveOrder_reserve_order_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for reserve_order_id",
+      "test_data": {
+        "reserve_order_id": 999999,
+        "reserve_status": 3,
+        "user_id": 10006,
+        "service_time_minutes": 24,
+        "service_address_id": 10006,
+        "is_modified": false,
+        "minutes_since_created": 77
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207337",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_boundary_1",
+      "test_name": "ReserveOrder_reserve_status_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for reserve_status",
+      "test_data": {
+        "reserve_order_id": 10006,
+        "reserve_status": 0,
+        "user_id": 10007,
+        "service_time_minutes": 51,
+        "service_address_id": 10007,
+        "is_modified": true,
+        "minutes_since_created": 91
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207337",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_boundary_1",
+      "test_name": "ReserveOrder_reserve_status_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for reserve_status",
+      "test_data": {
+        "reserve_order_id": 10007,
+        "reserve_status": 999999,
+        "user_id": 10008,
+        "service_time_minutes": 97,
+        "service_address_id": 10008,
+        "is_modified": true,
+        "minutes_since_created": 4
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207338",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_negative_1",
+      "test_name": "ReserveOrder_reserve_order_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for reserve_order_id",
+      "test_data": {
+        "reserve_order_id": "not_a_number",
+        "reserve_status": 1,
+        "user_id": 10009,
+        "service_time_minutes": 9,
+        "service_address_id": 10009,
+        "is_modified": true,
+        "minutes_since_created": 30
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207339",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "ReserveOrder_negative_1",
+      "test_name": "ReserveOrder_reserve_status_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for reserve_status",
+      "test_data": {
+        "reserve_order_id": 10009,
+        "reserve_status": "not_a_number",
+        "user_id": 10010,
+        "service_time_minutes": 22,
+        "service_address_id": 10010,
+        "is_modified": false,
+        "minutes_since_created": 62
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207339",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "ReserveOrder_constraint_satisfaction_1",
+      "test_name": "ReserveOrder_reserve_order_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for reserve_order_id",
+      "test_data": {
+        "reserve_order_id": 10010,
+        "reserve_status": 5,
+        "user_id": 10011,
+        "service_time_minutes": 64,
+        "service_address_id": 10011,
+        "is_modified": true,
+        "minutes_since_created": 88
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207340",
+      "constraint": "reserve_order_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_scenario_1",
+      "test_name": "ReserveOrder_scenario_complete_dispatch_flow",
+      "test_type": "scenario",
+      "description": "完整的派单流程测试：从创建预约到派单成功",
+      "test_data": {
+        "scenario_name": "complete_dispatch_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建新的预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 180
+            },
+            "expected_result": {
+              "reserve_order_created": true
+            }
+          },
+          {
+            "action": "系统自动派单",
+            "entity": "DispatchOrder",
+            "timing": 5,
+            "state_change": {
+              "dispatch_status": 2,
+              "dispatch_type": 1
+            },
+            "expected_result": {
+              "dispatch_success": true,
+              "notification_sent": true
+            }
+          },
+          {
+            "action": "服务人员查看订单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 2,
+              "view_time_minutes": 10
+            },
+            "expected_result": {
+              "order_viewed": true
+            }
+          },
+          {
+            "action": "服务人员确认接单",
+            "entity": "TakeOrderRecord",
+            "timing": 15,
+            "state_change": {
+              "record_status": 3
+            },
+            "expected_result": {
+              "order_accepted": true,
+              "inventory_updated": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207341",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_scenario_1",
+      "test_name": "ReserveOrder_scenario_order_complete_lifecycle",
+      "test_type": "scenario",
+      "description": "订单完整生命周期测试：从创建到完成",
+      "test_data": {
+        "scenario_name": "order_complete_lifecycle",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建订单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "order_status": 1
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "派单成功",
+            "entity": "ReserveOrder",
+            "timing": 10,
+            "state_change": {
+              "order_status": 2
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "服务人员接单",
+            "entity": "ReserveOrder",
+            "timing": 20,
+            "state_change": {
+              "order_status": 3
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "开始服务",
+            "entity": "ReserveOrder",
+            "timing": 180,
+            "state_change": {
+              "order_status": 4
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "完成服务",
+            "entity": "ReserveOrder",
+            "timing": 240,
+            "state_change": {
+              "order_status": 5
+            },
+            "expected_result": {}
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207342",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_scenario_1",
+      "test_name": "ReserveOrder_scenario_order_modification_flow",
+      "test_type": "scenario",
+      "description": "用户修改预约时间的完整流程",
+      "test_data": {
+        "scenario_name": "order_modification_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "原始预约已派单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 2,
+              "service_time_minutes": 180
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "用户请求修改时间",
+            "entity": "ReserveOrder",
+            "timing": 30,
+            "state_change": {
+              "is_modified": true,
+              "service_time_minutes": 240
+            },
+            "expected_result": {
+              "modification_allowed": true
+            }
+          },
+          {
+            "action": "系统评估是否需要换人",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "is_reassignment": true
+            },
+            "expected_result": {
+              "provider_evaluation_complete": true
+            }
+          },
+          {
+            "action": "通知相关人员",
+            "entity": "Notification",
+            "timing": 32,
+            "state_change": {
+              "message_type": 4,
+              "is_sent": true
+            },
+            "expected_result": {
+              "notifications_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207342",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_scenario_1",
+      "test_name": "ReserveOrder_scenario_dispatch_timeout_handling",
+      "test_type": "scenario",
+      "description": "派单超时自动处理流程",
+      "test_data": {
+        "scenario_name": "dispatch_timeout_handling",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 90
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "等待10分钟未派单",
+            "entity": "DispatchOrder",
+            "timing": 11,
+            "state_change": {
+              "dispatch_status": 1,
+              "minutes_since_created": 11
+            },
+            "expected_result": {
+              "timeout_notification_sent": true
+            }
+          },
+          {
+            "action": "继续等待至服务前1小时",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "service_time_minutes": 59
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "系统自动取消",
+            "entity": "DispatchOrder",
+            "timing": 32,
+            "state_change": {
+              "dispatch_status": 6
+            },
+            "expected_result": {
+              "auto_cancelled": true,
+              "cancel_notification_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207343",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ReserveOrder_scenario_1",
+      "test_name": "ReserveOrder_scenario_ReserveOrderFlow_complete_lifecycle",
+      "test_type": "scenario",
+      "description": "Complete lifecycle test for ReserveOrderFlow",
+      "test_data": {
+        "scenario_name": "ReserveOrderFlow_complete_lifecycle",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "Execute transition: DispatchToProvider",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 2,
+              "dispatch_status": 2
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "Execute transition: ProviderAccept",
+            "entity": "ReserveOrder",
+            "timing": 10,
+            "state_change": {
+              "reserve_status": 3,
+              "record_status": 3
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "Execute transition: StartService",
+            "entity": "ReserveOrder",
+            "timing": 20,
+            "state_change": {
+              "reserve_status": 4,
+              "actual_start_time_minutes": 10
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "Execute transition: CompleteService",
+            "entity": "ReserveOrder",
+            "timing": 30,
+            "state_change": {
+              "reserve_status": 5,
+              "service_status": 3
+            },
+            "expected_result": {}
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ReserveOrder",
+      "timestamp": "2025-07-14T18:06:40.207344",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_functional_16",
+      "test_name": "ServiceOrder_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of ServiceOrder",
+      "test_data": {
+        "service_order_id": 10001,
+        "reserve_order_id": 10001,
+        "provider_id": 10001,
+        "service_status": 2,
+        "actual_start_time_minutes": 18,
+        "actual_end_time_minutes": 19
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207512",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_functional_16",
+      "test_name": "ServiceOrder_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of ServiceOrder",
+      "test_data": {
+        "service_order_id": 10002,
+        "reserve_order_id": 10002,
+        "provider_id": 10002,
+        "service_status": 2,
+        "actual_start_time_minutes": 44,
+        "actual_end_time_minutes": 31
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207514",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_functional_16",
+      "test_name": "ServiceOrder_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of ServiceOrder",
+      "test_data": {
+        "service_order_id": 10003,
+        "reserve_order_id": 10004,
+        "provider_id": 10003,
+        "service_status": 4,
+        "actual_start_time_minutes": 93,
+        "actual_end_time_minutes": 91
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207515",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_boundary_16",
+      "test_name": "ServiceOrder_service_order_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for service_order_id",
+      "test_data": {
+        "service_order_id": 0,
+        "reserve_order_id": 10005,
+        "provider_id": 10004,
+        "service_status": 4,
+        "actual_start_time_minutes": 8,
+        "actual_end_time_minutes": 10
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207515",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_boundary_16",
+      "test_name": "ServiceOrder_service_order_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for service_order_id",
+      "test_data": {
+        "service_order_id": 999999,
+        "reserve_order_id": 10006,
+        "provider_id": 10005,
+        "service_status": 3,
+        "actual_start_time_minutes": 47,
+        "actual_end_time_minutes": 50
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207516",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_boundary_16",
+      "test_name": "ServiceOrder_reserve_order_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for reserve_order_id",
+      "test_data": {
+        "service_order_id": 10006,
+        "reserve_order_id": 0,
+        "provider_id": 10006,
+        "service_status": 3,
+        "actual_start_time_minutes": 64,
+        "actual_end_time_minutes": 65
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207517",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_boundary_16",
+      "test_name": "ServiceOrder_reserve_order_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for reserve_order_id",
+      "test_data": {
+        "service_order_id": 10007,
+        "reserve_order_id": 999999,
+        "provider_id": 10007,
+        "service_status": 1,
+        "actual_start_time_minutes": 94,
+        "actual_end_time_minutes": 87
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207517",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_negative_16",
+      "test_name": "ServiceOrder_service_order_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for service_order_id",
+      "test_data": {
+        "service_order_id": "not_a_number",
+        "reserve_order_id": 10009,
+        "provider_id": 10008,
+        "service_status": 5,
+        "actual_start_time_minutes": 5,
+        "actual_end_time_minutes": 7
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207518",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "ServiceOrder_negative_16",
+      "test_name": "ServiceOrder_reserve_order_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for reserve_order_id",
+      "test_data": {
+        "service_order_id": 10009,
+        "reserve_order_id": "not_a_number",
+        "provider_id": 10009,
+        "service_status": 2,
+        "actual_start_time_minutes": 39,
+        "actual_end_time_minutes": 41
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207519",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "ServiceOrder_constraint_satisfaction_16",
+      "test_name": "ServiceOrder_service_order_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for service_order_id",
+      "test_data": {
+        "service_order_id": 10010,
+        "reserve_order_id": 10011,
+        "provider_id": 10010,
+        "service_status": 2,
+        "actual_start_time_minutes": 62,
+        "actual_end_time_minutes": 54
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207519",
+      "constraint": "service_order_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_scenario_16",
+      "test_name": "ServiceOrder_scenario_complete_dispatch_flow",
+      "test_type": "scenario",
+      "description": "完整的派单流程测试：从创建预约到派单成功",
+      "test_data": {
+        "scenario_name": "complete_dispatch_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建新的预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 180
+            },
+            "expected_result": {
+              "reserve_order_created": true
+            }
+          },
+          {
+            "action": "系统自动派单",
+            "entity": "DispatchOrder",
+            "timing": 5,
+            "state_change": {
+              "dispatch_status": 2,
+              "dispatch_type": 1
+            },
+            "expected_result": {
+              "dispatch_success": true,
+              "notification_sent": true
+            }
+          },
+          {
+            "action": "服务人员查看订单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 2,
+              "view_time_minutes": 10
+            },
+            "expected_result": {
+              "order_viewed": true
+            }
+          },
+          {
+            "action": "服务人员确认接单",
+            "entity": "TakeOrderRecord",
+            "timing": 15,
+            "state_change": {
+              "record_status": 3
+            },
+            "expected_result": {
+              "order_accepted": true,
+              "inventory_updated": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207520",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_scenario_16",
+      "test_name": "ServiceOrder_scenario_order_complete_lifecycle",
+      "test_type": "scenario",
+      "description": "订单完整生命周期测试：从创建到完成",
+      "test_data": {
+        "scenario_name": "order_complete_lifecycle",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建订单",
+            "entity": "ServiceOrder",
+            "timing": 0,
+            "state_change": {
+              "order_status": 1
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "派单成功",
+            "entity": "ServiceOrder",
+            "timing": 10,
+            "state_change": {
+              "order_status": 2
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "服务人员接单",
+            "entity": "ServiceOrder",
+            "timing": 20,
+            "state_change": {
+              "order_status": 3
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "开始服务",
+            "entity": "ServiceOrder",
+            "timing": 180,
+            "state_change": {
+              "order_status": 4
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "完成服务",
+            "entity": "ServiceOrder",
+            "timing": 240,
+            "state_change": {
+              "order_status": 5
+            },
+            "expected_result": {}
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207521",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_scenario_16",
+      "test_name": "ServiceOrder_scenario_order_modification_flow",
+      "test_type": "scenario",
+      "description": "用户修改预约时间的完整流程",
+      "test_data": {
+        "scenario_name": "order_modification_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "原始预约已派单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 2,
+              "service_time_minutes": 180
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "用户请求修改时间",
+            "entity": "ReserveOrder",
+            "timing": 30,
+            "state_change": {
+              "is_modified": true,
+              "service_time_minutes": 240
+            },
+            "expected_result": {
+              "modification_allowed": true
+            }
+          },
+          {
+            "action": "系统评估是否需要换人",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "is_reassignment": true
+            },
+            "expected_result": {
+              "provider_evaluation_complete": true
+            }
+          },
+          {
+            "action": "通知相关人员",
+            "entity": "Notification",
+            "timing": 32,
+            "state_change": {
+              "message_type": 4,
+              "is_sent": true
+            },
+            "expected_result": {
+              "notifications_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207522",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceOrder_scenario_16",
+      "test_name": "ServiceOrder_scenario_dispatch_timeout_handling",
+      "test_type": "scenario",
+      "description": "派单超时自动处理流程",
+      "test_data": {
+        "scenario_name": "dispatch_timeout_handling",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 90
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "等待10分钟未派单",
+            "entity": "DispatchOrder",
+            "timing": 11,
+            "state_change": {
+              "dispatch_status": 1,
+              "minutes_since_created": 11
+            },
+            "expected_result": {
+              "timeout_notification_sent": true
+            }
+          },
+          {
+            "action": "继续等待至服务前1小时",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "service_time_minutes": 59
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "系统自动取消",
+            "entity": "DispatchOrder",
+            "timing": 32,
+            "state_change": {
+              "dispatch_status": 6
+            },
+            "expected_result": {
+              "auto_cancelled": true,
+              "cancel_notification_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ServiceOrder",
+      "timestamp": "2025-07-14T18:06:40.207523",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_functional_30",
+      "test_name": "DispatchOrder_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of DispatchOrder",
+      "test_data": {
+        "dispatch_order_id": 10001,
+        "reserve_order_id": 10001,
+        "dispatch_status": 6,
+        "dispatch_type": 1,
+        "dispatch_time_minutes": 19,
+        "is_reassignment": true,
+        "provider_status": 3
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207839",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_functional_30",
+      "test_name": "DispatchOrder_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of DispatchOrder",
+      "test_data": {
+        "dispatch_order_id": 10003,
+        "reserve_order_id": 10002,
+        "dispatch_status": 5,
+        "dispatch_type": 3,
+        "dispatch_time_minutes": 31,
+        "is_reassignment": false,
+        "provider_status": 4
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207841",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_functional_30",
+      "test_name": "DispatchOrder_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of DispatchOrder",
+      "test_data": {
+        "dispatch_order_id": 10004,
+        "reserve_order_id": 10003,
+        "dispatch_status": 2,
+        "dispatch_type": 3,
+        "dispatch_time_minutes": 76,
+        "is_reassignment": false,
+        "provider_status": 4
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207841",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_boundary_30",
+      "test_name": "DispatchOrder_dispatch_order_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for dispatch_order_id",
+      "test_data": {
+        "dispatch_order_id": 0,
+        "reserve_order_id": 10004,
+        "dispatch_status": 4,
+        "dispatch_type": 2,
+        "dispatch_time_minutes": 87,
+        "is_reassignment": true,
+        "provider_status": 1
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207842",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_boundary_30",
+      "test_name": "DispatchOrder_dispatch_order_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for dispatch_order_id",
+      "test_data": {
+        "dispatch_order_id": 999999,
+        "reserve_order_id": 10005,
+        "dispatch_status": 1,
+        "dispatch_type": 1,
+        "dispatch_time_minutes": 12,
+        "is_reassignment": false,
+        "provider_status": 3
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207843",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_boundary_30",
+      "test_name": "DispatchOrder_reserve_order_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for reserve_order_id",
+      "test_data": {
+        "dispatch_order_id": 10007,
+        "reserve_order_id": 0,
+        "dispatch_status": 3,
+        "dispatch_type": 2,
+        "dispatch_time_minutes": 26,
+        "is_reassignment": false,
+        "provider_status": 1
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207843",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_boundary_30",
+      "test_name": "DispatchOrder_reserve_order_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for reserve_order_id",
+      "test_data": {
+        "dispatch_order_id": 10008,
+        "reserve_order_id": 999999,
+        "dispatch_status": 4,
+        "dispatch_type": 3,
+        "dispatch_time_minutes": 51,
+        "is_reassignment": true,
+        "provider_status": 4
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207844",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_negative_30",
+      "test_name": "DispatchOrder_dispatch_order_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for dispatch_order_id",
+      "test_data": {
+        "dispatch_order_id": "not_a_number",
+        "reserve_order_id": 10008,
+        "dispatch_status": 2,
+        "dispatch_type": 1,
+        "dispatch_time_minutes": 99,
+        "is_reassignment": false,
+        "provider_status": 4
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207845",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "DispatchOrder_negative_30",
+      "test_name": "DispatchOrder_reserve_order_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for reserve_order_id",
+      "test_data": {
+        "dispatch_order_id": 10010,
+        "reserve_order_id": "not_a_number",
+        "dispatch_status": 3,
+        "dispatch_type": 1,
+        "dispatch_time_minutes": 11,
+        "is_reassignment": false,
+        "provider_status": 4
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207845",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "DispatchOrder_constraint_satisfaction_30",
+      "test_name": "DispatchOrder_dispatch_order_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for dispatch_order_id",
+      "test_data": {
+        "dispatch_order_id": 10011,
+        "reserve_order_id": 10010,
+        "dispatch_status": 4,
+        "dispatch_type": 1,
+        "dispatch_time_minutes": 44,
+        "is_reassignment": false,
+        "provider_status": 3
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207846",
+      "constraint": "dispatch_order_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_scenario_30",
+      "test_name": "DispatchOrder_scenario_complete_dispatch_flow",
+      "test_type": "scenario",
+      "description": "完整的派单流程测试：从创建预约到派单成功",
+      "test_data": {
+        "scenario_name": "complete_dispatch_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建新的预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 180
+            },
+            "expected_result": {
+              "reserve_order_created": true
+            }
+          },
+          {
+            "action": "系统自动派单",
+            "entity": "DispatchOrder",
+            "timing": 5,
+            "state_change": {
+              "dispatch_status": 2,
+              "dispatch_type": 1
+            },
+            "expected_result": {
+              "dispatch_success": true,
+              "notification_sent": true
+            }
+          },
+          {
+            "action": "服务人员查看订单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 2,
+              "view_time_minutes": 10
+            },
+            "expected_result": {
+              "order_viewed": true
+            }
+          },
+          {
+            "action": "服务人员确认接单",
+            "entity": "TakeOrderRecord",
+            "timing": 15,
+            "state_change": {
+              "record_status": 3
+            },
+            "expected_result": {
+              "order_accepted": true,
+              "inventory_updated": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207847",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_scenario_30",
+      "test_name": "DispatchOrder_scenario_rejection_and_reassignment",
+      "test_type": "scenario",
+      "description": "服务人员拒单及重新派单流程",
+      "test_data": {
+        "scenario_name": "rejection_and_reassignment",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "初始派单",
+            "entity": "DispatchOrder",
+            "timing": 0,
+            "state_change": {
+              "dispatch_status": 2,
+              "service_time_minutes": 120
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "服务人员拒单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 4,
+              "reject_reason": 1
+            },
+            "expected_result": {
+              "dispatch_status": 4
+            }
+          },
+          {
+            "action": "系统重新派单",
+            "entity": "DispatchOrder",
+            "timing": 15,
+            "state_change": {
+              "dispatch_status": 2,
+              "is_reassignment": true
+            },
+            "expected_result": {
+              "new_provider_assigned": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207848",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_scenario_30",
+      "test_name": "DispatchOrder_scenario_dispatch_timeout_handling",
+      "test_type": "scenario",
+      "description": "派单超时自动处理流程",
+      "test_data": {
+        "scenario_name": "dispatch_timeout_handling",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 90
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "等待10分钟未派单",
+            "entity": "DispatchOrder",
+            "timing": 11,
+            "state_change": {
+              "dispatch_status": 1,
+              "minutes_since_created": 11
+            },
+            "expected_result": {
+              "timeout_notification_sent": true
+            }
+          },
+          {
+            "action": "继续等待至服务前1小时",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "service_time_minutes": 59
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "系统自动取消",
+            "entity": "DispatchOrder",
+            "timing": 32,
+            "state_change": {
+              "dispatch_status": 6
+            },
+            "expected_result": {
+              "auto_cancelled": true,
+              "cancel_notification_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207848",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchOrder_scenario_30",
+      "test_name": "DispatchOrder_scenario_DispatchOrderFlow_complete_lifecycle",
+      "test_type": "scenario",
+      "description": "Complete lifecycle test for DispatchOrderFlow",
+      "test_data": {
+        "scenario_name": "DispatchOrderFlow_complete_lifecycle",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "Execute transition: Dispatch",
+            "entity": "DispatchOrder",
+            "timing": 0,
+            "state_change": {
+              "dispatch_status": 2,
+              "provider_id": 10
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "Execute transition: Accept",
+            "entity": "DispatchOrder",
+            "timing": 10,
+            "state_change": {
+              "dispatch_status": 3,
+              "record_status": 3
+            },
+            "expected_result": {}
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchOrder",
+      "timestamp": "2025-07-14T18:06:40.207849",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_functional_44",
+      "test_name": "TakeOrderRecord_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of TakeOrderRecord",
+      "test_data": {
+        "record_id": 10001,
+        "dispatch_order_id": 10001,
+        "provider_id": 10001,
+        "record_status": 5,
+        "view_time_minutes": 1,
+        "reject_reason": 0
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207995",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_functional_44",
+      "test_name": "TakeOrderRecord_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of TakeOrderRecord",
+      "test_data": {
+        "record_id": 10002,
+        "dispatch_order_id": 10002,
+        "provider_id": 10003,
+        "record_status": 2,
+        "view_time_minutes": 22,
+        "reject_reason": 0
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207996",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_functional_44",
+      "test_name": "TakeOrderRecord_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of TakeOrderRecord",
+      "test_data": {
+        "record_id": 10003,
+        "dispatch_order_id": 10004,
+        "provider_id": 10004,
+        "record_status": 2,
+        "view_time_minutes": 72,
+        "reject_reason": 3
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207997",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_boundary_44",
+      "test_name": "TakeOrderRecord_record_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for record_id",
+      "test_data": {
+        "record_id": 0,
+        "dispatch_order_id": 10005,
+        "provider_id": 10005,
+        "record_status": 4,
+        "view_time_minutes": 95,
+        "reject_reason": 0
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207997",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_boundary_44",
+      "test_name": "TakeOrderRecord_record_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for record_id",
+      "test_data": {
+        "record_id": 999999,
+        "dispatch_order_id": 10006,
+        "provider_id": 10006,
+        "record_status": 4,
+        "view_time_minutes": 16,
+        "reject_reason": 4
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207998",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_boundary_44",
+      "test_name": "TakeOrderRecord_dispatch_order_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for dispatch_order_id",
+      "test_data": {
+        "record_id": 10006,
+        "dispatch_order_id": 0,
+        "provider_id": 10007,
+        "record_status": 1,
+        "view_time_minutes": 25,
+        "reject_reason": 4
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207999",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_boundary_44",
+      "test_name": "TakeOrderRecord_dispatch_order_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for dispatch_order_id",
+      "test_data": {
+        "record_id": 10007,
+        "dispatch_order_id": 999999,
+        "provider_id": 10008,
+        "record_status": 1,
+        "view_time_minutes": 60,
+        "reject_reason": 2
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.207999",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_negative_44",
+      "test_name": "TakeOrderRecord_record_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for record_id",
+      "test_data": {
+        "record_id": "not_a_number",
+        "dispatch_order_id": 10009,
+        "provider_id": 10009,
+        "record_status": 4,
+        "view_time_minutes": 84,
+        "reject_reason": 3
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208000",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "TakeOrderRecord_negative_44",
+      "test_name": "TakeOrderRecord_dispatch_order_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for dispatch_order_id",
+      "test_data": {
+        "record_id": 10009,
+        "dispatch_order_id": "not_a_number",
+        "provider_id": 10010,
+        "record_status": 3,
+        "view_time_minutes": 7,
+        "reject_reason": 3
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208001",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "TakeOrderRecord_constraint_satisfaction_44",
+      "test_name": "TakeOrderRecord_record_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for record_id",
+      "test_data": {
+        "record_id": 10010,
+        "dispatch_order_id": 10011,
+        "provider_id": 10011,
+        "record_status": 1,
+        "view_time_minutes": 31,
+        "reject_reason": 3
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208001",
+      "constraint": "record_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_scenario_44",
+      "test_name": "TakeOrderRecord_scenario_complete_dispatch_flow",
+      "test_type": "scenario",
+      "description": "完整的派单流程测试：从创建预约到派单成功",
+      "test_data": {
+        "scenario_name": "complete_dispatch_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建新的预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 180
+            },
+            "expected_result": {
+              "reserve_order_created": true
+            }
+          },
+          {
+            "action": "系统自动派单",
+            "entity": "DispatchOrder",
+            "timing": 5,
+            "state_change": {
+              "dispatch_status": 2,
+              "dispatch_type": 1
+            },
+            "expected_result": {
+              "dispatch_success": true,
+              "notification_sent": true
+            }
+          },
+          {
+            "action": "服务人员查看订单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 2,
+              "view_time_minutes": 10
+            },
+            "expected_result": {
+              "order_viewed": true
+            }
+          },
+          {
+            "action": "服务人员确认接单",
+            "entity": "TakeOrderRecord",
+            "timing": 15,
+            "state_change": {
+              "record_status": 3
+            },
+            "expected_result": {
+              "order_accepted": true,
+              "inventory_updated": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208002",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_scenario_44",
+      "test_name": "TakeOrderRecord_scenario_order_complete_lifecycle",
+      "test_type": "scenario",
+      "description": "订单完整生命周期测试：从创建到完成",
+      "test_data": {
+        "scenario_name": "order_complete_lifecycle",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建订单",
+            "entity": "TakeOrderRecord",
+            "timing": 0,
+            "state_change": {
+              "order_status": 1
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "派单成功",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "order_status": 2
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "服务人员接单",
+            "entity": "TakeOrderRecord",
+            "timing": 20,
+            "state_change": {
+              "order_status": 3
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "开始服务",
+            "entity": "TakeOrderRecord",
+            "timing": 180,
+            "state_change": {
+              "order_status": 4
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "完成服务",
+            "entity": "TakeOrderRecord",
+            "timing": 240,
+            "state_change": {
+              "order_status": 5
+            },
+            "expected_result": {}
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208003",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_scenario_44",
+      "test_name": "TakeOrderRecord_scenario_order_modification_flow",
+      "test_type": "scenario",
+      "description": "用户修改预约时间的完整流程",
+      "test_data": {
+        "scenario_name": "order_modification_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "原始预约已派单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 2,
+              "service_time_minutes": 180
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "用户请求修改时间",
+            "entity": "ReserveOrder",
+            "timing": 30,
+            "state_change": {
+              "is_modified": true,
+              "service_time_minutes": 240
+            },
+            "expected_result": {
+              "modification_allowed": true
+            }
+          },
+          {
+            "action": "系统评估是否需要换人",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "is_reassignment": true
+            },
+            "expected_result": {
+              "provider_evaluation_complete": true
+            }
+          },
+          {
+            "action": "通知相关人员",
+            "entity": "Notification",
+            "timing": 32,
+            "state_change": {
+              "message_type": 4,
+              "is_sent": true
+            },
+            "expected_result": {
+              "notifications_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208003",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TakeOrderRecord_scenario_44",
+      "test_name": "TakeOrderRecord_scenario_dispatch_timeout_handling",
+      "test_type": "scenario",
+      "description": "派单超时自动处理流程",
+      "test_data": {
+        "scenario_name": "dispatch_timeout_handling",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 90
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "等待10分钟未派单",
+            "entity": "DispatchOrder",
+            "timing": 11,
+            "state_change": {
+              "dispatch_status": 1,
+              "minutes_since_created": 11
+            },
+            "expected_result": {
+              "timeout_notification_sent": true
+            }
+          },
+          {
+            "action": "继续等待至服务前1小时",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "service_time_minutes": 59
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "系统自动取消",
+            "entity": "DispatchOrder",
+            "timing": 32,
+            "state_change": {
+              "dispatch_status": 6
+            },
+            "expected_result": {
+              "auto_cancelled": true,
+              "cancel_notification_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "TakeOrderRecord",
+      "timestamp": "2025-07-14T18:06:40.208004",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_functional_58",
+      "test_name": "ServiceProvider_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of ServiceProvider",
+      "test_data": {
+        "provider_id": 1,
+        "provider_status": 2,
+        "skill_level": 1,
+        "service_score": 17.3,
+        "is_available": false,
+        "distance_km": 27.26
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208152",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_functional_58",
+      "test_name": "ServiceProvider_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of ServiceProvider",
+      "test_data": {
+        "provider_id": 2,
+        "provider_status": 3,
+        "skill_level": 3,
+        "service_score": 95.9,
+        "is_available": true,
+        "distance_km": 68.85
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208153",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_functional_58",
+      "test_name": "ServiceProvider_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of ServiceProvider",
+      "test_data": {
+        "provider_id": 4,
+        "provider_status": 1,
+        "skill_level": 5,
+        "service_score": 76.4,
+        "is_available": true,
+        "distance_km": 31.82
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208154",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_boundary_58",
+      "test_name": "ServiceProvider_provider_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for provider_id",
+      "test_data": {
+        "provider_id": 0,
+        "provider_status": 5,
+        "skill_level": 6,
+        "service_score": 42.1,
+        "is_available": true,
+        "distance_km": 57.98
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208155",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_boundary_58",
+      "test_name": "ServiceProvider_provider_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for provider_id",
+      "test_data": {
+        "provider_id": 999999,
+        "provider_status": 1,
+        "skill_level": 7,
+        "service_score": 9.9,
+        "is_available": true,
+        "distance_km": 62.67
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208155",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_boundary_58",
+      "test_name": "ServiceProvider_provider_status_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for provider_status",
+      "test_data": {
+        "provider_id": 7,
+        "provider_status": 0,
+        "skill_level": 8,
+        "service_score": 61.0,
+        "is_available": false,
+        "distance_km": 76.65
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208156",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_boundary_58",
+      "test_name": "ServiceProvider_provider_status_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for provider_status",
+      "test_data": {
+        "provider_id": 8,
+        "provider_status": 999999,
+        "skill_level": 9,
+        "service_score": 69.7,
+        "is_available": false,
+        "distance_km": 44.37
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208157",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_negative_58",
+      "test_name": "ServiceProvider_provider_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for provider_id",
+      "test_data": {
+        "provider_id": "not_a_number",
+        "provider_status": 1,
+        "skill_level": 10,
+        "service_score": 37.6,
+        "is_available": false,
+        "distance_km": 57.93
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208157",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "ServiceProvider_negative_58",
+      "test_name": "ServiceProvider_provider_status_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for provider_status",
+      "test_data": {
+        "provider_id": 10,
+        "provider_status": "not_a_number",
+        "skill_level": 11,
+        "service_score": 70.8,
+        "is_available": false,
+        "distance_km": 67.6
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208158",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "ServiceProvider_constraint_satisfaction_58",
+      "test_name": "ServiceProvider_provider_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for provider_id",
+      "test_data": {
+        "provider_id": 11,
+        "provider_status": 1,
+        "skill_level": 12,
+        "service_score": 35.5,
+        "is_available": false,
+        "distance_km": 88.58
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208159",
+      "constraint": "provider_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "ServiceProvider_scenario_58",
+      "test_name": "ServiceProvider_scenario_ServiceProviderFlow_complete_lifecycle",
+      "test_type": "scenario",
+      "description": "Complete lifecycle test for ServiceProviderFlow",
+      "test_data": {
+        "scenario_name": "ServiceProviderFlow_complete_lifecycle",
+        "initial_state": {},
+        "steps": [],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "ServiceProvider",
+      "timestamp": "2025-07-14T18:06:40.208159",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_functional_69",
+      "test_name": "TimeSlot_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of TimeSlot",
+      "test_data": {
+        "slot_id": 1,
+        "start_time_minutes": 2,
+        "end_time_minutes": 19,
+        "is_peak_time": true,
+        "available_providers": 1
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208262",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_functional_69",
+      "test_name": "TimeSlot_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of TimeSlot",
+      "test_data": {
+        "slot_id": 2,
+        "start_time_minutes": 23,
+        "end_time_minutes": 63,
+        "is_peak_time": true,
+        "available_providers": 2
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208263",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_functional_69",
+      "test_name": "TimeSlot_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of TimeSlot",
+      "test_data": {
+        "slot_id": 3,
+        "start_time_minutes": 66,
+        "end_time_minutes": 99,
+        "is_peak_time": true,
+        "available_providers": 3
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208263",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_boundary_69",
+      "test_name": "TimeSlot_slot_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for slot_id",
+      "test_data": {
+        "slot_id": 0,
+        "start_time_minutes": 83,
+        "end_time_minutes": 17,
+        "is_peak_time": false,
+        "available_providers": 4
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208264",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_boundary_69",
+      "test_name": "TimeSlot_slot_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for slot_id",
+      "test_data": {
+        "slot_id": 999999,
+        "start_time_minutes": 20,
+        "end_time_minutes": 32,
+        "is_peak_time": false,
+        "available_providers": 5
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208265",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_boundary_69",
+      "test_name": "TimeSlot_start_time_minutes_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for start_time_minutes",
+      "test_data": {
+        "slot_id": 6,
+        "start_time_minutes": 0,
+        "end_time_minutes": 63,
+        "is_peak_time": false,
+        "available_providers": 6
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208265",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_boundary_69",
+      "test_name": "TimeSlot_start_time_minutes_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for start_time_minutes",
+      "test_data": {
+        "slot_id": 7,
+        "start_time_minutes": 999999,
+        "end_time_minutes": 83,
+        "is_peak_time": false,
+        "available_providers": 7
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208266",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "TimeSlot_negative_69",
+      "test_name": "TimeSlot_slot_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for slot_id",
+      "test_data": {
+        "slot_id": "not_a_number",
+        "start_time_minutes": 87,
+        "end_time_minutes": 8,
+        "is_peak_time": true,
+        "available_providers": 8
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208267",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "TimeSlot_negative_69",
+      "test_name": "TimeSlot_start_time_minutes_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for start_time_minutes",
+      "test_data": {
+        "slot_id": 9,
+        "start_time_minutes": "not_a_number",
+        "end_time_minutes": 25,
+        "is_peak_time": false,
+        "available_providers": 9
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208267",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "TimeSlot_constraint_satisfaction_69",
+      "test_name": "TimeSlot_slot_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for slot_id",
+      "test_data": {
+        "slot_id": 10,
+        "start_time_minutes": 48,
+        "end_time_minutes": 74,
+        "is_peak_time": true,
+        "available_providers": 10
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "TimeSlot",
+      "timestamp": "2025-07-14T18:06:40.208268",
+      "constraint": "slot_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_functional_79",
+      "test_name": "DispatchEvent_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of DispatchEvent",
+      "test_data": {
+        "event_id": 1,
+        "event_type": 1,
+        "event_time_minutes": 17,
+        "related_order_id": 1,
+        "old_provider_id": 1,
+        "new_provider_id": 1
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208397",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_functional_79",
+      "test_name": "DispatchEvent_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of DispatchEvent",
+      "test_data": {
+        "event_id": 3,
+        "event_type": 3,
+        "event_time_minutes": 25,
+        "related_order_id": 2,
+        "old_provider_id": 2,
+        "new_provider_id": 3
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208398",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_functional_79",
+      "test_name": "DispatchEvent_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of DispatchEvent",
+      "test_data": {
+        "event_id": 4,
+        "event_type": 5,
+        "event_time_minutes": 62,
+        "related_order_id": 3,
+        "old_provider_id": 3,
+        "new_provider_id": 4
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208399",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_boundary_79",
+      "test_name": "DispatchEvent_event_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for event_id",
+      "test_data": {
+        "event_id": 0,
+        "event_type": 6,
+        "event_time_minutes": 92,
+        "related_order_id": 4,
+        "old_provider_id": 4,
+        "new_provider_id": 5
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208400",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_boundary_79",
+      "test_name": "DispatchEvent_event_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for event_id",
+      "test_data": {
+        "event_id": 999999,
+        "event_type": 6,
+        "event_time_minutes": 5,
+        "related_order_id": 5,
+        "old_provider_id": 5,
+        "new_provider_id": 6
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208400",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_boundary_79",
+      "test_name": "DispatchEvent_event_type_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for event_type",
+      "test_data": {
+        "event_id": 7,
+        "event_type": 0,
+        "event_time_minutes": 22,
+        "related_order_id": 6,
+        "old_provider_id": 6,
+        "new_provider_id": 7
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208401",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_boundary_79",
+      "test_name": "DispatchEvent_event_type_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for event_type",
+      "test_data": {
+        "event_id": 8,
+        "event_type": 999999,
+        "event_time_minutes": 71,
+        "related_order_id": 7,
+        "old_provider_id": 7,
+        "new_provider_id": 8
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208402",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_negative_79",
+      "test_name": "DispatchEvent_event_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for event_id",
+      "test_data": {
+        "event_id": "not_a_number",
+        "event_type": 5,
+        "event_time_minutes": 91,
+        "related_order_id": 8,
+        "old_provider_id": 8,
+        "new_provider_id": 9
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208402",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "DispatchEvent_negative_79",
+      "test_name": "DispatchEvent_event_type_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for event_type",
+      "test_data": {
+        "event_id": 10,
+        "event_type": "not_a_number",
+        "event_time_minutes": 16,
+        "related_order_id": 9,
+        "old_provider_id": 9,
+        "new_provider_id": 10
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208403",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "DispatchEvent_constraint_satisfaction_79",
+      "test_name": "DispatchEvent_event_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for event_id",
+      "test_data": {
+        "event_id": 11,
+        "event_type": 3,
+        "event_time_minutes": 37,
+        "related_order_id": 10,
+        "old_provider_id": 10,
+        "new_provider_id": 11
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208404",
+      "constraint": "event_id >= 0",
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_scenario_79",
+      "test_name": "DispatchEvent_scenario_complete_dispatch_flow",
+      "test_type": "scenario",
+      "description": "完整的派单流程测试：从创建预约到派单成功",
+      "test_data": {
+        "scenario_name": "complete_dispatch_flow",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建新的预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 180
+            },
+            "expected_result": {
+              "reserve_order_created": true
+            }
+          },
+          {
+            "action": "系统自动派单",
+            "entity": "DispatchOrder",
+            "timing": 5,
+            "state_change": {
+              "dispatch_status": 2,
+              "dispatch_type": 1
+            },
+            "expected_result": {
+              "dispatch_success": true,
+              "notification_sent": true
+            }
+          },
+          {
+            "action": "服务人员查看订单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 2,
+              "view_time_minutes": 10
+            },
+            "expected_result": {
+              "order_viewed": true
+            }
+          },
+          {
+            "action": "服务人员确认接单",
+            "entity": "TakeOrderRecord",
+            "timing": 15,
+            "state_change": {
+              "record_status": 3
+            },
+            "expected_result": {
+              "order_accepted": true,
+              "inventory_updated": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208405",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_scenario_79",
+      "test_name": "DispatchEvent_scenario_rejection_and_reassignment",
+      "test_type": "scenario",
+      "description": "服务人员拒单及重新派单流程",
+      "test_data": {
+        "scenario_name": "rejection_and_reassignment",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "初始派单",
+            "entity": "DispatchOrder",
+            "timing": 0,
+            "state_change": {
+              "dispatch_status": 2,
+              "service_time_minutes": 120
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "服务人员拒单",
+            "entity": "TakeOrderRecord",
+            "timing": 10,
+            "state_change": {
+              "record_status": 4,
+              "reject_reason": 1
+            },
+            "expected_result": {
+              "dispatch_status": 4
+            }
+          },
+          {
+            "action": "系统重新派单",
+            "entity": "DispatchOrder",
+            "timing": 15,
+            "state_change": {
+              "dispatch_status": 2,
+              "is_reassignment": true
+            },
+            "expected_result": {
+              "new_provider_assigned": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208405",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "DispatchEvent_scenario_79",
+      "test_name": "DispatchEvent_scenario_dispatch_timeout_handling",
+      "test_type": "scenario",
+      "description": "派单超时自动处理流程",
+      "test_data": {
+        "scenario_name": "dispatch_timeout_handling",
+        "initial_state": {},
+        "steps": [
+          {
+            "action": "创建预约单",
+            "entity": "ReserveOrder",
+            "timing": 0,
+            "state_change": {
+              "reserve_status": 1,
+              "service_time_minutes": 90
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "等待10分钟未派单",
+            "entity": "DispatchOrder",
+            "timing": 11,
+            "state_change": {
+              "dispatch_status": 1,
+              "minutes_since_created": 11
+            },
+            "expected_result": {
+              "timeout_notification_sent": true
+            }
+          },
+          {
+            "action": "继续等待至服务前1小时",
+            "entity": "DispatchOrder",
+            "timing": 31,
+            "state_change": {
+              "service_time_minutes": 59
+            },
+            "expected_result": {}
+          },
+          {
+            "action": "系统自动取消",
+            "entity": "DispatchOrder",
+            "timing": 32,
+            "state_change": {
+              "dispatch_status": 6
+            },
+            "expected_result": {
+              "auto_cancelled": true,
+              "cancel_notification_sent": true
+            }
+          }
+        ],
+        "expected_final_state": {}
+      },
+      "expected_result": "pass",
+      "priority": 9,
+      "entity": "DispatchEvent",
+      "timestamp": "2025-07-14T18:06:40.208406",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_functional_92",
+      "test_name": "Notification_functional_1",
+      "test_type": "functional",
+      "description": "Test basic functionality of Notification",
+      "test_data": {
+        "notification_id": 1,
+        "notification_type": 5,
+        "recipient_id": 1,
+        "is_sent": true,
+        "send_time_minutes": 4
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208524",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_functional_92",
+      "test_name": "Notification_functional_2",
+      "test_type": "functional",
+      "description": "Test basic functionality of Notification",
+      "test_data": {
+        "notification_id": 2,
+        "notification_type": 4,
+        "recipient_id": 2,
+        "is_sent": true,
+        "send_time_minutes": 42
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208525",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_functional_92",
+      "test_name": "Notification_functional_3",
+      "test_type": "functional",
+      "description": "Test basic functionality of Notification",
+      "test_data": {
+        "notification_id": 3,
+        "notification_type": 2,
+        "recipient_id": 4,
+        "is_sent": false,
+        "send_time_minutes": 55
+      },
+      "expected_result": "pass",
+      "priority": 8,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208525",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_boundary_92",
+      "test_name": "Notification_notification_id_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for notification_id",
+      "test_data": {
+        "notification_id": 0,
+        "notification_type": 4,
+        "recipient_id": 5,
+        "is_sent": false,
+        "send_time_minutes": 83
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208526",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_boundary_92",
+      "test_name": "Notification_notification_id_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for notification_id",
+      "test_data": {
+        "notification_id": 999999,
+        "notification_type": 3,
+        "recipient_id": 6,
+        "is_sent": true,
+        "send_time_minutes": 1
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208527",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_boundary_92",
+      "test_name": "Notification_notification_type_min_boundary",
+      "test_type": "boundary",
+      "description": "Test minimum boundary for notification_type",
+      "test_data": {
+        "notification_id": 6,
+        "notification_type": 0,
+        "recipient_id": 7,
+        "is_sent": false,
+        "send_time_minutes": 49
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208527",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_boundary_92",
+      "test_name": "Notification_notification_type_max_boundary",
+      "test_type": "boundary",
+      "description": "Test maximum boundary for notification_type",
+      "test_data": {
+        "notification_id": 7,
+        "notification_type": 999999,
+        "recipient_id": 8,
+        "is_sent": false,
+        "send_time_minutes": 51
+      },
+      "expected_result": "pass",
+      "priority": 7,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208528",
+      "constraint": null,
+      "expected_error": null
+    },
+    {
+      "test_id": "Notification_negative_92",
+      "test_name": "Notification_notification_id_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for notification_id",
+      "test_data": {
+        "notification_id": "not_a_number",
+        "notification_type": 2,
+        "recipient_id": 9,
+        "is_sent": true,
+        "send_time_minutes": 87
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208529",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "Notification_negative_92",
+      "test_name": "Notification_notification_type_invalid_type",
+      "test_type": "negative",
+      "description": "Test invalid type for notification_type",
+      "test_data": {
+        "notification_id": 9,
+        "notification_type": "not_a_number",
+        "recipient_id": 10,
+        "is_sent": true,
+        "send_time_minutes": 19
+      },
+      "expected_result": "fail",
+      "priority": 6,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208530",
+      "constraint": null,
+      "expected_error": "type_error"
+    },
+    {
+      "test_id": "Notification_constraint_satisfaction_92",
+      "test_name": "Notification_notification_id_positive_constraint",
+      "test_type": "constraint_satisfaction",
+      "description": "Test implicit positive constraint for notification_id",
+      "test_data": {
+        "notification_id": 10,
+        "notification_type": 2,
+        "recipient_id": 11,
+        "is_sent": true,
+        "send_time_minutes": 28
+      },
+      "expected_result": "pass",
+      "priority": 6,
+      "entity": "Notification",
+      "timestamp": "2025-07-14T18:06:40.208530",
+      "constraint": "notification_id >= 0",
+      "expected_error": null
+    }
+  ]
+}
