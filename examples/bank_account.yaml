@@ -1,0 +1,130 @@
+# 银行账户系统 DSL
+domain: Banking Account System
+
+entities:
+  - name: Account
+    description: Bank account with balance and transactions
+    attributes:
+      - name: account_id
+        type: integer
+        min: 1000000
+        max: 9999999
+        description: Unique account identifier
+      
+      - name: balance
+        type: real
+        min: 0.0
+        max: 1000000.0
+        description: Account balance
+      
+      - name: account_type
+        type: integer
+        enum_values: [1, 2, 3]  # 1=Checking, 2=Savings, 3=Business
+        description: Type of account
+      
+      - name: is_active
+        type: boolean
+        description: Whether account is active
+      
+      - name: daily_withdrawal_amount
+        type: real
+        min: 0.0
+        max: 10000.0
+        description: Amount withdrawn today
+      
+      - name: credit_score
+        type: integer
+        min: 300
+        max: 850
+        description: Customer credit score
+
+  - name: Transaction
+    description: Financial transaction
+    attributes:
+      - name: transaction_id
+        type: integer
+        min: 1
+        max: 999999999
+        description: Unique transaction ID
+      
+      - name: amount
+        type: real
+        min: 0.01
+        max: 100000.0
+        description: Transaction amount
+      
+      - name: transaction_type
+        type: integer
+        enum_values: [1, 2, 3, 4]  # 1=Deposit, 2=Withdrawal, 3=Transfer, 4=Fee
+        description: Type of transaction
+      
+      - name: status
+        type: integer
+        enum_values: [1, 2, 3]  # 1=Pending, 2=Completed, 3=Failed
+        description: Transaction status
+
+# 约束条件
+constraints:
+  # 账户余额不能为负
+  - expression: balance >= 0.0
+    description: Account balance cannot be negative
+  
+  # 每日取款限额
+  - expression: daily_withdrawal_amount <= 5000.0
+    description: Daily withdrawal limit is $5000
+  
+  # 交易金额必须为正
+  - expression: amount > 0.0
+    description: Transaction amount must be positive
+
+# 业务规则
+rules:
+  # 高信用分享受更高取款限额
+  - name: High credit withdrawal limit
+    condition: credit_score >= 750
+    action: daily_withdrawal_limit = 10000
+    description: High credit score customers get higher withdrawal limit
+  
+  # 商业账户无取款限制
+  - name: Business account no limit
+    condition: account_type == 3
+    action: daily_withdrawal_limit = unlimited
+    description: Business accounts have no withdrawal limit
+  
+  # 非活跃账户不能交易
+  - name: Inactive account block
+    condition: is_active == false
+    action: block_all_transactions = true
+    description: Inactive accounts cannot make transactions
+  
+  # 储蓄账户限制
+  - name: Savings account limit
+    condition: account_type == 2
+    action: monthly_withdrawal_count <= 6
+    description: Savings accounts limited to 6 withdrawals per month
+
+# 状态机
+state_machines:
+  - name: TransactionFlow
+    entity: Transaction
+    state_attribute: status
+    states:
+      - name: Pending
+        description: Transaction is pending
+      - name: Completed
+        description: Transaction completed successfully
+      - name: Failed
+        description: Transaction failed
+    
+    transitions:
+      - name: ProcessTransaction
+        from: Pending
+        to: Completed
+        condition: account_balance >= transaction_amount
+        description: Process when sufficient balance
+      
+      - name: FailTransaction
+        from: Pending
+        to: Failed
+        condition: account_balance < transaction_amount
+        description: Fail when insufficient balance

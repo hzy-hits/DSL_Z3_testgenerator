@@ -18,11 +18,12 @@ from ..v8.test_strategies import (
     NegativeTestStrategy,
     ConstraintTestStrategy
 )
-from ..v8.value_generator import ValueGenerator
+from ..v8.semantic_value_generator import SemanticValueGenerator
 from ..v8.constraint_handler import ConstraintHandler
 from ..v8.state_transition_strategy import StateTransitionTestStrategy
 from ..v8.scenario_test_strategy import ScenarioTestStrategy
 from ..v8.timed_constraint_strategy import TimedConstraintTestStrategy
+from ..v8.generic_constraint_test_strategy import GenericConstraintTestStrategy
 
 
 class ExtendedTestGenerator:
@@ -105,8 +106,8 @@ class ExtendedTestGenerator:
     
     def _initialize_strategies(self) -> Dict[str, any]:
         """初始化所有测试策略"""
-        # 创建共享的工具类
-        value_generator = ValueGenerator()
+        # 创建共享的工具类 - 使用语义感知的值生成器
+        value_generator = SemanticValueGenerator()
         constraint_handler = ConstraintHandler()
         
         strategies = {
@@ -116,7 +117,8 @@ class ExtendedTestGenerator:
             'constraint': ConstraintTestStrategy(value_generator, constraint_handler),
             'state_transition': StateTransitionTestStrategy(),
             'scenario': ScenarioTestStrategy(self.dsl_model),
-            'timed_constraint': TimedConstraintTestStrategy(self.dsl_model)
+            'timed_constraint': TimedConstraintTestStrategy(self.dsl_model),
+            'generic_constraint': GenericConstraintTestStrategy(value_generator, constraint_handler, self.dsl_model)
         }
         
         return strategies

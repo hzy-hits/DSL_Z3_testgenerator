@@ -118,7 +118,9 @@ class ExtendedYAMLParser:
             is_collection=is_collection,
             is_temporal=attr_type in ['date', 'datetime', 'timestamp'],
             min_size=attr_data.get('min_size'),
-            max_size=attr_data.get('max_size')
+            max_size=attr_data.get('max_size'),
+            min=attr_data.get('min'),
+            max=attr_data.get('max')
         )
     
     def _parse_state_machine(self, sm_data: Dict[str, Any]) -> StateMachine:
@@ -153,7 +155,7 @@ class ExtendedYAMLParser:
                 name=trans_data.get('name', ''),
                 from_state=from_state_list,
                 to_state=trans_data.get('to', ''),
-                condition=trans_data.get('condition', ''),
+                condition=str(trans_data.get('condition', '')),
                 description=trans_data.get('description', '')
             )
             state_machine.transitions.append(transition)
@@ -167,7 +169,7 @@ class ExtendedYAMLParser:
         if req_data.get('type') == 'timed_constraint':
             timing_constraints = {
                 'time_window': req_data.get('time_window', 0),
-                'condition': req_data.get('condition', ''),
+                'condition': str(req_data.get('condition', '')),
                 'action': req_data.get('action', '')
             }
         
@@ -188,7 +190,7 @@ class ExtendedYAMLParser:
         for rule in model.global_rules:
             if isinstance(rule, dict):
                 rule_name = rule.get('name', '')
-                condition = rule.get('condition', '')
+                condition = str(rule.get('condition', ''))
                 description = rule.get('description', '')
                 
                 # 检查是否包含时间相关的关键词

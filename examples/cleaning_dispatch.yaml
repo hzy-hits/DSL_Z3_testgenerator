@@ -1,0 +1,323 @@
+# 保洁派单系统 DSL
+domain: Cleaning Service Dispatch System
+
+entities:
+  - name: ServicePerson  # 服务人员/阿姨
+    description: Cleaning service personnel with skills and availability
+    attributes:
+      - name: id
+        type: integer
+        min: 1
+        max: 999999
+        description: Unique service person ID
+      
+      - name: has_electric_vehicle  # 是否有电动车
+        type: boolean
+        description: Whether the cleaner has an electric vehicle
+      
+      - name: current_orders  # 当天订单数
+        type: integer
+        min: 0
+        max: 10
+        description: Number of orders for the day
+      
+      - name: skill_daily  # 日常保洁技能
+        type: boolean
+        description: Has daily cleaning skill
+      
+      - name: skill_deep  # 深度保洁技能
+        type: boolean
+        description: Has deep cleaning skill
+      
+      - name: skill_glass  # 擦玻璃技能
+        type: boolean
+        description: Has glass cleaning skill
+      
+      - name: skill_full_house  # 全屋大扫除技能
+        type: boolean
+        description: Has full house cleaning skill
+      
+      - name: skill_new_house  # 开荒保洁技能
+        type: boolean
+        description: Has new house cleaning skill
+      
+      - name: base_location_distance  # 距离布点位置（公里）
+        type: real
+        min: 0.0
+        max: 50.0
+        description: Distance from base location in km
+      
+      - name: is_available  # 是否可用（不在黑名单）
+        type: boolean
+        description: Whether service person is available
+      
+      - name: rejection_count  # 拒单次数
+        type: integer
+        min: 0
+        max: 100
+        description: Number of order rejections
+
+  - name: Order  # 订单
+    description: Customer cleaning service order
+    attributes:
+      - name: id
+        type: integer
+        min: 1
+        max: 999999
+        description: Unique order ID
+      
+      - name: service_type  # 服务类型
+        type: integer
+        enum_values: [1, 2, 3, 4, 5]  # 1=日常保洁, 2=深度保洁, 3=擦玻璃, 4=全屋大扫除, 5=开荒保洁
+        description: Type of cleaning service
+      
+      - name: status  # 订单状态
+        type: integer
+        enum_values: [1, 2, 3, 4, 5, 6]  # 1=待派单, 2=已派单, 3=已接单, 4=服务中, 5=已完成, 6=已取消
+        description: Order status
+      
+      - name: distance_to_service_person  # 到服务人员的直线距离（公里）
+        type: real
+        min: 0.0
+        max: 50.0
+        description: Straight line distance to service person in km
+      
+      - name: navigation_distance  # 导航距离（公里）
+        type: real
+        min: 0.0
+        max: 50.0
+        description: Navigation distance in km
+      
+      - name: previous_order_distance  # 与上一单的距离（公里）
+        type: real
+        min: 0.0
+        max: 50.0
+        description: Distance from previous order in km
+      
+      - name: next_order_distance  # 与下一单的距离（公里）
+        type: real
+        min: 0.0
+        max: 50.0
+        description: Distance to next order in km
+      
+      - name: service_duration  # 服务时长（小时）
+        type: real
+        min: 1.0
+        max: 8.0
+        description: Service duration in hours
+      
+      - name: hours_until_service  # 距离服务开始时间（小时）
+        type: real
+        min: 0.0
+        max: 720.0  # 30 days
+        description: Hours until service starts
+      
+      - name: assigned_person_id  # 派单的服务人员ID
+        type: integer
+        min: 0
+        max: 999999
+        description: Assigned service person ID (0 means unassigned)
+      
+      - name: is_modified  # 是否修改过预约
+        type: boolean
+        description: Whether appointment was modified
+      
+      - name: is_rejected  # 是否被拒单
+        type: boolean
+        description: Whether order was rejected by service person
+
+# 约束条件
+constraints:
+  # 距离约束
+  - expression: distance_to_service_person <= 9.0
+    description: Service person must be within 9km straight line distance
+  
+  - expression: navigation_distance <= 10.0
+    description: Navigation distance cannot exceed 10km
+  
+  # 通勤时间约束 (27分钟buffer + 导航时间必须小于间隔时间)
+  - expression: previous_order_distance >= 0.0
+    description: Previous order distance must be non-negative
+  
+  - expression: next_order_distance >= 0.0
+    description: Next order distance must be non-negative
+  
+  # 服务人员约束
+  - expression: current_orders >= 0
+    description: Cannot have negative orders
+  
+  # 订单约束
+  - expression: assigned_person_id >= 0
+    description: Person ID must be non-negative
+  
+  - expression: hours_until_service >= 1.0 or status == 6
+    description: Must have at least 1 hour before service unless cancelled
+
+# 状态机
+state_machines:
+  - name: OrderStatusFlow
+    entity: Order
+    state_attribute: status
+    states:
+      - name: WaitingDispatch  # 待派单
+        description: Order waiting for dispatch
+      - name: Dispatched  # 已派单
+        description: Order has been dispatched
+      - name: Accepted  # 已接单
+        description: Service person accepted order
+      - name: InService  # 服务中
+        description: Service in progress
+      - name: Completed  # 已完成
+        description: Service completed
+      - name: Cancelled  # 已取消
+        description: Order cancelled
+    
+    transitions:
+      - name: SystemDispatch  # 系统派单
+        from: WaitingDispatch
+        to: Dispatched
+        condition: assigned_person_id > 0 and hours_until_service > 1.0
+        description: System dispatches order when conditions met
+      
+      - name: AcceptOrder  # 接单
+        from: Dispatched
+        to: Accepted
+        condition: true
+        description: Service person accepts order
+      
+      - name: RejectOrder  # 拒单
+        from: Dispatched
+        to: WaitingDispatch
+        condition: is_rejected == true and hours_until_service > 1.0
+        description: Service person rejects order
+      
+      - name: StartService  # 开始服务
+        from: Accepted
+        to: InService
+        condition: true
+        description: Service starts
+      
+      - name: CompleteService  # 完成服务
+        from: InService
+        to: Completed
+        condition: true
+        description: Service completed
+      
+      - name: CancelBeforeDispatch  # 派单前取消
+        from: WaitingDispatch
+        to: Cancelled
+        condition: true
+        description: Cancel before dispatch
+      
+      - name: CancelAfterDispatch  # 派单后取消
+        from: Dispatched
+        to: Cancelled
+        condition: hours_until_service < 1.0
+        description: Cancel when too close to service time
+      
+      - name: CannotCancelInService  # 服务中不能取消
+        from: InService
+        to: Cancelled
+        condition: false
+        description: Cannot cancel during service
+
+# 业务规则
+rules:
+  # 技能匹配规则
+  - name: Daily cleaning skill match
+    condition: order_service_type == 1
+    action: service_person_skill_daily == true
+    description: Daily cleaning requires daily skill
+  
+  - name: Deep cleaning skill match
+    condition: order_service_type == 2
+    action: service_person_skill_deep == true
+    description: Deep cleaning requires deep skill
+  
+  - name: Glass cleaning skill match
+    condition: order_service_type == 3
+    action: service_person_skill_glass == true
+    description: Glass cleaning requires glass skill
+  
+  - name: Full house cleaning skill match
+    condition: order_service_type == 4
+    action: service_person_skill_full_house == true
+    description: Full house cleaning requires full house skill
+  
+  - name: New house cleaning skill match
+    condition: order_service_type == 5
+    action: service_person_skill_new_house == true
+    description: New house cleaning requires new house skill
+  
+  # 派单优先级规则
+  - name: Zero order advantage
+    condition: service_person_current_orders == 0 and order_distance_to_service_person <= 3.5
+    action: dispatch_priority_bonus = 0.8
+    description: Service person with no orders gets 800m advantage
+  
+  - name: Electric vehicle navigation time
+    condition: service_person_has_electric_vehicle == true
+    action: use_cycling_time = true
+    description: Use cycling time for those with electric vehicles
+  
+  - name: No electric vehicle navigation time
+    condition: service_person_has_electric_vehicle == false
+    action: use_walking_or_transit_time = true
+    description: Use walking or public transit time
+  
+  # 拒单规则
+  - name: Rejection penalty
+    condition: service_person_rejection_count > 3
+    action: service_level_reduced = true
+    description: Multiple rejections affect service level
+  
+  # 可用性规则
+  - name: Service person availability
+    condition: service_person_is_available == false
+    action: cannot_dispatch = true
+    description: Cannot dispatch to unavailable service person
+  
+  # 时间窗口规则
+  - name: Commute time buffer
+    condition: true
+    action: required_buffer_minutes = 27
+    description: Need 27 minutes buffer for commute
+  
+  - name: Auto cancel when no match
+    condition: hours_until_service <= 1.0 and assigned_person_id == 0
+    action: auto_cancel = true
+    description: Auto cancel if no service person found 1 hour before
+
+# 测试需求
+test_requirements:
+  - name: Distance boundary tests
+    type: boundary
+    focus: [distance_to_service_person, navigation_distance]
+    description: Test distance constraints
+  
+  - name: Skill matching tests
+    type: equivalence
+    focus: [service_type, skill_daily, skill_deep, skill_glass, skill_full_house, skill_new_house]
+    description: Test all skill matching combinations
+  
+  - name: State machine tests
+    type: state_machine
+    focus: [OrderStatusFlow]
+    description: Test order status transitions
+  
+  - name: Time constraint tests
+    type: boundary
+    focus: [hours_until_service]
+    description: Test time-based constraints
+  
+  - name: Rejection scenario tests
+    type: combinatorial
+    combinations: 2
+    focus: [is_rejected, hours_until_service, status]
+    description: Test rejection handling scenarios
+  
+  - name: Priority calculation tests
+    type: combinatorial
+    combinations: 2
+    focus: [current_orders, distance_to_service_person, has_electric_vehicle]
+    description: Test dispatch priority logic

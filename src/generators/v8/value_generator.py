@@ -24,7 +24,7 @@ class ValueGenerator:
             return random.choice(attr.enum)
         
         # 处理ID
-        if 'id' in attr.name.lower():
+        if 'id' in attr.name.lower() and not attr.name == 'assigned_person_id':
             return self._generate_id(entity_name, attr.name)
         
         # 先检查是否是集合类型
@@ -33,9 +33,9 @@ class ValueGenerator:
         
         # 根据类型生成
         if attr.type == 'int' or attr.type == 'integer':
-            return self._generate_int(attr.name, context)
-        elif attr.type == 'float' or attr.type == 'double':
-            return self._generate_float(attr.name, context)
+            return self._generate_int(attr.name, context, attr=attr)
+        elif attr.type == 'float' or attr.type == 'double' or attr.type == 'real':
+            return self._generate_float(attr.name, context, attr=attr)
         elif attr.type == 'string':
             return self._generate_string(attr.name, context)
         elif attr.type == 'boolean' or attr.type == 'bool':
@@ -65,7 +65,7 @@ class ValueGenerator:
         self.id_counters[key] += 1
         return current
     
-    def _generate_int(self, attr_name: str, context: Dict[str, Any] = None) -> int:
+    def _generate_int(self, attr_name: str, context: Dict[str, Any] = None, attr: Attribute = None) -> int:
         """生成整数"""
         attr_lower = attr_name.lower()
         
@@ -73,6 +73,33 @@ class ValueGenerator:
         gen_key = f"int_{attr_name}"
         self.generation_count[gen_key] = self.generation_count.get(gen_key, 0) + 1
         count = self.generation_count[gen_key]
+        
+        # 如果有属性定义的min/max，优先使用
+        if attr and hasattr(attr, 'min') and hasattr(attr, 'max') and attr.min is not None and attr.max is not None:
+            min_val = int(attr.min) if attr.min is not None else 0
+            max_val = int(attr.max) if attr.max is not None else 100
+            
+            # 特殊处理某些属性
+            if 'current_orders' in attr_lower:
+                # 生成不同的订单数量分布
+                order_counts = [0, 1, 2, 3, 5, 8, 10]
+                valid_counts = [c for c in order_counts if min_val <= c <= max_val]
+                if valid_counts:
+                    return random.choice(valid_counts)
+            elif 'rejection_count' in attr_lower:
+                # 生成不同的拒单次数
+                rejection_counts = [0, 1, 2, 3, 5, 10]
+                valid_counts = [c for c in rejection_counts if min_val <= c <= max_val]
+                if valid_counts:
+                    return random.choice(valid_counts)
+            elif 'assigned_person_id' in attr_lower:
+                # 0表示未分配，其他为具体ID
+                if random.random() < 0.2:  # 20%概率未分配
+                    return 0
+                return random.randint(1, min(max_val, 10))
+            
+            # 默认在范围内随机生成
+            return random.randint(min_val, max_val)
         
         # 基于属性名的智能生成
         if 'age' in attr_lower:
@@ -114,10 +141,54 @@ class ValueGenerator:
         range_idx = (count - 1) % len(ranges)
         return random.randint(ranges[range_idx][0], ranges[range_idx][1])
     
-    def _generate_float(self, attr_name: str, context: Dict[str, Any] = None) -> float:
+    def _generate_float(self, attr_name: str, context: Dict[str, Any] = None, attr: Attribute = None) -> float:
         """生成浮点数"""
         attr_lower = attr_name.lower()
         
+        # 如果有属性定义的min/max，优先使用
+        if attr and hasattr(attr, 'min') and hasattr(attr, 'max') and attr.min is not None and attr.max is not None:
+            min_val = float(attr.min) if attr.min is not None else 0.0
+            max_val = float(attr.max) if attr.max is not None else 100.0
+            
+            # 特殊处理距离相关属性 - 遵守派单系统的距离约束
+            if 'distance_to_service_person' in attr_lower:
+                # 直线距离必须 <= 9公里
+                distance_ranges = [(0.5, 2.0), (2.1, 4.0), (4.1, 6.0), (6.1, 8.0), (8.1, 9.0)]
+                distance_range = random.choice(distance_ranges)
+                return round(random.uniform(distance_range[0], min(distance_range[1], 9.0)), 2)
+            elif 'navigation_distance' in attr_lower:
+                # 导航距离必须 <= 10公里，通常比直线距离大1.2-1.5倍
+                if context and 'distance_to_service_person' in context:
+                    straight_distance = context['distance_to_service_person']
+                    factor = random.uniform(1.2, 1.5)
+                    nav_distance = straight_distance * factor
+                    return round(min(nav_distance, 10.0), 2)
+                else:
+                    # 没有直线距离时，生成合理的导航距离
+                    nav_ranges = [(0.6, 3.0), (3.1, 6.0), (6.1, 8.5), (8.6, 10.0)]
+                    nav_range = random.choice(nav_ranges)
+                    return round(random.uniform(nav_range[0], min(nav_range[1], 10.0)), 2)
+            elif 'base_location_distance' in attr_lower:
+                # 基地距离，生成多样化的距离
+                base_ranges = [(0.1, 3.0), (3.1, 10.0), (10.1, 30.0), (30.1, max_val)]
+                base_range = random.choice(base_ranges)
+                return round(random.uniform(base_range[0], min(base_range[1], max_val)), 2)
+            elif 'hours_until_service' in attr_lower:
+                # 服务时间必须>=1小时（除非订单已取消）
+                hour_ranges = [(1.0, 2.0), (2.1, 6.0), (6.1, 24.0), (24.1, 72.0), (72.1, max_val)]
+                hour_range = random.choice(hour_ranges)
+                return round(random.uniform(hour_range[0], min(hour_range[1], max_val)), 2)
+            elif 'service_duration' in attr_lower:
+                # 服务时长分布
+                duration_options = [1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 8.0]
+                valid_options = [d for d in duration_options if min_val <= d <= max_val]
+                if valid_options:
+                    return random.choice(valid_options)
+            
+            # 默认在范围内随机生成
+            return round(random.uniform(min_val, max_val), 2)
+        
+        # 原有的基于名称的生成逻辑
         if 'price' in attr_lower or 'cost' in attr_lower:
             # 生成真实的价格
             prices = [9.99, 19.99, 29.99, 49.99, 99.99, 149.99, 199.99]

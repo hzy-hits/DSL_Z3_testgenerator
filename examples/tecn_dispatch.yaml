@@ -1,0 +1,444 @@
+domain: 保洁自营门店调度引擎系统
+
+entities:
+  # 预约单实体
+  - name: ReservationOrder
+    description: 用户预约单
+    attributes:
+      - name: order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 订单唯一标识
+      
+      - name: reserve_start_time
+        type: integer
+        min: 0
+        max: 168
+        description: 预约开始时间(小时偏移)
+      
+      - name: has_been_modified
+        type: boolean
+        description: 是否被修改过
+      
+      - name: modification_version
+        type: integer
+        min: 0
+        max: 100
+        description: 修改版本号
+
+  # 服务单实体
+  - name: ServiceOrder
+    description: 服务单
+    attributes:
+      - name: service_order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 服务单ID
+      
+      - name: order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联预约单ID
+      
+      - name: service_status
+        type: integer
+        enum_values: [1, 2, 3, 4]  # 1=待派单, 2=已派单, 3=服务中, 4=已完成
+        description: 服务状态
+      
+      - name: assigned_technician_id
+        type: integer
+        min: 0
+        max: 9999
+        description: 已分配手艺人ID(0表示未分配)
+      
+      - name: needs_redispatch
+        type: boolean
+        description: 是否需要重派
+
+  # 调度单实体
+  - name: DispatchOrder
+    description: 调度系统内部调度单
+    attributes:
+      - name: dispatch_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 调度单ID
+      
+      - name: order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联预约单ID
+      
+      - name: dispatch_status
+        type: integer
+        enum_values: [1, 2, 3, 4, 5, 6]  # 1=待调度, 2=预调度中, 3=预调度完成, 4=正式调度中, 5=已派单, 6=已失效
+        description: 调度状态
+      
+      - name: expect_dispatch_time
+        type: integer
+        min: 0
+        max: 168
+        description: 期望调度时间
+      
+      - name: is_valid
+        type: boolean
+        description: 调度单是否有效
+      
+      - name: create_time
+        type: integer
+        min: 0
+        max: 999999
+        description: 创建时间戳
+
+  # MQ消息实体
+  - name: MQMessage
+    description: 消息队列消息
+    attributes:
+      - name: message_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 消息ID
+      
+      - name: message_type
+        type: integer
+        enum_values: [1, 2]  # 1=服务单状态变更, 2=预约单状态变更
+        description: 消息类型
+      
+      - name: order_id
+        type: integer
+        min: 1
+        max: 9999999
+        description: 关联订单ID
+      
+      - name: is_processed
+        type: boolean
+        description: 是否已处理
+      
+      - name: retry_count
+        type: integer
+        min: 0
+        max: 5
+        description: 重试次数
+
+  # 调度池实体
+  - name: DispatchPool
+    description: 调度池
+    attributes:
+      - name: pool_id
+        type: integer
+        min: 1
+        max: 100
+        description: 调度池ID
+      
+      - name: dispatch_type
+        type: integer
+        enum_values: [1, 2]  # 1=正式调度, 2=预调度
+        description: 调度类型
+      
+      - name: pool_size
+        type: integer
+        min: 0
+        max: 1000
+        description: 池内调度单数量
+      
+      - name: is_locked
+        type: boolean
+        description: 是否被锁定
+
+  # 库存实体
+  - name: Inventory
+    description: 库存管理
+    attributes:
+      - name: inventory_type
+        type: integer
+        enum_values: [1, 2]  # 1=C端库存, 2=手艺人库存
+        description: 库存类型
+      
+      - name: resource_id
+        type: integer
+        min: 1
+        max: 9999
+        description: 资源ID
+      
+      - name: time_slot
+        type: integer
+        min: 1
+        max: 96
+        description: 时间段
+      
+      - name: available_count
+        type: integer
+        min: 0
+        max: 100
+        description: 可用数量
+      
+      - name: locked_count
+        type: integer
+        min: 0
+        max: 50
+        description: 锁定数量
+
+  # 分布式锁实体
+  - name: DistributedLock
+    description: 分布式锁
+    attributes:
+      - name: lock_key
+        type: integer
+        min: 1
+        max: 9999999
+        description: 锁键值(通常是order_id)
+      
+      - name: lock_type
+        type: integer
+        enum_values: [1, 2, 3]  # 1=预约单锁, 2=调度单锁, 3=库存锁
+        description: 锁类型
+      
+      - name: is_locked
+        type: boolean
+        description: 是否已锁定
+      
+      - name: lock_duration
+        type: integer
+        min: 1
+        max: 300
+        description: 锁持续时间(秒)
+
+constraints:
+  # 调度单约束
+  - expression: dispatch_status == 6 implies is_valid == false
+    description: 失效状态的调度单必须标记为无效
+  
+  - expression: dispatch_status == 5 implies assigned_technician_id > 0
+    description: 已派单状态必须有分配的手艺人
+  
+  # 服务单约束
+  - expression: service_status == 2 implies assigned_technician_id > 0
+    description: 已派单的服务单必须分配手艺人
+  
+  - expression: needs_redispatch == true implies service_status == 2
+    description: 只有已派单状态才能需要重派
+  
+  # 消息处理约束
+  - expression: retry_count > 3 implies is_processed == false
+    description: 重试超过3次的消息标记为未处理
+  
+  - expression: message_type == 1 implies needs_redispatch == true
+    description: 服务单变更消息只在需要重派时发送
+  
+  # 库存约束
+  - expression: locked_count <= available_count
+    description: 锁定数量不能超过可用数量
+  
+  - expression: inventory_type == 1 implies resource_id < 100
+    description: C端库存的资源ID范围限制
+  
+  # 并发控制约束
+  - expression: is_locked == true implies lock_duration > 0
+    description: 锁定状态必须有持续时间
+  
+  - expression: pool_size > 100 implies is_locked == true
+    description: 大批量处理时需要锁定调度池
+
+state_machines:
+  # 调度单状态机
+  - name: DispatchOrderFlow
+    entity: DispatchOrder
+    state_attribute: dispatch_status
+    states:
+      - name: Pending
+        description: "待调度"
+      - name: PreDispatching
+        description: "预调度中"
+      - name: PreDispatched
+        description: "预调度完成"
+      - name: FormalDispatching
+        description: "正式调度中"
+      - name: Dispatched
+        description: "已派单"
+      - name: Invalid
+        description: "已失效"
+    
+    transitions:
+      - name: StartPreDispatch
+        from: Pending
+        to: PreDispatching
+        condition: current_time >= expect_dispatch_time - 24
+        description: "开始预调度"
+      
+      - name: CompletePreDispatch
+        from: PreDispatching
+        to: PreDispatched
+        condition: locked_count > 0
+        description: "预调度完成"
+      
+      - name: StartFormalDispatch
+        from: PreDispatched
+        to: FormalDispatching
+        condition: current_time >= expect_dispatch_time
+        description: "开始正式调度"
+      
+      - name: CompleteFormalDispatch
+        from: FormalDispatching
+        to: Dispatched
+        condition: assigned_technician_id > 0
+        description: "正式调度完成"
+      
+      - name: InvalidateOrder
+        from: Pending
+        to: Invalid
+        condition: has_been_modified == true
+        description: "因修改而失效"
+      
+      - name: InvalidatePreDispatched
+        from: PreDispatched
+        to: Invalid
+        condition: has_been_modified == true
+        description: "预调度后失效"
+
+  # 消息处理状态机
+  - name: MessageProcessFlow
+    entity: MQMessage
+    state_attribute: is_processed
+    states:
+      - name: Unprocessed
+        description: "未处理"
+      - name: Processed
+        description: "已处理"
+    
+    transitions:
+      - name: ProcessServiceChange
+        from: Unprocessed
+        to: Processed
+        condition: message_type == 1 and needs_redispatch == true
+        description: "处理服务单变更"
+      
+      - name: ProcessReservationChange
+        from: Unprocessed
+        to: Processed
+        condition: message_type == 2 and is_locked == true
+        description: "处理预约单变更"
+      
+      - name: RetryFailed
+        from: Unprocessed
+        to: Unprocessed
+        condition: retry_count < 5
+        description: "重试失败消息"
+
+rules:
+  # 消息处理规则
+  - name: Service Order Change Rule
+    condition: needs_redispatch == true and service_status == 2
+    action: send_message_type_1 = true
+    description: 已派单且需要重派时发送服务单变更消息
+  
+  - name: Reservation Order Change Rule
+    condition: has_been_modified == true
+    action: send_message_type_2 = true
+    description: 预约单修改时发送预约单变更消息
+  
+  # 并发控制规则
+  - name: Lock Before Create
+    condition: message_type == 2
+    action: acquire_order_lock = true
+    description: 处理预约单变更前获取锁
+  
+  - name: Invalidate Existing Dispatch
+    condition: has_been_modified == true and dispatch_status < 5
+    action: invalidate_dispatch_orders = true
+    description: 修改预约时失效未完成的调度单
+  
+  # 调度冲突处理
+  - name: Skip Invalid Dispatch
+    condition: is_valid == false
+    action: terminate_dispatch = true
+    description: 跳过无效调度单
+  
+  - name: Concurrent Dispatch Prevention
+    condition: pool_size > 0 and is_locked == false
+    action: wait_for_lock = true
+    description: 防止并发调度
+  
+  # 库存管理规则
+  - name: Lock C-End Inventory
+    condition: dispatch_status == 2
+    action: lock_c_inventory = true
+    description: 预调度时锁定C端库存
+  
+  - name: Lock Technician Inventory
+    condition: dispatch_status == 4
+    action: lock_technician_inventory = true
+    description: 正式调度时锁定手艺人库存
+  
+  - name: Release Pre-lock on Dispatch
+    condition: dispatch_status == 5
+    action: release_c_inventory = true
+    description: 派单完成释放预占
+
+test_requirements:
+  # 消息处理测试
+  - name: Message Processing Tests
+    type: custom
+    description: 测试消息处理机制
+    scenarios:
+      - service_change_message     # 服务单变更消息
+      - reservation_change_message # 预约单变更消息
+      - message_retry_logic        # 消息重试逻辑
+      - duplicate_message_handling # 重复消息处理
+  
+  # 并发控制测试
+  - name: Concurrency Control Tests
+    type: custom
+    description: 测试并发控制
+    scenarios:
+      - distributed_lock_acquire   # 分布式锁获取
+      - lock_timeout_handling      # 锁超时处理
+      - concurrent_modification    # 并发修改
+      - race_condition_prevention  # 竞态条件预防
+  
+  # 改约场景测试
+  - name: Modification Scenario Tests
+    type: custom
+    description: 测试三种改约场景
+    scenarios:
+      - modify_before_dispatch         # 未派出时改约
+      - modify_after_dispatch_no_redo  # 已派出不需重派
+      - modify_after_dispatch_redo     # 已派出需要重派
+      - concurrent_message_handling    # 并发消息处理
+  
+  # 调度单失效测试
+  - name: Dispatch Invalidation Tests
+    type: custom
+    description: 测试调度单失效机制
+    scenarios:
+      - invalidate_pending_orders      # 失效待调度单
+      - invalidate_predispatched       # 失效预调度单
+      - skip_invalid_in_pool           # 调度池跳过无效单
+      - create_new_after_invalid       # 失效后创建新单
+  
+  # 状态机测试
+  - name: State Machine Tests
+    type: state_machine
+    focus: [DispatchOrderFlow, MessageProcessFlow]
+    description: 测试状态流转
+  
+  # 数据竞争测试
+  - name: Data Race Tests
+    type: custom
+    description: 测试数据竞争场景
+    scenarios:
+      - consumer_vs_scheduler      # 消费者vs调度任务
+      - multiple_consumers         # 多消费者竞争
+      - inventory_race_condition   # 库存竞争
+      - dispatch_pool_race         # 调度池竞争
+  
+  # 边界测试
+  - name: Boundary Tests
+    type: boundary
+    focus: [retry_count, lock_duration, pool_size]
+    description: 测试系统边界条件

@@ -19,6 +19,8 @@ class Attribute:
     default: Any = None
     min_size: Optional[int] = None
     max_size: Optional[int] = None
+    min: Optional[float] = None
+    max: Optional[float] = None
 
 
 @dataclass
